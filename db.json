@@ -1,0 +1,34 @@
+{
+  "cardData": [
+    {
+      "title": "Tapak Suci",
+      "image": "/src/assets/bg-mobile.png",
+      "paragraf": "Tapak Suci merupakan salah satu kegiatan unggulan olahraga beladiri di SMP Muh Sumbang."
+    },
+    {
+      "title": "Pramuka",
+      "image": "/src/assets/bg-mobile.png",
+      "paragraf": "Kegiatan pramuka di SMP Muh Sumbang bertujuan untuk melatih kemandirian dan kebersamaan siswa."
+    },
+    {
+      "title": "Paskibra",
+      "image": "/src/assets/bg-mobile.png",
+      "paragraf": "Paskibra adalah kegiatan pengibaran bendera yang melatih kedisiplinan siswa."
+    },
+    {
+      "title": "Karate",
+      "image": "/src/assets/bg-mobile.png",
+      "paragraf": "Kegiatan karate di SMP Muh Sumbang bertujuan mengembangkan bakat siswa dalam seni bela diri."
+    },
+    {
+      "title": "Futsal",
+      "image": "/src/assets/bg-mobile.png",
+      "paragraf": "Futsal adalah kegiatan olahraga yang menjadi favorit di SMP Muh Sumbang."
+    },
+    {
+      "title": "Marching Band",
+      "image": "/src/assets/bg-mobile.png",
+      "paragraf": "Marching Band di SMP Muh Sumbang adalah kegiatan yang melatih kekompakan siswa dalam bermusik."
+    }
+  ]
+}

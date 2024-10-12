@@ -1,0 +1,18 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.slick-slide {
+    height: auto;
+    /* Atur tinggi otomatis agar konten tidak terpotong */
+}
+
+.relative {
+    width: 100%;
+    /* Pastikan lebar slider 100% */
+}
+
+.p-2 {
+    padding: 0.5rem;
+    /* Atur padding sesuai kebutuhan */
+}
