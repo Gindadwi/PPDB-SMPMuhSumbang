@@ -10,7 +10,7 @@ function card(props) {
             </a>
 
             <div className="px-3 pt-3">
-                <h1 className="font-outfit font-medium text-black text-[24px] ">{title}</h1>
+                <h1 className="font-outfit font-medium text-black lg:text-[24px] text-[18px] ">{title}</h1>
                 <p className="text-[12px] lg:text-[16px] font-medium font-poppins">{paragraf}</p>
             </div>
 

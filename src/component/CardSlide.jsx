@@ -13,7 +13,7 @@ const CardSlide = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('https://smpmuhsumbang-9fa3a-default-rtdb.firebaseio.com/ekstraku.json');
+        const response = await axios.get('https://smpmuhsumbang-9fa3a-default-rtdb.firebaseio.com/Prestasi.json');
         const fetchedData = Object.values(response.data); // Ubah objek menjadi array
         setData(fetchedData);
         console.log(fetchedData); // Memeriksa data
@@ -41,9 +41,9 @@ const CardSlide = () => {
         },
       },
       {
-        breakpoint: 768, // tablet breakpoint
+        breakpoint: 720, // tablet breakpoint
         settings: {
-          slidesToShow: 1,
+          slidesToShow: 1.4,
           slidesToScroll: 1,
           infinite: true,
         },
@@ -51,7 +51,7 @@ const CardSlide = () => {
       {
         breakpoint: 480, // small mobile
         settings: {
-          slidesToShow: 1.2,
+          slidesToShow: 1.3,
           slidesToScroll: 1,
           infinite: true,
         },

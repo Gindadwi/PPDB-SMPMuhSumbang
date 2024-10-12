@@ -42,7 +42,7 @@ const Home = () => {
       </div>
       <div className='mt-10 items-center justify-center flex flex-col '>
         <div className='w-full text-left  max-w-[1080px] px-4 lg:px-0'>
-          <h1 className='font-outfit font-medium text-[24px] lg:text-[35px] text-black text-left'>Kegiatan Ekstrakurikuler</h1>
+          <h1 className='font-outfit font-medium text-[24px] lg:text-[35px] text-black text-left'>Prestasi Spemba</h1>
         </div>
         <Card />
       </div>
