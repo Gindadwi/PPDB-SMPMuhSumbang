@@ -33,6 +33,7 @@ const Login = ({onSwitchToRegister}) => {
                         </button>
 
                     </div>
+
                 </div>
 
                 <div className='w-full items-center justify-center flex mt-5'>

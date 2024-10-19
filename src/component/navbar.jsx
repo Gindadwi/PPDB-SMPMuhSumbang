@@ -7,6 +7,7 @@ import Login from '../pages/Login';
 import Register from '../pages/Register'; // Pastikan nama file sesuai dan huruf kapital
 import 'flowbite/dist/flowbite.css';
 import { Modal } from 'flowbite';
+import FormPendaftaran from '../pages/FormPendaftaran';
 
 export default function Navbar() {
     const [open, setOpen] = useState(false);
@@ -83,7 +84,7 @@ export default function Navbar() {
                                 <a href="#" className='text-white font-outfit text-sm'>Beranda</a>
                                 <a href="#" className='text-white font-outfit text-sm'>Tentang Kami</a>
                                 <a href="#" className='text-white font-outfit text-sm'>Prestasi</a>
-                                <a href="#" className='text-white font-outfit text-sm'>PPDB</a>
+                                <a href="/formpendaftaran" className='text-white font-outfit text-sm'>PPDB</a>
                             </nav>
 
                             <div>
@@ -190,7 +191,7 @@ export default function Navbar() {
                         <a href="#" className='text-warnaUtama font-outfit font-medium text-sm'>Beranda</a>
                         <a href="#" className='text-warnaUtama font-outfit font-medium text-sm'>Tentang Kami</a>
                         <a href="#" className='text-warnaUtama font-outfit font-medium text-sm'>Prestasi</a>
-                        <a href="#" className='text-warnaUtama font-outfit font-medium text-sm'>PPDB</a>
+                        <a href="/formpendaftaran" className='text-warnaUtama font-outfit font-medium text-sm'>PPDB</a>
                     </nav>
                 </div>
 
