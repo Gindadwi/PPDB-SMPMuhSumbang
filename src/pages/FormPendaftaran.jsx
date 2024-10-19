@@ -166,6 +166,26 @@ const FormPendaftaran = () => {
                             </div>
                         </div>
 
+                        <div className='grid grid-cols-1 gap-4 mt-5'>
+                            <div className='flex flex-col w-full'>
+                                <label className='font-medium font-outfit text-[14px]'>kartu Indonesia Pintar (KIP)</label>
+                                <input type="file"
+                                    name="KIP"
+                                    onChange={handleFileChange}
+                                    className='block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400' />
+                            </div>
+                        </div>
+
+                        <div className='grid grid-cols-1 gap-4 mt-5'>
+                            <div className='flex flex-col w-full'>
+                                <label className='font-medium font-outfit text-[14px]'>Sertifikat</label>
+                                <input type="file"
+                                    name="akta"
+                                    onChange={handleFileChange}
+                                    className='block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400' />
+                            </div>
+                        </div>
+
                         {/* Buttons Prev and Submit */}
                         <div className='mt-8 flex justify-between'>
                             <button
