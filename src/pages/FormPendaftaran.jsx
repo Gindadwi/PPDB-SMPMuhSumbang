@@ -16,12 +16,12 @@ const FormPendaftaran = () => {
 
     const nextStep = () => setStep(step + 1);
 
-    const prevStep = () => setStep (step - 1);
+    const prevStep = () => setStep(step - 1);
 
 
     const handleFileChange = (e) => {
         setUploadFiles({
-            ...uploadedFiles ({
+            ...uploadedFiles({
                 [e.target.name]: e.target.files[0]
             })
         })
@@ -29,112 +29,112 @@ const FormPendaftaran = () => {
 
     return (
         <div className='mb-14 my-20 px-4 sm:px-6'>
-            <div className='flex flex-col gap-1 justify-center items-center'>
-                <h1 className='text-[18px] font-outfit font-semibold text-center'>
+            <div className='flex flex-col pt-10 gap-1 justify-center items-center'>
+                <h1 className='text-[18px] lg:text-[24px] font-outfit font-semibold text-center'>
                     Form Pendaftaran Siswa Baru
                 </h1>
-                <h1 className='text-[12px] font-poppins font-normal text-center'>
+                <h1 className='text-[12px] lg:text-[16px] font-poppins font-normal text-center'>
                     Isi semua form yang ada di bawah ini jangan sampai terlewat.
                     Kami membutuhkan data anda yang valid.
                 </h1>
             </div>
 
-            <form className='relative max-w-[1080px] mx-auto mt-8'>
-              {step === 1 && (
-              <>
-                {/* Input Nama Lengkap */}
-                <div className='grid grid-cols-1 gap-4'>
-                    <div className='flex flex-col w-full'>
-                        <label className='font-medium font-outfit'>Nama Lengkap</label>
-                        <input type="text"
-                            className='border border-black rounded-md p-2 font-outfit'
-                            placeholder='Masukkan nama lengkap' />
-                    </div>
-                </div>
+            <form className='relative max-w-[720px] mx-auto mt-8'>
+                {step === 1 && (
+                    <>
+                        {/* Input Nama Lengkap */}
+                        <div className='grid grid-cols-1 gap-4'>
+                            <div className='flex flex-col w-full'>
+                                <label className='font-medium font-outfit'>Nama Lengkap</label>
+                                <input type="text"
+                                    className='border border-black rounded-md p-2 lg:p-3 font-outfit'
+                                    placeholder='Masukkan nama lengkap' />
+                            </div>
+                        </div>
 
-                {/* Input Tempat Lahir dan Tanggal Lahir */}
-                <div className='grid grid-cols-1 gap-4 mt-5'>
-                    <div className='flex flex-col w-full'>
-                        <label className='font-medium font-outfit'>Tempat Lahir</label>
-                        <input type="text"
-                            className='border border-black rounded-md p-2 font-outfit'
-                            placeholder='Tempat lahir' />
-                    </div>
-                    <div className='flex flex-col w-full'>
-                        <label className='font-medium font-outfit'>Tanggal Lahir</label>
-                        <DatePicker
-                            selected={selectedDate}
-                            onChange={(date) => setSelectedDate(date)} // Handler untuk mengubah tanggal
-                            dateFormat="dd/MM/yyyy"
-                            placeholderText="Tanggal lahir"
-                            className='w-full border border-black rounded-md p-2 font-outfit'
-                        />
-                    </div>
-                </div>
+                        {/* Input Tempat Lahir dan Tanggal Lahir */}
+                        <div className='grid grid-cols-1 lg:grid-cols-2 gap-4 mt-5'>
+                            <div className='flex flex-col w-full'>
+                                <label className='font-medium font-outfit'>Tempat Lahir</label>
+                                <input type="text"
+                                    className='border border-black rounded-md p-2 lg:p-3 font-outfit'
+                                    placeholder='Tempat lahir' />
+                            </div>
+                            <div className='flex flex-col w-full'>
+                                <label className='font-medium font-outfit'>Tanggal Lahir</label>
+                                <DatePicker
+                                    selected={selectedDate}
+                                    onChange={(date) => setSelectedDate(date)} // Handler untuk mengubah tanggal
+                                    dateFormat="dd/MM/yyyy"
+                                    placeholderText="Tanggal lahir"
+                                    className='w-full border border-black rounded-md p-2 lg:p-3 font-outfit'
+                                />
+                            </div>
+                        </div>
 
-                {/* Alamat */}
-                <div className='grid grid-cols-1 gap-4 mt-5'>
-                    <div className='flex flex-col w-full'>
-                        <label className='font-medium font-outfit'>Alamat</label>
-                        <input type="text"
-                            className='border border-black rounded-md p-2 font-outfit'
-                            placeholder='Masukkan alamat lengkap' />
-                    </div>
-                </div>
+                        {/* Alamat */}
+                        <div className='grid grid-cols-1 gap-4 mt-5'>
+                            <div className='flex flex-col w-full'>
+                                <label className='font-medium font-outfit'>Alamat</label>
+                                <input type="text"
+                                    className='border border-black rounded-md p-2 lg:p-3 font-outfit'
+                                    placeholder='Masukkan alamat lengkap' />
+                            </div>
+                        </div>
 
-                {/* NIK */}
-                <div className='grid grid-cols-1 gap-4 mt-5'>
-                    <div className='flex flex-col w-full'>
-                        <label className='font-medium font-outfit'>NIK</label>
-                        <input type="text"
-                            className='border border-black rounded-md p-2 font-outfit'
-                            placeholder='Masukan NIk' />
-                    </div>
-                </div>
-
-
-                {/* Asal Sekolah */}
-                <div className='grid grid-cols-1 gap-4 mt-5'>
-                    <div className='flex flex-col w-full'>
-                        <label className='font-medium font-outfit'>Asal Sekolah</label>
-                        <input type="text"
-                            className='border border-black rounded-md p-2 font-outfit'
-                            placeholder='Masukan Asal Sekolah' />
-                    </div>
-                </div>
+                        {/* NIK */}
+                        <div className='grid grid-cols-1 gap-4 mt-5'>
+                            <div className='flex flex-col w-full'>
+                                <label className='font-medium font-outfit'>NIK</label>
+                                <input type="text"
+                                    className='border border-black rounded-md p-2 lg:p-3 font-outfit'
+                                    placeholder='Masukan NIk' />
+                            </div>
+                        </div>
 
 
-                {/* Nilai Ujian */}
-                <div className='mt-5'>
-                    <label className='font-medium font-outfit' >Nilai Ujian Sekolah</label>
-                    <div className='grid grid-cols-3 gap-2 '>
-                        <input type="Number"
-                            className='border border-black rounded-md p-2 font-outfit'
-                            placeholder='IPA' />
+                        {/* Asal Sekolah */}
+                        <div className='grid grid-cols-1 gap-4 mt-5'>
+                            <div className='flex flex-col w-full'>
+                                <label className='font-medium font-outfit'>Asal Sekolah</label>
+                                <input type="text"
+                                    className='border border-black rounded-md p-2 lg:p-3 font-outfit'
+                                    placeholder='Masukan Asal Sekolah' />
+                            </div>
+                        </div>
 
-                        <input type="Number"
-                            className='border border-black rounded-md p-2 font-outfit'
-                            placeholder='B.Indo' />
-                        <input type="Number"
-                            className='border border-black rounded-md p-2 font-outfit'
-                            placeholder='MTK' />
-                    </div>
-                </div>
+
+                        {/* Nilai Ujian */}
+                        <div className='mt-5'>
+                            <label className='font-medium font-outfit' >Nilai Ujian Sekolah</label>
+                            <div className='grid grid-cols-3 lg:grid-cols-4 gap-2 '>
+                                <input type="Number"
+                                    className='border border-black rounded-md p-2 lg:p-3 font-outfit'
+                                    placeholder='IPA' />
+
+                                <input type="Number"
+                                    className='border border-black rounded-md p-2 lg:p-3 font-outfit'
+                                    placeholder='B.Indo' />
+                                <input type="Number"
+                                    className='border border-black rounded-md p-2 lg:p-3 font-outfit'
+                                    placeholder='MTK' />
+                            </div>
+                        </div>
 
                         {/* Button Next */}
                         <div className='mt-8 grid grid-cols-3'>
                             <button
                                 type="button"
                                 onClick={nextStep}
-                                className='bg-warnaUtama text-white px-4 py-2 font-outfit font-medium rounded-md'>
+                                className='bg-warnaUtama text-white px-4 py-2 lg:py-3 lg:text-[18px] font-outfit font-medium rounded-md lg:hover:scale-105 transform duration-150'>
                                 Next
                             </button>
                         </div>
-              </>
-              )}
+                    </>
+                )}
 
-            {step === 2 && (
-                <>
+                {step === 2 && (
+                    <>
                         {/* Step 2: Upload Berkas */}
                         <div className='grid grid-cols-1 gap-4'>
                             <div className='flex flex-col w-full'>
@@ -168,7 +168,7 @@ const FormPendaftaran = () => {
 
                         <div className='grid grid-cols-1 gap-4 mt-5'>
                             <div className='flex flex-col w-full'>
-                                <label className='font-medium font-outfit text-[14px]'>kartu Indonesia Pintar (KIP)</label>
+                                <label className='font-medium font-outfit text-[14px]'>kartu Indonesia Pintar (KIP) </label>
                                 <input type="file"
                                     name="KIP"
                                     onChange={handleFileChange}
@@ -191,21 +191,18 @@ const FormPendaftaran = () => {
                             <button
                                 type="button"
                                 onClick={prevStep}
-                                className='bg-warnaUtama text-white font-outfit font-medium px-4 py-2 rounded-md'>
+                                className='bg-warnaUtama text-white lg:text-[18px] lg:py-3 font-outfit font-medium px-4 py-2 rounded-md lg:hover:scale-105 transform duration-150'>
                                 Previous
                             </button>
 
                             <button
                                 type="submit"
-                                className='bg-green-700 text-white font-outfit font-medium px-4 py-2 rounded-md'>
+                                className='bg-green-700 text-white lg:text-[18px] lg:py-3 font-outfit font-medium px-4 py-2 rounded-md lg:hover:scale-105 transform duration-150'>
                                 Submit
                             </button>
-                        </div>                
-                </>
-            )}
-
-
-
+                        </div>
+                    </>
+                )}
 
 
             </form>
