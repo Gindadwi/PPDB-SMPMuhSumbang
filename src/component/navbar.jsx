@@ -66,7 +66,7 @@ export default function Navbar() {
             {/* Kontainer utama navbar */}
             <div className="flex w-full min-w-[360px] items-center px-5 lg:mx-auto lg:min-w-[460px] lg:max-w-[1080px] lg:justify-center lg:px-0">
                 {/* Header yang tetap di bagian atas */}
-                <header className="bg-warnaUtama dark:bg-gray-900 fixed w-full z-20 top-0 start-0 border-b border-gray-200 dark:border-gray-600">
+                <header className="bg-warnaUtama dark:bg-gray-900 fixed w-full z-50 top-0 start-0 border-b border-gray-200 dark:border-gray-600">
                     {/* Kontainer isi header */}
                     <div className='px-4 lg:px-0 py-2 lg:py-4 flex items-center justify-between text-2xl font-semibold font-outfit mx-auto max-w-[1080px]'>
                         {/* Bagian kiri header: Logo dan nama sekolah */}
@@ -82,7 +82,7 @@ export default function Navbar() {
                             <nav className='hidden md:flex flex-row gap-5'>
                                 <Link to="/" className='text-white font-outfit text-sm'>Beranda</Link>
                                 <Link to="/tentangkami" className='text-white font-outfit text-sm'>Tentang Kami</Link>
-                                <Link to="#" className='text-white font-outfit text-sm'>Ekstrakulikuler</Link>
+                                <Link to="/esktrakulikuler" className='text-white font-outfit text-sm'>Ekstrakulikuler</Link>
                                 <Link to="/informasippdb" className='text-white font-outfit text-sm'>Informasi PPDB</Link>                            
                             </nav>
 
@@ -189,7 +189,7 @@ export default function Navbar() {
                     <nav className='flex flex-col gap-5 ps-5 pt-6'>
                         <Link to="/" className='text-warnaUtama font-outfit font-medium text-sm'>Beranda</Link>
                         <Link to="/tentangKami" className='text-warnaUtama font-outfit font-medium text-sm'>Tentang Kami</Link>
-                        <Link to="#" className='text-warnaUtama font-outfit font-medium text-sm'>Ekstrakulikurer</Link>
+                        <Link to="/esktrakulikuler" className='text-warnaUtama font-outfit font-medium text-sm'>Ekstrakulikurer</Link>
                         <Link to="/informasippdb" className='text-warnaUtama font-outfit font-medium text-sm'>Informasi PPDB</Link>
                     </nav>
                 </div>

@@ -15,7 +15,8 @@ export default {
       backgroundImage: {
         imageDekstop: ("url(/src/assets/bg-dekstop.png)"),
         imageMobile: ("url(/src/assets/bg-Mobile.png)"),
-        imageInformasi: ("url(/src/assets/bg-informasi.jpg)"),
+        imageInformasiM: ("url(/src/assets/bg-informasiM.jpg)"),
+        imageInformasiD: ("url(/src/assets/bg-informasiD.jpg)"),
       },
 
       colors: {

@@ -9,6 +9,8 @@ import InformasiPPDB from './pages/InformasiPPDB'
 import { Toaster } from 'react-hot-toast';
 
 import './App.css'
+import Status from './pages/Status';
+import EkstrakurikulerPage from './pages/Ekstrakulikuler';
 
 function App() {
 
@@ -23,6 +25,8 @@ function App() {
             <Route path='/formpendaftaran' element={<FormPendaftaran />} />
             <Route path='/informasippdb' element={<InformasiPPDB />} />
             <Route path='/tentangkami' element={<TentangKami />} />
+            <Route path='/status' element={<Status/>} />
+            <Route path='/esktrakulikuler' element={<EkstrakurikulerPage/>} />
           </Routes>
         </div>
         <Footer />
