@@ -7,13 +7,12 @@ import Login from '../pages/Login';
 import Register from '../pages/Register'; // Pastikan nama file sesuai dan huruf kapital
 import 'flowbite/dist/flowbite.css';
 import { Modal } from 'flowbite';
-import FormPendaftaran from '../pages/FormPendaftaran';
+import { Link } from 'react-router-dom';
 
 export default function Navbar() {
     const [open, setOpen] = useState(false);
     const dropdownRef = useRef(null);
     const [modalContent, setModalContent] = useState(null);
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [dropdownOpen, setDropdownOpen] = useState(false);
 
     // Fungsi untuk mengganti konten modal ke Login
@@ -81,10 +80,10 @@ export default function Navbar() {
                         <div className='flex flex-row gap-5 lg:gap-10 items-center'>
                             {/* Navigasi untuk desktop, disembunyikan pada layar kecil */}
                             <nav className='hidden md:flex flex-row gap-5'>
-                                <a href="/" className='text-white font-outfit text-sm'>Beranda</a>
-                                <a href="/TentangKami" className='text-white font-outfit text-sm'>Tentang Kami</a>
-                                <a href="#" className='text-white font-outfit text-sm'>Ekstrakulikurer</a>
-                                <a href="/informasippdb" className='text-white font-outfit text-sm'>Informasi PPDB</a>
+                                <Link to="/" className='text-white font-outfit text-sm'>Beranda</Link>
+                                <Link to="/tentangkami" className='text-white font-outfit text-sm'>Tentang Kami</Link>
+                                <Link to="#" className='text-white font-outfit text-sm'>Ekstrakulikuler</Link>
+                                <Link to="/informasippdb" className='text-white font-outfit text-sm'>Informasi PPDB</Link>                            
                             </nav>
 
                             <div>
@@ -188,10 +187,10 @@ export default function Navbar() {
                     </div>
                     {/* Navigasi mobile */}
                     <nav className='flex flex-col gap-5 ps-5 pt-6'>
-                        <a href="/" className='text-warnaUtama font-outfit font-medium text-sm'>Beranda</a>
-                        <a href="/tentangKami" className='text-warnaUtama font-outfit font-medium text-sm'>Tentang Kami</a>
-                        <a href="#" className='text-warnaUtama font-outfit font-medium text-sm'>Ekstrakulikurer</a>
-                        <a href="/informasippdb" className='text-warnaUtama font-outfit font-medium text-sm'>Informasi PPDB</a>
+                        <Link to="/" className='text-warnaUtama font-outfit font-medium text-sm'>Beranda</Link>
+                        <Link to="/tentangKami" className='text-warnaUtama font-outfit font-medium text-sm'>Tentang Kami</Link>
+                        <Link to="#" className='text-warnaUtama font-outfit font-medium text-sm'>Ekstrakulikurer</Link>
+                        <Link to="/informasippdb" className='text-warnaUtama font-outfit font-medium text-sm'>Informasi PPDB</Link>
                     </nav>
                 </div>
 
