@@ -21,8 +21,8 @@ function App() {
           <Routes>
             <Route path='/' element={<Home />} />
             <Route path='/formpendaftaran' element={<FormPendaftaran />} />
-            <Route path='/informasippdb' element={<InformasiPPDB/>} />
-            <Route path='/tentangKami' element={<TentangKami />} />
+            <Route path='/informasippdb' element={<InformasiPPDB />} />
+            <Route path='/TentangKami' element={<TentangKami />} />
           </Routes>
         </div>
         <Footer />

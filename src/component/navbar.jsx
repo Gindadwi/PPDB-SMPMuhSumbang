@@ -82,9 +82,9 @@ export default function Navbar() {
                             {/* Navigasi untuk desktop, disembunyikan pada layar kecil */}
                             <nav className='hidden md:flex flex-row gap-5'>
                                 <a href="/" className='text-white font-outfit text-sm'>Beranda</a>
-                                <a href="/tentangKami" className='text-white font-outfit text-sm'>Tentang Kami</a>
+                                <a href="/TentangKami" className='text-white font-outfit text-sm'>Tentang Kami</a>
                                 <a href="#" className='text-white font-outfit text-sm'>Ekstrakulikurer</a>
-                                <a href="/informasippdb" className='text-white font-outfit text-sm'>PPDB</a>
+                                <a href="/informasippdb" className='text-white font-outfit text-sm'>Informasi PPDB</a>
                             </nav>
 
                             <div>
