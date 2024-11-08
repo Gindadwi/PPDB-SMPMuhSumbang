@@ -105,7 +105,7 @@ const Ekstrakulikuler = () => {
                     </div>
                 </div>
 
-                <div className='font-poppins mt-5 lg:text-center'>
+                <div className='font-poppins mt-8 lg:text-center'>
                     <h1 className='font-semibold text-[24px] lg:text-[32px]'>Ekstrakulikuler</h1>
                     <p className='font-normal text-[18px] lg:text-[24px]'>SMP Muhammadiyah Sumbang</p>
                 </div>
