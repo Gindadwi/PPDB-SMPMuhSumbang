@@ -9,20 +9,20 @@ const Footer = () => {
                 <div>
                 <img src={LogoSMP} alt="" className='w-28 lg:w-36' />
                 <div>
-                    <h1 className='text-white font-outfit font-semibold text-base lg:text-3xl'>SMP Muhammadiyah Sumbang</h1>
+                    <h1 className='text-white font-outfit font-semibold text-base lg:text-xl'>SMP Muhammadiyah Sumbang</h1>
                     <p className='text-white font-poppins text-[15px] font-light lg:text-[18px]'>Dusun I, Karangcegak, Kec. Sumbang, Kabupaten Banyumas, Jawa Tengah 53183</p>
                 </div>
                 </div>
                 <div className='mt-5 grid grid-cols-2 lg:gap-20 lg:text-left lg:justify-center lg:flex'>
                     <div className='flex flex-col gap-2'>
-                        <h1 className='text-white font-poppins text-[20px] lg:text-[28px] font-semibold'>Navigasi</h1>
+                        <h1 className='text-white font-poppins text-[20px] lg:text-[22px] font-semibold'>Navigasi</h1>
                         <a className='text-white font-poppins text-[14px] lg:text-[18px] font-extralight' href="">Beranda</a>
                         <a className='text-white font-poppins text-[14px] lg:text-[18px] font-extralight' href="">FAQ</a>
                         <a className='text-white font-poppins text-[14px] lg:text-[18px] font-extralight' href="">Ekstrakulikuler</a>
                         <a className='text-white font-poppins text-[14px] lg:text-[18px] font-extralight' href="">Daftar</a>
                     </div>
                     <div className='flex flex-col gap-2'>
-                        <h1 className='text-white font-poppins text-[20px] lg:text-[28px]  font-semibold'>Sosial Media</h1>
+                        <h1 className='text-white font-poppins text-[20px] lg:text-[22px]  font-semibold'>Sosial Media</h1>
                         <a className='text-white font-poppins text-[14px] lg:text-[18px] font-extralight' href="">Instagram</a>
                         <a className='text-white font-poppins text-[14px] lg:text-[18px] font-extralight' href="">Facebook</a>
                         <a className='text-white font-poppins text-[14px] lg:text-[18px] font-extralight' href="">Twiter</a>

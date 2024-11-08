@@ -3,9 +3,38 @@ import React, { useState } from 'react';
 import Button from '../common/Button'; // Pastikan path ini benar
 import { Icon } from '@iconify/react';
 import PropTypes from 'prop-types'; // Untuk validasi prop
+import axios from 'axios';
+import toast from 'react-hot-toast';
 
 const Register = ({ onSwitchToLogin }) => { // Menerima prop dengan nama yang benar
   const [showPassword, setShowPassword] = useState(false);
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confPassword, setConfPassword] = useState('');
+
+
+  //Membuat fungsi register
+  const handleRegister = async(e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post('https://be-smp-muh-sumbang.vercel.app/users/register', {
+        name: name,
+        email: email,
+        password: password,
+        confPassword: confPassword        
+      })
+
+      setName(''),
+      setEmail(''),
+      setPassword(''),
+      setConfPassword(''),
+      console.log(response.data);
+      toast.success("Berhasil Membuat Akun")
+    } catch (error) {
+      console.log("error resigter", error)
+    }
+  }
   
 
   // Handler untuk link 'Login'
@@ -19,18 +48,20 @@ const Register = ({ onSwitchToLogin }) => { // Menerima prop dengan nama yang be
   return (
     <div className=''>
       <h1 className='text-black text-[20px] font-outfit font-medium'>Daftar ke akun anda.</h1>
-      <form action="" className='mt-7'>
+      <form action="" onSubmit={handleRegister} className='mt-7'>
         <div className='flex flex-col gap-5'>
           <div className='flex flex-col'>
             <label htmlFor="fullname" className='text-black font-outfit text-[16px] font-medium'>Nama Lengkap</label>
             <input
               type="text"
               id="fullname"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
               className='w-full rounded-md text-[12px] font-normal p-2 border border-gray-300 shadow-md'
               placeholder='Masukan Nama Lengkap kamu'
             />
           </div>
-          <div className='flex flex-col'>
+          {/* <div className='flex flex-col'>
             <label htmlFor="phone" className='text-black font-outfit text-[16px] font-medium'>Nomor Hp</label>
             <input
               type="text"
@@ -38,11 +69,13 @@ const Register = ({ onSwitchToLogin }) => { // Menerima prop dengan nama yang be
               className='w-full rounded-md text-[12px] font-normal p-2 border border-gray-300 shadow-md'
               placeholder='Nomor Hp atau WhatsApp'
             />
-          </div>
+          </div> */}
           <div className='flex flex-col'>
             <label htmlFor="email" className='text-black font-outfit text-[16px] font-medium '>Email</label>
             <input
               type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               id="email"
               className='w-full rounded-md text-[12px] font-normal p-2 border border-gray-300 shadow-md'
               placeholder='Masukkan Email'
@@ -53,6 +86,18 @@ const Register = ({ onSwitchToLogin }) => { // Menerima prop dengan nama yang be
             <input
               type={showPassword ? "text" : "password"}
               id="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className='w-full rounded-md text-[12px] font-normal p-2 border border-gray-300 shadow-md'
+              placeholder='••••••••••••••'
+            />
+
+            <label htmlFor="password" className='text-black font-outfit text-[16px] font-medium'>Confirm Password</label>
+            <input
+              type={showPassword ? "text" : "password"}
+              id="confirmPassword"
+              value={confPassword}
+              onChange={(e) => setConfPassword(e.target.value)}
               className='w-full rounded-md text-[12px] font-normal p-2 border border-gray-300 shadow-md'
               placeholder='••••••••••••••'
             />
