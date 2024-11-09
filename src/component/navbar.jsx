@@ -89,7 +89,7 @@ export default function Navbar() {
                             <div>
                                 {/* Tombol Register yang membuka dropdown */}
                                 <Button
-                                    name={"Register"} // Nama tombol
+                                    name={"Logout"} // Nama tombol
                                     className={'bg-white'} // Kelas CSS tambahan
                                     onClick={handleRegister} // Handler saat tombol diklik
                                 />

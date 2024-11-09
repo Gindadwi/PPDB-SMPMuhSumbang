@@ -43,7 +43,7 @@ const Ekstrakulikuler = () => {
     }, []);
 
     return (
-        <div className='flex justify-center'>
+        <div className='flex justify-center bg-gray-100'>
             <div className='p-6 max-w-[1080px]'>
                 <div className='flex justify-center rounded-lg'>
                     <div id="controls-carousel" className="relative max-w-[1080px] mt-12 w-full rounded-lg">
@@ -110,7 +110,7 @@ const Ekstrakulikuler = () => {
                     <p className='font-normal text-[18px] lg:text-[24px]'>SMP Muhammadiyah Sumbang</p>
                 </div>
 
-                <div className="lg:flex-row flex flex-col gap-2 max-w-[1080px] mt-2">
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-2 max-w-[1080px] mt-2">
                     {imgCard.map((card, index) => (
                         <div key={index} className=' bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 '>
                             <a href="#">
