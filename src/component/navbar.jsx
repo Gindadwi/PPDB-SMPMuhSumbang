@@ -8,12 +8,15 @@ import Register from '../pages/Register'; // Pastikan nama file sesuai dan huruf
 import 'flowbite/dist/flowbite.css';
 import { Modal } from 'flowbite';
 import { Link } from 'react-router-dom';
+import toast from 'react-hot-toast';
 
 export default function Navbar() {
     const [open, setOpen] = useState(false);
     const dropdownRef = useRef(null);
     const [modalContent, setModalContent] = useState(null);
     const [dropdownOpen, setDropdownOpen] = useState(false);
+    const [isLoggedIn, setIsLoggedIn] = useState(false); // State untuk status login
+
 
     // Fungsi untuk mengganti konten modal ke Login
     const switchToLogin = () => {
@@ -61,6 +64,20 @@ export default function Navbar() {
         modal.hide(); // Menyembunyikan modal
     };
 
+    const handleLogginsuccess = () => {
+        setIsLoggedIn(true);
+        toast.success('Login Berhasil');
+        closeModal();
+    };
+
+
+    const handleLogout = () => {
+        localStorage.removeItem('accessToken');
+        setIsLoggedIn(false);
+        toast.success("Logout berhasil")
+        closeModal
+    }
+
     return (
         <div className='relative'>
             {/* Kontainer utama navbar */}
@@ -89,9 +106,10 @@ export default function Navbar() {
                             <div>
                                 {/* Tombol Register yang membuka dropdown */}
                                 <Button
-                                    name={"Logout"} // Nama tombol
+                                    id="dropdownDefaultButton"
+                                    name={isLoggedIn ? "Logout" : "Register"} // Nama tombol
                                     className={'bg-white'} // Kelas CSS tambahan
-                                    onClick={handleRegister} // Handler saat tombol diklik
+                                    onClick={isLoggedIn ? handleLogout : handleRegister} // Handler saat tombol diklik
                                 />
                                 {/* Dropdown muncul jika dropdownOpen true */}
                                 {dropdownOpen && (
@@ -103,7 +121,7 @@ export default function Navbar() {
                                             <li>
                                                 {/* Tombol Login dalam dropdown */}
                                                 <button
-                                                    onClick={() => handleClickModal(<Login onSwitchToRegister={switchToRegister} />)} // Membuka modal Login
+                                                    onClick={() => handleClickModal(<Login onLoginSuccess={handleLogginsuccess} onSwitchToRegister={switchToRegister} />)} // Membuka modal Login
                                                     className="block bg-warnaUtama text-white font-poppins font-normal w-full px-4 py-2 rounded-lg lg:hover:scale-105 transform ease-in-out duration-200"
                                                 >
                                                     Login

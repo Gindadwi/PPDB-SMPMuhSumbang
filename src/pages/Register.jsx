@@ -5,6 +5,8 @@ import { Icon } from '@iconify/react';
 import PropTypes from 'prop-types'; // Untuk validasi prop
 import axios from 'axios';
 import toast from 'react-hot-toast';
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { auth } from "../firebase";
 
 const Register = ({ onSwitchToLogin }) => { // Menerima prop dengan nama yang benar
   const [showPassword, setShowPassword] = useState(false);
@@ -15,26 +17,28 @@ const Register = ({ onSwitchToLogin }) => { // Menerima prop dengan nama yang be
 
 
   //Membuat fungsi register
-  const handleRegister = async(e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
-    try {
-      const response = await axios.post('https://be-smp-muh-sumbang.vercel.app/users/register', {
-        name: name,
-        email: email,
-        password: password,
-        confPassword: confPassword        
-      })
 
-      setName(''),
-      setEmail(''),
-      setPassword(''),
-      setConfPassword(''),
-      console.log(response.data);
-      toast.success("Berhasil Membuat Akun")
-    } catch (error) {
-      console.log("error resigter", error)
+    if (password !== confPassword) {
+      toast.error("Password tidak cocok!");
+      return;
     }
-  }
+
+    try {
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+
+      // Update nama pengguna
+      await updateProfile(user, { displayName: name });
+
+      toast.success("Registrasi berhasil!");
+      onSwitchToLogin(); // Alihkan ke halaman login setelah registrasi berhasil
+    } catch (error) {
+      console.error(error);
+      toast.error(error.message || "Terjadi kesalahan saat registrasi");
+    }
+  };
   
 
   // Handler untuk link 'Login'

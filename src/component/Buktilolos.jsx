@@ -1,140 +1,92 @@
-import React from 'react';
-import { jsPDF } from 'jspdf';
-import Button from '../common/Button'
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import { getAuth } from 'firebase/auth';
+import toast from 'react-hot-toast';
 
-const AnnouncementPage = ({ }) => {
+const BuktiLolosPage = () => {
+    const [userData, setUserData] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const auth = getAuth();
 
-    const student = {
-        name: "Ginda Dwi Pamungkas",
-        nik: "1234567890123456",
-        address: "Jl. Contoh Alamat, Yogyakarta",
-        status: "Lulus" // atau "Tidak Lulus"
-    };
+    useEffect(() => {
+        const fetchStatusData = async () => {
+            const user = auth.currentUser; // Dapatkan pengguna yang sedang login
+            if (user) {
+                try {
+                    // Ambil data pendaftaran berdasarkan UID pengguna
+                    const response = await axios.get(
+                        `https://smpmuhsumbang-9fa3a-default-rtdb.firebaseio.com/pendaftaran/${user.uid}.json`
+                    );
 
+                    // Jika data ada, set userData
+                    if (response.data) {
+                        setUserData(response.data);
+                    } else {
+                        toast.error("Data pendaftaran tidak ditemukan.");
+                    }
+                } catch (error) {
+                    console.error('Error fetching data:', error);
+                    toast.error("Terjadi kesalahan saat memuat data.");
+                }
+            } else {
+                toast.error("Silakan login terlebih dahulu.");
+            }
+            setLoading(false);
+        };
 
-    const downloadSuratLolos = () => {
-        const doc = new jsPDF();
+        fetchStatusData();
+    }, [auth]);
 
-        doc.setFontSize(14);
-        doc.text('SMP Muhammadiyah Sumbang', 35, 20);
-        doc.text('DINAS PENDIDIKAN DAN KEBUDAYAAN', 45, 28);
-        doc.text('DEMO E-UJIAN', 85, 36);
-        doc.text('Alamat:', 15, 46);
-
-        doc.setFontSize(16);
-        doc.text('SURAT KETERANGAN LULUS', 80, 60);
-        doc.setFontSize(12);
-        doc.text('No Surat : 421/200/SDN1/2023', 85, 68);
-
-        // Detail Peserta
-        doc.text('Yang bertandatangan di bawah ini, Kepala Demo E-Ujian, menerangkan dengan sesungguhnya bahwa:', 15, 80);
-        doc.text(`Nama Peserta Didik      : ${student.name}`, 15, 90);
-        doc.text(`Tempat, Tanggal Lahir  : ${student.birthPlace}, ${student.birthDate}`, 15, 100);
-        doc.text(`Nomor Induk Siswa Nasional : ${student.nisn}`, 15, 110);
-        doc.text(`Jurusan                     : ${student.major}`, 15, 120);
-
-        // Pernyataan Kelulusan
-        doc.text('Berdasarkan hasil keputusan Rapat Pleno Kelulusan Dewan Guru, Demo E-Ujian pada tanggal 15 Mei 2023,', 15, 130);
-        doc.text('maka siswa yang bersangkutan dinyatakan', 15, 140);
-        doc.setFontSize(16);
-        doc.text('LULUS', 95, 150);
-
-        // Penutup
-        doc.setFontSize(12);
-        doc.text('Demikian surat keterangan ini dibuat dengan sebenarnya untuk digunakan sebagaimana mestinya', 15, 160);
-        doc.text('Bantul, 29 Mei 2023', 15, 180);
-        doc.text('Kepala Demo E-Ujian', 15, 190);
-
-        // Tanda Tangan
-        doc.text(student.headName, 15, 210);
-        doc.text(student.headNIP, 15, 220);
-
-        // Unduh PDF
-        doc.save("Surat_Keterangan_Lulus.pdf");
-    };
-
-    const downloadTagihanPembayaran = () => {
-        const doc = new jsPDF();
-
-        doc.setFontSize(16);
-        doc.text('SMP Muhammadiyah Sumbang', 35, 20);
-        doc.text('Tagihan Pembayaran Pendaftaran', 50, 30);
-
-        // Detail Tagihan
-        doc.setFontSize(12);
-        doc.text(`Nama Peserta Didik : ${student.name}`, 15, 50);
-        doc.text(`NIK                : ${student.nik}`, 15, 60);
-        doc.text(`Jurusan            : ${student.major}`, 15, 70);
-
-        doc.setFontSize(14);
-        doc.text('Rincian Pembayaran:', 15, 90);
-        doc.setFontSize(12);
-        doc.text('1. Biaya Pendaftaran: Rp500,000', 15, 100);
-        doc.text('2. Biaya Seragam    : Rp300,000', 15, 110);
-        doc.text('3. Biaya Buku       : Rp200,000', 15, 120);
-        doc.text('-----------------------------------', 15, 130);
-        doc.text('Total: Rp1,000,000', 15, 140);
-
-        // Penutup
-        doc.text('Silakan melakukan pembayaran sesuai dengan rincian di atas.', 15, 160);
-        doc.text('Terima kasih.', 15, 170);
-
-        // Unduh PDF
-        doc.save("Tagihan_Pembayaran.pdf");
-    };
+    if (loading) {
+        return <p>Memuat data...</p>;
+    }
 
     return (
-        <div className="min-h-screen  flex items-center lg:justify-center bg-gray-100">
-            <div className="bg-white p-8 rounded-lg shadow-lg max-w-md mx-4 lg:max-w-xl w-full">
-                <div className='flex flex-col gap-1 items-center justify-center'>
-                    <h1 className="text-xl lg:text-[24px] font-poppins font-medium text-center">Pengumuman Kelulusan</h1>
-                    <div className='bg-black w-64 lg:w-72 h-1 text-center flex justify-center items-center border-1 border-black'></div>
-                </div>
-
-                <div className="mt-8">
-                    <p className="text-lg font-poppins font-medium">Nama Lengkap:</p>
-                    <p className="text-gray-700 font-poppins font-normal">{student.name}</p>
-                </div>
-
-                <div className="mt-4">
-                    <p className="text-lg font-poppins font-medium">NIK:</p>
-                    <p className="text-gray-700 font-poppins font-normal">{student.nik}</p>
-                </div>
-
-                <div className="mt-4">
-                    <p className="text-lg font-poppins font-medium">Alamat:</p>
-                    <p className="text-gray-700 font-poppins font-normal">{student.address}</p>
-                </div>
-
-                <div className="mt-4">
-                    <p className="text-lg font-semibold">Status:</p>
-                    <p className={`font-bold font-poppins text-xl ${student.status === 'Lulus' ? 'text-green-600' : 'text-red-600'}`}>
-                        {student.status}
-                    </p>
-                </div>
-
-                <div className="mt-8 text-center">
-                    {student.status === 'Lulus' ? (
-                        <>
-                            <p className="text-green-600 font-semibold text-lg">Selamat! Anda Lolos Seleksi 🎉</p>
-                            <div className="mt-6 flex flex-col lg:flex-row gap-2 w-full items-center justify-center">
-                                <Button
-                                 name='Bukti Lolos'
-                                 className={`bg-blue-500 p-2 w-full h-11 rounded-md text-white font-poppins font-medium`}
-                                />
-                                <Button
-                                 name='Rincian Pembayaran'
-                                 className={`bg-green-500 p-2 w-full h-11 rounded-md text-white font-poppins font-medium`}
-                                />
+        <div className="min-h-screen flex items-center justify-center bg-gray-100 p-5">
+            <div className="bg-white shadow-lg rounded-lg max-w-xl w-full p-8">
+                <h1 className="text-2xl font-bold text-center mb-6">Pengumuman Seleksi</h1>
+                {userData ? (
+                    <div>
+                        <div className="space-y-3">
+                            <div className="flex justify-between">
+                                <p className="font-medium">Nama Lengkap :</p>
+                                <p>{userData.nama}</p>
                             </div>
-                        </>
-                    ) : (
-                        <p className="text-red-600 font-semibold text-lg">Maaf, Anda Tidak Lolos Seleksi.</p>
-                    )}
-                </div>
+                            <div className="flex justify-between">
+                                <p className="font-medium">NIK :</p>
+                                <p>{userData.nik}</p>
+                            </div>
+                            <div className="flex justify-between">
+                                <p className="font-medium">Alamat :</p>
+                                <p>{userData.alamat}</p>
+                            </div>
+                            <div className="flex justify-between">
+                                <p className="font-medium">Keterangan :</p>
+                                <p className={`font-semibold ${userData.status === 'Lulus' ? 'text-green-500' : 'text-red-500'}`}>
+                                    {userData.status}
+                                </p>
+                            </div>
+                        </div>
+
+                        <div className="text-center mt-6">
+                            {userData.status === 'di terima' ? (
+                                <p className="text-green-600 font-bold text-xl">Selamat! Anda Lolos Seleksi 🎉</p>
+                            ) : (
+                                <p className="text-red-600 font-bold text-xl">Maaf, Anda tidak lulus.</p>
+                            )}
+                        </div>
+
+                        <div className="flex justify-center gap-5 mt-8">
+                            <button className="bg-blue-500 text-white px-6 py-2 rounded-md hover:bg-blue-600">Bukti Lolos</button>
+                            <button className="bg-gray-300 text-gray-700 px-6 py-2 rounded-md hover:bg-gray-400">Rincian Pembayaran</button>
+                        </div>
+                    </div>
+                ) : (
+                    <p>Data tidak ditemukan.</p>
+                )}
             </div>
         </div>
     );
 };
 
-export default AnnouncementPage;
+export default BuktiLolosPage;
