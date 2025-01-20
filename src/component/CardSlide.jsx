@@ -69,7 +69,7 @@ const CardSlide = () => {
       {
         breakpoint: 360, // extra small mobile
         settings: {
-          slidesToShow: 1,
+          slidesToShow: 1.2,
           slidesToScroll: 1,
           infinite: true,
         },
