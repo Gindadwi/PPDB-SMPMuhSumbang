@@ -51,19 +51,19 @@ const BuktiLolosPage = () => {
   const renderStatusMessage = () => {
     if (userData.status === "Pending") {
       return (
-        <p className="text-blue-600 font-bold text-xl xl:text-3xl">
+        <p className="text-blue-600 font-bold text-xl 2xl:text-3xl">
           Tes Anda masih dalam tahap seleksi.
         </p>
       );
     } else if (userData.status === "Diterima") {
       return (
-        <p className="text-green-600 font-bold text-xl xl:text-3xl">
+        <p className="text-green-600 font-bold text-xl 2xl:text-3xl">
           Selamat! Anda Lolos Seleksi 🎉
         </p>
       );
     } else if (userData.status === "Ditolak") {
       return (
-        <p className="text-red-600 font-bold text-xl xl:text-3xl">
+        <p className="text-red-600 font-bold text-xl 2xl:text-3xl">
           Maaf, Anda tidak lulus.
         </p>
       );
@@ -73,54 +73,54 @@ const BuktiLolosPage = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 p-5">
-      <div className="bg-white shadow-lg rounded-lg max-w-xl  w-full p-8  xl:max-w-4xl xl:p-12">
+      <div className="bg-white shadow-lg rounded-lg max-w-xl  w-full p-8  2xl:max-w-4xl 2xl:p-12">
         <div class="text-center mb-8 font-poppins">
-          <h1 class="font-semibold text-xl xl:text-4xl">
+          <h1 class="font-semibold text-xl 2xl:text-4xl">
             Pengumuman Kelulusan
           </h1>
-          <div class="border-b-4 border-black w-44 xl:w-72 xl:border-b-8 mx-auto mt-2"></div>
+          <div class="border-b-4 border-black w-44 xl:w-72 2xl:border-b-8 mx-auto mt-2"></div>
         </div>
 
         {userData ? (
           <div>
-            <div className="space-y-3 xl:space-y-9">
+            <div className="space-y-3 2xl:space-y-9">
               <div className="flex gap-6 font-poppins ">
                 <div>
-                  <p className="font-semibold font-poppins text-lg xl:text-4xl">
+                  <p className="font-semibold font-poppins text-lg 2xl:text-4xl">
                     Nama Lengkap:
                   </p>
-                  <p className="font-poppins text-lg xl:text-3xl">
+                  <p className="font-poppins text-lg 2xl:text-3xl">
                     {userData.nama}
                   </p>
                 </div>
               </div>
               <div className="flex gap-6 font-poppins">
                 <div>
-                  <p className="font-semibold font-poppins text-lg xl:text-4xl">
+                  <p className="font-semibold font-poppins text-lg 2xl:text-4xl">
                     NIK:
                   </p>
-                  <p className="font-poppins text-lg xl:text-3xl">
+                  <p className="font-poppins text-lg 2xl:text-3xl">
                     {userData.nik}
                   </p>
                 </div>
               </div>
               <div className="flex gap-6 font-poppins">
                 <div>
-                  <p className="font-semibold font-poppins text-lg xl:text-4xl">
+                  <p className="font-semibold font-poppins text-lg 2xl:text-4xl">
                     Alamat:
                   </p>
-                  <p className="font-poppins text-lg xl:text-3xl">
+                  <p className="font-poppins text-lg 2xl:text-3xl">
                     {userData.alamat}
                   </p>
                 </div>
               </div>
               <div className="flex gap-6 font-poppins">
                 <div>
-                  <p className="font-semibold font-poppins text-lg xl:text-4xl">
+                  <p className="font-semibold font-poppins text-lg 2xl:text-4xl">
                     Status:
                   </p>
                   <p
-                    className={`font-semibold text-lg xl:text-3xl ${
+                    className={`font-semibold text-lg 2xl:text-3xl ${
                       userData.status === "Diterima"
                         ? "text-green-500"
                         : userData.status === "Pending"
@@ -139,10 +139,10 @@ const BuktiLolosPage = () => {
             </div>
 
             <div className="flex flex-col lg:flex lg:flex-row justify-center gap-5 mt-8">
-              <button className="bg-warnaUtama text-white px-16 py-2 rounded-md hover:bg-blue-600 font-outfit text-base xl:text-3xl xl:py-4">
+              <button className="bg-warnaUtama text-white px-16 py-2 rounded-md hover:bg-blue-600 font-outfit text-base 2xl:text-3xl 2xl:py-4">
                 Bukti Lolos
               </button>
-              <button className="bg-green-600  px-6 py-2 rounded-md hover:bg-gray-400 font-outfit text-base text-white xl:text-3xl xl:py-4">
+              <button className="bg-green-600  px-6 py-2 rounded-md hover:bg-gray-400 font-outfit text-base text-white 2xl:text-3xl 2xl:py-4">
                 Rincian Pembayaran
               </button>
             </div>

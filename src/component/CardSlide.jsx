@@ -78,7 +78,7 @@ const CardSlide = () => {
   };
 
   return (
-    <div className="relative px-4 lg:px-14 w-full max-w-[1180px] overflow-hidden">
+    <div className="relative px-4 lg:px-14 w-full max-w-[1180px] 2xl:max-w-[1444px]  overflow-hidden">
       <Slider ref={sliderRef} {...settings}>
         {data &&
           data.map((item, index) => (
@@ -97,7 +97,7 @@ const CardSlide = () => {
         className="absolute top-1/2 left-0 lg:left-[10px] transform -translate-y-1/2 hidden lg:block rotate-180"
         onClick={() => sliderRef.current.slickPrev()}
       >
-        <img src={arrow} alt="Previous" className="w-[25px]" />
+        <img src={arrow} alt="Previous" className="w-[25px] 2xl:w-[35px]" />
       </button>
 
       {/* Tombol panah berikutnya */}
@@ -105,7 +105,7 @@ const CardSlide = () => {
         className="absolute top-1/2 right-0 lg:right-[10px] transform -translate-y-1/2 hidden lg:block"
         onClick={() => sliderRef.current.slickNext()}
       >
-        <img src={arrow} alt="Next" className="w-[25px]" />
+        <img src={arrow} alt="Next" className="w-[25px] 2xl:w-[35px]" />
       </button>
     </div>
   );
