@@ -33,13 +33,16 @@ const Login = ({ onSwitchToRegister, onLoginSuccess, closeModal }) => {
         password
       );
       const user = userCredential.user;
+
+      // Simpan user ID di localStorage untuk digunakan di FormPendaftaran
+      localStorage.setItem("userId", user.uid);
+
       toast.success("Login berhasil!");
-      onLoginSuccess(user); // Memanggil callback untuk tindakan setelah login
-      closeModal(); // Menutup modal setelah login berhasil
-      localStorage.setItem("user", JSON.stringify(user)); // Simpan informasi pengguna di local storage
-      navigate("/"); // Alihkan ke halaman lain setelah login
+      onLoginSuccess(user);
+      closeModal();
+      navigate("/");
     } catch (error) {
-      console.log("Error fetching data from API", error);
+      console.log("Error during login:", error);
       setError("Terjadi kesalahan, silakan coba lagi");
     }
   };

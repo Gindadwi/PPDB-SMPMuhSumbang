@@ -1,12 +1,12 @@
-import React from 'react'
-import StatusPage from '../component/Buktilolos'
+import React from "react";
+import StatusPage from "../component/Buktilolos";
 
 const Status = () => {
   return (
-    <div className='lg:mt-12'>
-          <StatusPage  />
+    <div className="lg:mt-12 ">
+      <StatusPage />
     </div>
-  )
-}
+  );
+};
 
-export default Status
+export default Status;

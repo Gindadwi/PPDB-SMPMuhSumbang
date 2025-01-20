@@ -65,8 +65,16 @@ export default function Navbar() {
     modal.hide(); // Menyembunyikan modal
   };
 
+  useEffect(() => {
+    const userId = localStorage.getItem("userId");
+    if (userId) {
+      setIsLoggedIn(true); // Pengguna sudah login, tampilkan menu logout
+    }
+  }, []);
+
   const handleLogginsuccess = () => {
     setIsLoggedIn(true);
+    localStorage.setItem("isLoggedIn", "true"); // Simpan status login
     toast.success("Login Berhasil");
     closeModal();
   };
@@ -74,29 +82,41 @@ export default function Navbar() {
   const handleLogout = () => {
     signOut(auth)
       .then(() => {
-        localStorage.removeItem("accessToken"); // Jika Anda menyimpan token lokal, hapus
-        setIsLoggedIn(false); // Perbarui state
-        toast.success("Logout berhasil");
+        localStorage.removeItem("userId"); // Hapus userId dari localStorage
+        setIsLoggedIn(false); // Ubah status login
+        navigate("/login"); // Arahkan ke halaman login setelah logout
       })
       .catch((error) => {
         console.error("Error saat logout:", error);
-        toast.error("Logout gagal, coba lagi.");
       });
   };
+
+  // const handleLogout = () => {
+  //   signOut(auth)
+  //     .then(() => {
+  //       localStorage.removeItem("accessToken"); // Jika Anda menyimpan token lokal, hapus
+  //       setIsLoggedIn(false); // Perbarui state
+  //       toast.success("Logout berhasil");
+  //     })
+  //     .catch((error) => {
+  //       console.error("Error saat logout:", error);
+  //       toast.error("Logout gagal, coba lagi.");
+  //     });
+  // };
 
   return (
     <div className="relative">
       {/* Kontainer utama navbar */}
-      <div className="flex w-full min-w-[360px] items-center px-5 lg:mx-auto lg:min-w-[460px] lg:max-w-[1080px] lg:justify-center lg:px-0">
+      <div className="flex w-full min-w-[360px] items-center px-5 lg:mx-auto lg:min-w-[460px] lg:max-w-[1080px]  lg:justify-center lg:px-0">
         {/* Header yang tetap di bagian atas */}
         <header className="bg-warnaUtama dark:bg-gray-900 fixed w-full z-50 top-0 start-0 border-b border-gray-200 dark:border-gray-600">
           {/* Kontainer isi header */}
-          <div className="px-4 lg:px-0 py-2 lg:py-4 flex items-center justify-between text-2xl font-semibold font-outfit mx-auto max-w-[1080px]">
+          <div className="px-4 lg:px-0 py-2 lg:py-4 flex items-center justify-between text-2xl font-semibold font-outfit mx-auto max-w-[1080px] xl:max-w-[1440px]">
             {/* Bagian kiri header: Logo dan nama sekolah */}
             <div className="flex flex-row items-center">
-              <img src={Logo} alt="Logo" className="w-12" />{" "}
+              <img src={Logo} alt="Logo" className="w-12 xl:w-24" />{" "}
               {/* Logo sekolah */}
-              <span className="hidden md:inline text-white text-base">
+              <span className="hidden md:inline text-white text-base xl:text-2xl">
                 SMP Muhammadiyah Sumbang{" "}
                 {/* Nama sekolah, disembunyikan pada layar kecil */}
               </span>
@@ -105,24 +125,27 @@ export default function Navbar() {
             <div className="flex flex-row gap-5 lg:gap-10 items-center">
               {/* Navigasi untuk desktop, disembunyikan pada layar kecil */}
               <nav className="hidden md:flex flex-row gap-5">
-                <Link to="/" className="text-white font-outfit text-sm">
+                <Link
+                  to="/"
+                  className="text-white font-outfit text-sm xl:text-xl"
+                >
                   Beranda
                 </Link>
                 <Link
                   to="/tentangkami"
-                  className="text-white font-outfit text-sm"
+                  className="text-white font-outfit text-sm xl:text-xl"
                 >
                   Tentang Kami
                 </Link>
                 <Link
                   to="/esktrakulikuler"
-                  className="text-white font-outfit text-sm"
+                  className="text-white font-outfit text-sm xl:text-xl"
                 >
                   Ekstrakulikuler
                 </Link>
                 <Link
                   to="/informasippdb"
-                  className="text-white font-outfit text-sm"
+                  className="text-white font-outfit text-sm xl:text-xl"
                 >
                   Informasi PPDB
                 </Link>
@@ -133,14 +156,14 @@ export default function Navbar() {
                 <Button
                   id="dropdownDefaultButton"
                   name={isLoggedIn ? "Logout" : "Register"} // Nama tombol
-                  className={"bg-white"} // Kelas CSS tambahan
+                  className={"bg-white xl:py-4 xl:text-xl"} // Kelas CSS tambahan
                   onClick={isLoggedIn ? handleLogout : handleRegister} // Handler saat tombol diklik
                 />
                 {/* Dropdown muncul jika dropdownOpen true */}
                 {dropdownOpen && (
                   <div
                     ref={dropdownRef} // Ref untuk mendeteksi klik di luar
-                    className="absolute z-10 bg-white divide-y divide-gray-100 rounded-lg shadow-lg border border-gray-200 w-[135px] top-14 right-14 dark:bg-gray-700 mt-3 lg:w-[150px] lg:right-[125px]"
+                    className="absolute z-10 bg-white divide-y divide-gray-100 rounded-lg shadow-lg border border-gray-200 w-[135px] top-14 right-14 dark:bg-gray-700 mt-3 lg:w-[150px] lg:right-[190px] xl:w-[300px] xl:right-[230px] xl:mt-16"
                   >
                     <ul className="py-2 px-3 text-sm text-gray-700 dark:text-gray-200">
                       <li>
@@ -154,7 +177,7 @@ export default function Navbar() {
                               />
                             )
                           } // Membuka modal Login
-                          className="block bg-warnaUtama text-white font-poppins font-normal w-full px-4 py-2 rounded-lg lg:hover:scale-105 transform ease-in-out duration-200"
+                          className="block bg-warnaUtama text-white font-poppins font-normal w-full px-4 py-2 rounded-lg lg:hover:scale-105 transform ease-in-out duration-200 xl:py-4 xl:text-xl"
                         >
                           Login
                         </button>
@@ -167,7 +190,7 @@ export default function Navbar() {
                               <Register onSwitchToLogin={switchToLogin} />
                             )
                           } // Membuka modal Register
-                          className="block font-poppins font-normal text-warnaUtama border border-1 border-warnaUtama rounded-lg mt-2 w-full px-4 py-2 lg:hover:bg-white lg:hover:scale-105 transform ease-in-out duration-200"
+                          className="block font-poppins font-normal text-warnaUtama border border-1 border-warnaUtama rounded-lg mt-2 w-full px-4 py-2 lg:hover:bg-white lg:hover:scale-105 transform ease-in-out duration-200 xl:py-4 xl:text-xl"
                         >
                           Register
                         </button>

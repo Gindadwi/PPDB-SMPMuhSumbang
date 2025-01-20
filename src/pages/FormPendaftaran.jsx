@@ -1,116 +1,123 @@
-import React, { useState } from "react";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
-import { format } from "date-fns";
+import React, { useState, useEffect } from "react";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { getDatabase, ref as dbRef, push } from "firebase/database";
 import toast from "react-hot-toast";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { getAuth } from "firebase/auth";
 
-const FormPendaftaran = (userData) => {
-  const [nama, setNama] = useState(userData?.name || ""); // Isi nama dengan data dari userData jika ada
-  const [tempatLahir, setTempatLahir] = useState("");
-  const [namaOrtu, setNamaOrtu] = useState("");
-  const [alamat, setAlamat] = useState("");
-  const [jenisKelamin, setJenisKelamin] = useState("");
-  const [noHP, setNoHP] = useState("");
-  const [nik, setNik] = useState("");
-  const [asalSekolah, setAsalSekolah] = useState("");
-  const [nilaiIpa, setNilaiIpa] = useState("");
-  const [nilaiMTK, setNilaiMTK] = useState("");
-  const [nilaiBindo, setNilaiBindo] = useState("");
-  const [total, setTotal] = useState("");
-  const [selectedDate, setSelectedDate] = useState(null);
-  const [step, setStep] = useState(1);
-  const [uploadedFiles, setUploadFiles] = useState({
+const FormPendaftaran = ({ userId: propUserId }) => {
+  const [formData, setFormData] = useState({
+    nama: "",
+    tempatLahir: "",
+    tanggalLahir: "",
+    alamat: "",
+    jenisKelamin: "",
+    nik: "",
+    noHP: "",
+    namaOrtu: "",
+    asalSekolah: "",
+    IPA: "",
+    BIndo: "",
+    MTK: "",
+    total: 0,
     kk: null,
+    kip: null,
     skhun: null,
-    akta: null,
-    KIP: null,
     sertifikat: null,
+    aktaKelahiran: null,
+    status: "Pending",
   });
 
-  const auth = getAuth();
-  const user = auth.currentUser;
-  const userId = user ? user.uid : null; // Dapatkan UID dari Firebase Authentication
+  const [step, setStep] = useState(1);
   const navigate = useNavigate();
 
-  const nextStep = () => setStep(step + 1);
+  const nextStep = () => setStep((prevStep) => prevStep + 1);
+  const prevStep = () => setStep((prevStep) => prevStep - 1);
 
-  const prevStep = () => setStep(step - 1);
+  // Ambil userId dari localStorage jika tidak ada dari props
+  const userId = propUserId || localStorage.getItem("userId");
 
-  const handleFileChange = (e) => {
-    setUploadFiles({
-      ...uploadedFiles({
-        [e.target.name]: e.target.files[0],
-      }),
-    });
-  };
+  useEffect(() => {
+    if (!userId) {
+      alert("Anda harus login untuk mengakses form ini.");
+    }
+  }, [userId]);
 
-  // Fungsi untuk memeriksa apakah pengguna sudah mendaftar
-  const checkIfUserHasRegistered = async (uid) => {
-    try {
-      const response = await axios.get(
-        `https://smpmuhsumbang-9fa3a-default-rtdb.firebaseio.com/pendaftaran/${uid}.json`
-      );
-      return response.data !== null; // Jika data ditemukan, berarti pengguna sudah mendaftar
-    } catch (error) {
-      console.error("anda sudah mendaftar", error);
-      return false; // Anggap pengguna belum mendaftar jika terjadi error
+  const handleInputChange = (e) => {
+    const { name, value, files } = e.target;
+
+    if (files) {
+      setFormData({ ...formData, [name]: files[0] });
+    } else {
+      setFormData((prevData) => {
+        const updatedData = { ...prevData, [name]: value };
+
+        // Jika ada perubahan di nilai IPA, B. Indo, atau MTK, hitung total
+        if (name === "IPA" || name === "BIndo" || name === "MTK") {
+          const ipa = parseFloat(updatedData.IPA) || 0;
+          const bindo = parseFloat(updatedData.BIndo) || 0;
+          const mtk = parseFloat(updatedData.MTK) || 0;
+
+          updatedData.total = (ipa + bindo + mtk) / 3;
+        }
+        return updatedData;
+      });
     }
   };
 
-  // Fungsi untuk menangani pendaftaran
-  const handleDaftar = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-
-    // Format tanggal lahir
-    const formattedTanggalLahir = selectedDate
-      ? format(selectedDate, "yyyy-MM-dd")
-      : null;
-    const tanggalDaftar = format(new Date(), "yyyy-MM-dd HH:mm:ss");
-
-    // Validasi form
-    if (!nama || !tempatLahir || !selectedDate || !alamat || !nik || !noHP) {
-      toast.error("Harap lengkapi semua data!");
+    if (!userId) {
+      alert("User ID tidak ditemukan. Silakan login kembali.");
       return;
     }
 
     try {
-      // Periksa apakah pengguna sudah mendaftar
-      const hasRegistered = await checkIfUserHasRegistered(userId);
+      const storage = getStorage();
+      const database = getDatabase();
 
-      if (hasRegistered) {
-        toast.error("Anda sudah pernah mendaftar!");
-        return;
+      // Upload files to Firebase Storage
+      const fileFields = ["kk", "kip", "skhun", "sertifikat", "aktaKelahiran"];
+      const fileUrls = {};
+
+      for (const field of fileFields) {
+        if (formData[field]) {
+          const storageRef = ref(
+            storage,
+            `files/${userId}/${field}-${formData[field].name}`
+          );
+          await uploadBytes(storageRef, formData[field]);
+          const downloadURL = await getDownloadURL(storageRef);
+          fileUrls[field] = downloadURL;
+        }
       }
 
-      // Kirim data pendaftaran ke Firebase Realtime Database
-      await axios.put(
-        `https://smpmuhsumbang-9fa3a-default-rtdb.firebaseio.com/pendaftaran/${userId}.json`,
-        {
-          userId,
-          nama,
-          tempat_lahir: tempatLahir,
-          tanggal_lahir: formattedTanggalLahir,
-          nama_ortu: namaOrtu,
-          alamat,
-          no_hp: noHP,
-          nik,
-          asal_sekolah: asalSekolah,
-          nilai_IPA: nilaiIpa,
-          nilai_Matematika: nilaiMTK,
-          nilai_Bhs_Indonesia: nilaiBindo,
-          rata_rata_nilai: total,
-          tanggal_daftar: tanggalDaftar,
-        }
-      );
+      // Save form data and file URLs to Realtime Database
+      const dataToSave = {
+        nama: formData.nama,
+        tempatLahir: formData.tempatLahir,
+        tanggalLahir: formData.tanggalLahir,
+        alamat: formData.alamat,
+        jenisKelamin: formData.jenisKelamin,
+        nik: formData.nik,
+        noHP: formData.noHP,
+        namaOrtu: formData.namaOrtu,
+        asalSekolah: formData.asalSekolah,
+        IPA: formData.IPA,
+        BIndo: formData.BIndo,
+        MTK: formData.MTK,
+        total: formData.total,
+        files: fileUrls,
+        status: formData.status,
+        createdAt: new Date().toISOString(),
+      };
 
-      toast.success("Berhasil melakukan pendaftaran!");
+      const pendaftaranRef = dbRef(database, `pendaftaran/${userId}`);
+      await push(pendaftaranRef, dataToSave);
+      toast.success("Pendaftaran berhasil ");
       navigate("/informasippdb");
     } catch (error) {
-      console.error("Error mengirim data:", error);
-      toast.error("Terjadi kesalahan, coba lagi nanti.");
+      console.error("Terjadi kesalahan:", error);
+      alert("Terjadi kesalahan saat menyimpan data.");
     }
   };
 
@@ -127,7 +134,7 @@ const FormPendaftaran = (userData) => {
       </div>
 
       <form
-        onSubmit={handleDaftar}
+        onSubmit={handleSubmit}
         className="relative max-w-[720px] mx-auto mt-8"
       >
         {step === 1 && (
@@ -138,8 +145,8 @@ const FormPendaftaran = (userData) => {
                 <label className="font-medium font-outfit">Nama Lengkap</label>
                 <input
                   type="text"
-                  value={nama}
-                  onChange={(e) => setNama(e.target.value)}
+                  name="nama"
+                  onChange={handleInputChange}
                   className="border border-black rounded-md p-2 lg:p-3 font-outfit"
                   placeholder="Masukkan nama lengkap"
                 />
@@ -152,20 +159,19 @@ const FormPendaftaran = (userData) => {
                 <label className="font-medium font-outfit">Tempat Lahir</label>
                 <input
                   type="text"
-                  value={tempatLahir}
-                  onChange={(e) => setTempatLahir(e.target.value)}
+                  name="tempatLahir"
+                  onChange={handleInputChange}
                   className="border border-black rounded-md p-2 lg:p-3 font-outfit"
                   placeholder="Tempat lahir"
                 />
               </div>
               <div className="flex flex-col w-full">
                 <label className="font-medium font-outfit">Tanggal Lahir</label>
-                <DatePicker
+                <input
                   type="date"
-                  selected={selectedDate}
-                  onChange={(date) => setSelectedDate(date)} // Handler untuk mengubah tanggal
-                  dateFormat="dd/MM/yyyy"
-                  placeholderText="Tanggal lahir"
+                  onChange={handleInputChange}
+                  name="tanggalLahir"
+                  dateFormat="Masukan Tanggal lahir"
                   className="w-full border border-black rounded-md p-2 lg:p-3 font-outfit"
                 />
               </div>
@@ -177,8 +183,8 @@ const FormPendaftaran = (userData) => {
                 <label className="font-medium font-outfit">Alamat</label>
                 <input
                   type="text"
-                  value={alamat}
-                  onChange={(e) => setAlamat(e.target.value)}
+                  name="alamat"
+                  onChange={handleInputChange}
                   className="border border-black rounded-md p-2 lg:p-3 font-outfit"
                   placeholder="Masukkan alamat lengkap"
                 />
@@ -191,8 +197,8 @@ const FormPendaftaran = (userData) => {
                 <label className="font-medium font-outfit">NIK</label>
                 <input
                   type="number"
-                  value={nik}
-                  onChange={(e) => setNik(e.target.value)}
+                  name="nik"
+                  onChange={handleInputChange}
                   className="border border-black rounded-md p-2 lg:p-3 font-outfit"
                   placeholder="Masukan NIk"
                 />
@@ -205,8 +211,8 @@ const FormPendaftaran = (userData) => {
                 <label className="font-medium font-outfit">Nomor HP/WA</label>
                 <input
                   type="tel"
-                  value={noHP}
-                  onChange={(e) => setNoHP(e.target.value)}
+                  name="noHP"
+                  onChange={handleInputChange}
                   className="border border-black rounded-md p-2 lg:p-3 font-outfit"
                   placeholder="Masukan NIk"
                 />
@@ -219,8 +225,8 @@ const FormPendaftaran = (userData) => {
                 <label className="font-medium font-outfit">Nama Orangtua</label>
                 <input
                   type="text"
-                  value={namaOrtu}
-                  onChange={(e) => setNamaOrtu(e.target.value)}
+                  name="namaOrtu"
+                  onChange={handleInputChange}
                   className="border border-black rounded-md p-2 lg:p-3 font-outfit"
                   placeholder="Masukan NIk"
                 />
@@ -233,8 +239,8 @@ const FormPendaftaran = (userData) => {
                 <label className="font-medium font-outfit">Asal Sekolah</label>
                 <input
                   type="text"
-                  value={asalSekolah}
-                  onChange={(e) => setAsalSekolah(e.target.value)}
+                  name="asalSekolah"
+                  onChange={handleInputChange}
                   className="border border-black rounded-md p-2 lg:p-3 font-outfit"
                   placeholder="Masukan Asal Sekolah"
                 />
@@ -249,29 +255,30 @@ const FormPendaftaran = (userData) => {
               <div className="grid grid-cols-3 lg:grid-cols-4 gap-2 ">
                 <input
                   type="number"
-                  value={nilaiIpa}
-                  onChange={(e) => setNilaiIpa(e.target.value)}
+                  name="IPA"
+                  onChange={handleInputChange}
                   className="border border-black rounded-md p-2 lg:p-3 font-outfit"
                   placeholder="IPA"
                 />
                 <input
                   type="number"
-                  value={nilaiBindo}
-                  onChange={(e) => setNilaiBindo(e.target.value)}
+                  name="BIndo"
+                  onChange={handleInputChange}
                   className="border border-black rounded-md p-2 lg:p-3 font-outfit"
                   placeholder="B.Indo"
                 />
                 <input
                   type="number"
-                  value={nilaiMTK}
-                  onChange={(e) => setNilaiMTK(e.target.value)}
+                  name="MTK"
+                  onChange={handleInputChange}
                   className="border border-black rounded-md p-2 lg:p-3 font-outfit"
                   placeholder="MTK"
                 />
                 <input
                   type="number"
-                  value={total}
-                  onChange={(e) => setTotal(e.target.value)}
+                  name="total"
+                  onChange={handleInputChange}
+                  value={formData.total.toFixed(2)}
                   className="border border-black rounded-md p-2 lg:p-3 font-outfit"
                   placeholder="Total Nilai"
                 />
@@ -302,7 +309,7 @@ const FormPendaftaran = (userData) => {
                 <input
                   type="file"
                   name="kk"
-                  onChange={handleFileChange}
+                  onChange={handleInputChange}
                   className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
                 />
               </div>
@@ -316,7 +323,7 @@ const FormPendaftaran = (userData) => {
                 <input
                   type="file"
                   name="skhun"
-                  onChange={handleFileChange}
+                  onChange={handleInputChange}
                   className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
                 />
               </div>
@@ -329,8 +336,8 @@ const FormPendaftaran = (userData) => {
                 </label>
                 <input
                   type="file"
-                  name="akta"
-                  onChange={handleFileChange}
+                  name="sertifikat"
+                  onChange={handleInputChange}
                   className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
                 />
               </div>
@@ -343,8 +350,8 @@ const FormPendaftaran = (userData) => {
                 </label>
                 <input
                   type="file"
-                  name="KIP"
-                  onChange={handleFileChange}
+                  name="kip"
+                  onChange={handleInputChange}
                   className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
                 />
               </div>
@@ -357,8 +364,8 @@ const FormPendaftaran = (userData) => {
                 </label>
                 <input
                   type="file"
-                  name="akta"
-                  onChange={handleFileChange}
+                  name="aktaKelahiran"
+                  onChange={handleInputChange}
                   className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
                 />
               </div>

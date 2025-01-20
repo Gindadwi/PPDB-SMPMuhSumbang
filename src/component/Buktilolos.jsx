@@ -1,92 +1,158 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import { getAuth } from 'firebase/auth';
-import toast from 'react-hot-toast';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { getAuth } from "firebase/auth";
+import toast from "react-hot-toast";
 
 const BuktiLolosPage = () => {
-    const [userData, setUserData] = useState(null);
-    const [loading, setLoading] = useState(true);
-    const auth = getAuth();
+  const [userData, setUserData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const auth = getAuth();
 
-    useEffect(() => {
-        const fetchStatusData = async () => {
-            const user = auth.currentUser; // Dapatkan pengguna yang sedang login
-            if (user) {
-                try {
-                    // Ambil data pendaftaran berdasarkan UID pengguna
-                    const response = await axios.get(
-                        `https://smpmuhsumbang-9fa3a-default-rtdb.firebaseio.com/pendaftaran/${user.uid}.json`
-                    );
+  useEffect(() => {
+    const fetchStatusData = async () => {
+      const user =
+        auth.currentUser || JSON.parse(localStorage.getItem("userId"));
 
-                    // Jika data ada, set userData
-                    if (response.data) {
-                        setUserData(response.data);
-                    } else {
-                        toast.error("Data pendaftaran tidak ditemukan.");
-                    }
-                } catch (error) {
-                    console.error('Error fetching data:', error);
-                    toast.error("Terjadi kesalahan saat memuat data.");
-                }
+      if (user && user.uid) {
+        try {
+          const response = await axios.get(
+            `https://smpmuhsumbang-9fa3a-default-rtdb.firebaseio.com/pendaftaran/${user.uid}.json`
+          );
+
+          if (response.headers["content-type"].includes("application/json")) {
+            const responseData = response.data;
+            const key = Object.keys(responseData)[0];
+            const data = responseData[key];
+
+            if (data) {
+              setUserData(data);
             } else {
-                toast.error("Silakan login terlebih dahulu.");
+              toast.error("Data pendaftaran tidak ditemukan.");
             }
-            setLoading(false);
-        };
+          } else {
+            toast.error("Terjadi kesalahan dalam format data.");
+          }
+        } catch (error) {
+          toast.error("Terjadi kesalahan saat memuat data.");
+        }
+      } else {
+        toast.error("Silakan login terlebih dahulu.");
+      }
+      setLoading(false);
+    };
 
-        fetchStatusData();
-    }, [auth]);
+    fetchStatusData();
+  }, [auth]);
 
-    if (loading) {
-        return <p>Memuat data...</p>;
+  if (loading) {
+    return <p>Memuat data...</p>;
+  }
+
+  const renderStatusMessage = () => {
+    if (userData.status === "Pending") {
+      return (
+        <p className="text-blue-600 font-bold text-xl xl:text-3xl">
+          Tes Anda masih dalam tahap seleksi.
+        </p>
+      );
+    } else if (userData.status === "Diterima") {
+      return (
+        <p className="text-green-600 font-bold text-xl xl:text-3xl">
+          Selamat! Anda Lolos Seleksi 🎉
+        </p>
+      );
+    } else if (userData.status === "Ditolak") {
+      return (
+        <p className="text-red-600 font-bold text-xl xl:text-3xl">
+          Maaf, Anda tidak lulus.
+        </p>
+      );
     }
+    return <p>Status belum diperbarui.</p>;
+  };
 
-    return (
-        <div className="min-h-screen flex items-center justify-center bg-gray-100 p-5">
-            <div className="bg-white shadow-lg rounded-lg max-w-xl w-full p-8">
-                <h1 className="text-2xl font-bold text-center mb-6">Pengumuman Seleksi</h1>
-                {userData ? (
-                    <div>
-                        <div className="space-y-3">
-                            <div className="flex justify-between">
-                                <p className="font-medium">Nama Lengkap :</p>
-                                <p>{userData.nama}</p>
-                            </div>
-                            <div className="flex justify-between">
-                                <p className="font-medium">NIK :</p>
-                                <p>{userData.nik}</p>
-                            </div>
-                            <div className="flex justify-between">
-                                <p className="font-medium">Alamat :</p>
-                                <p>{userData.alamat}</p>
-                            </div>
-                            <div className="flex justify-between">
-                                <p className="font-medium">Keterangan :</p>
-                                <p className={`font-semibold ${userData.status === 'Lulus' ? 'text-green-500' : 'text-red-500'}`}>
-                                    {userData.status}
-                                </p>
-                            </div>
-                        </div>
-
-                        <div className="text-center mt-6">
-                            {userData.status === 'di terima' ? (
-                                <p className="text-green-600 font-bold text-xl">Selamat! Anda Lolos Seleksi 🎉</p>
-                            ) : (
-                                <p className="text-red-600 font-bold text-xl">Maaf, Anda tidak lulus.</p>
-                            )}
-                        </div>
-
-                        <div className="flex justify-center gap-5 mt-8">
-                            <button className="bg-blue-500 text-white px-6 py-2 rounded-md hover:bg-blue-600">Bukti Lolos</button>
-                            <button className="bg-gray-300 text-gray-700 px-6 py-2 rounded-md hover:bg-gray-400">Rincian Pembayaran</button>
-                        </div>
-                    </div>
-                ) : (
-                    <p>Data tidak ditemukan.</p>
-                )}
-            </div>
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-gray-100 p-5">
+      <div className="bg-white shadow-lg rounded-lg max-w-xl  w-full p-8  xl:max-w-4xl xl:p-12">
+        <div class="text-center mb-8 font-poppins">
+          <h1 class="font-semibold text-xl xl:text-4xl">
+            Pengumuman Kelulusan
+          </h1>
+          <div class="border-b-4 border-black w-44 xl:w-72 xl:border-b-8 mx-auto mt-2"></div>
         </div>
-    );
+
+        {userData ? (
+          <div>
+            <div className="space-y-3 xl:space-y-9">
+              <div className="flex gap-6 font-poppins ">
+                <div>
+                  <p className="font-semibold font-poppins text-lg xl:text-4xl">
+                    Nama Lengkap:
+                  </p>
+                  <p className="font-poppins text-lg xl:text-3xl">
+                    {userData.nama}
+                  </p>
+                </div>
+              </div>
+              <div className="flex gap-6 font-poppins">
+                <div>
+                  <p className="font-semibold font-poppins text-lg xl:text-4xl">
+                    NIK:
+                  </p>
+                  <p className="font-poppins text-lg xl:text-3xl">
+                    {userData.nik}
+                  </p>
+                </div>
+              </div>
+              <div className="flex gap-6 font-poppins">
+                <div>
+                  <p className="font-semibold font-poppins text-lg xl:text-4xl">
+                    Alamat:
+                  </p>
+                  <p className="font-poppins text-lg xl:text-3xl">
+                    {userData.alamat}
+                  </p>
+                </div>
+              </div>
+              <div className="flex gap-6 font-poppins">
+                <div>
+                  <p className="font-semibold font-poppins text-lg xl:text-4xl">
+                    Status:
+                  </p>
+                  <p
+                    className={`font-semibold text-lg xl:text-3xl ${
+                      userData.status === "Diterima"
+                        ? "text-green-500"
+                        : userData.status === "Pending"
+                        ? "text-blue-500"
+                        : "text-red-500"
+                    }`}
+                  >
+                    {userData.status || "Status belum diperbarui"}
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className="text-center mt-6 xl:text-3xl">
+              {renderStatusMessage()}
+            </div>
+
+            <div className="flex flex-col lg:flex lg:flex-row justify-center gap-5 mt-8">
+              <button className="bg-warnaUtama text-white px-16 py-2 rounded-md hover:bg-blue-600 font-outfit text-base xl:text-3xl xl:py-4">
+                Bukti Lolos
+              </button>
+              <button className="bg-green-600  px-6 py-2 rounded-md hover:bg-gray-400 font-outfit text-base text-white xl:text-3xl xl:py-4">
+                Rincian Pembayaran
+              </button>
+            </div>
+          </div>
+        ) : (
+          <p>Data tidak ditemukan.</p>
+        )}
+      </div>
+    </div>
+  );
 };
 
 export default BuktiLolosPage;
