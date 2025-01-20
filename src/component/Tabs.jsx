@@ -78,6 +78,7 @@ const Tabs = () => {
         "https://smpmuhsumbang-9fa3a-default-rtdb.firebaseio.com/InformasiPPDB.json"
       );
       const data = response.data;
+      console.log("Data fetched from Firebase:", data); // Log data dari Firebase
       const InformasiPPDB = Object.keys(data).map((key) => data[key]);
       setInformasiData(InformasiPPDB);
     } catch (error) {
@@ -92,11 +93,8 @@ const Tabs = () => {
   // Fungsi untuk format tanggal
   const formatDate = (dateString) => {
     if (!dateString) return "";
-    const date = new Date(dateString);
-    const day = String(date.getDate()).padStart(2, "0");
-    const month = String(date.getMonth() + 1).padStart(2, "0");
-    const year = date.getFullYear();
-    return `${day}/${month}/${year}`;
+    const [year, month, day] = dateString.split("-"); // Pisahkan string berdasarkan "-"
+    return `${day}/${month}/${year}`; // Gabungkan kembali dalam format DD/MM/YYYY
   };
 
   const currentStatus = informasiData.length > 0 ? informasiData[0].status : "";
@@ -201,8 +199,12 @@ const Tabs = () => {
                     Informasi PPDB SMP Muhammadiyah Sumbang akan dibuka pada:
                   </h3>
                   <ul className="list-disc font-poppins font-medium mt-5 pl-5 space-y-4 text-sm lg:text-base">
-                    <li>Tanggal Dibuka PPDB: {formatDate(item.startDate)}</li>
-                    <li>Tanggal Selesai PPDB: {formatDate(item.finishDate)}</li>
+                    <li>
+                      Tanggal Dibuka PPDB: {formatDate(item.tanggal_buka)}
+                    </li>
+                    <li>
+                      Tanggal Selesai PPDB: {formatDate(item.tanggal_tutup)}
+                    </li>
                     {item.detail && (
                       <li style={{ whiteSpace: "pre-line" }}>{item.detail}</li>
                     )}
@@ -211,7 +213,7 @@ const Tabs = () => {
                   <div className="mt-7">
                     <h1 className="font-poppins text-base">
                       Status PPDB:
-                      <span className="font-semibold text-sm font-poppins p-2 ml-3 bg-warnaUtama text-white rounded-lg">
+                      <span className="font-semibold font-poppins p-2 ml-3 bg-warnaUtama text-white rounded-lg">
                         {item.status}
                       </span>
                     </h1>

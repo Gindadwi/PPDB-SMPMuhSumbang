@@ -108,6 +108,7 @@ const FormPendaftaran = ({ userId: propUserId }) => {
         total: formData.total,
         files: fileUrls,
         status: formData.status,
+        tanggalDaftar: new Date().toISOString(), // Menambahkan tanggal daftar
         createdAt: new Date().toISOString(),
       };
 
