@@ -201,12 +201,8 @@ const Tabs = () => {
                     Informasi PPDB SMP Muhammadiyah Sumbang akan dibuka pada:
                   </h3>
                   <ul className="list-disc font-poppins font-medium mt-5 pl-5 space-y-4 text-sm lg:text-base">
-                    <li>
-                      Tanggal Dibuka PPDB: {formatDate(item.tanggal_buka)}
-                    </li>
-                    <li>
-                      Tanggal Selesai PPDB: {formatDate(item.tanggal_tutup)}
-                    </li>
+                    <li>Tanggal Dibuka PPDB: {formatDate(item.startDate)}</li>
+                    <li>Tanggal Selesai PPDB: {formatDate(item.finishDate)}</li>
                     {item.detail && (
                       <li style={{ whiteSpace: "pre-line" }}>{item.detail}</li>
                     )}
@@ -215,7 +211,7 @@ const Tabs = () => {
                   <div className="mt-7">
                     <h1 className="font-poppins text-base">
                       Status PPDB:
-                      <span className="font-semibold font-poppins p-2 ml-3 bg-warnaUtama text-white rounded-lg">
+                      <span className="font-semibold text-sm font-poppins p-2 ml-3 bg-warnaUtama text-white rounded-lg">
                         {item.status}
                       </span>
                     </h1>
