@@ -156,7 +156,7 @@ export default function Navbar() {
                 <Button
                   id="dropdownDefaultButton"
                   name={isLoggedIn ? "Logout" : "Register"} // Nama tombol
-                  className={"bg-white 2xl:text-2xl 2xl:py-3"} // Kelas CSS tambahan
+                  className={"bg-white 2xl:text-2xl 2xl:py-2"} // Kelas CSS tambahan
                   onClick={isLoggedIn ? handleLogout : handleRegister} // Handler saat tombol diklik
                 />
                 {/* Dropdown muncul jika dropdownOpen true */}

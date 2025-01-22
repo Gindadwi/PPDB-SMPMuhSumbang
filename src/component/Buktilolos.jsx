@@ -55,13 +55,13 @@ const BuktiLolosPage = () => {
           Tes Anda masih dalam tahap seleksi.
         </p>
       );
-    } else if (userData.status === "Diterima") {
+    } else if (userData.status === "Di Terima") {
       return (
         <p className="text-green-600 font-bold text-xl 2xl:text-3xl">
           Selamat! Anda Lolos Seleksi 🎉
         </p>
       );
-    } else if (userData.status === "Ditolak") {
+    } else if (userData.status === "Di Tolak") {
       return (
         <p className="text-red-600 font-bold text-xl 2xl:text-3xl">
           Maaf, Anda tidak lulus.
