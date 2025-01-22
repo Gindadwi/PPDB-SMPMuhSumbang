@@ -3,11 +3,14 @@ import axios from "axios";
 import { getAuth } from "firebase/auth";
 import toast from "react-hot-toast";
 import { getDatabase, ref, onValue } from "firebase/database";
+import { useNavigate } from "react-router-dom";
 
 const BuktiLolosPage = () => {
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const userId = localStorage.getItem("userId");
@@ -65,6 +68,10 @@ const BuktiLolosPage = () => {
     return <p>Status belum diperbarui.</p>;
   };
 
+  const handlePembayaran = () => {
+    navigate("/pembayaran");
+  };
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 p-5">
       <div className="bg-white shadow-lg rounded-lg max-w-xl  w-full p-8  2xl:max-w-4xl 2xl:p-12">
@@ -115,7 +122,7 @@ const BuktiLolosPage = () => {
                   </p>
                   <p
                     className={`font-semibold text-lg 2xl:text-3xl ${
-                      userData.status === "Diterima"
+                      userData.status === "Di Terima"
                         ? "text-green-500"
                         : userData.status === "Pending"
                         ? "text-blue-500"
@@ -136,7 +143,10 @@ const BuktiLolosPage = () => {
               <button className="bg-warnaUtama text-white px-16 py-2 rounded-md hover:bg-blue-600 font-outfit text-base 2xl:text-3xl 2xl:py-4">
                 Bukti Lolos
               </button>
-              <button className="bg-green-600  px-6 py-2 rounded-md hover:bg-gray-400 font-outfit text-base text-white 2xl:text-3xl 2xl:py-4">
+              <button
+                onClick={handlePembayaran}
+                className="bg-green-600  px-6 py-2 rounded-md hover:bg-gray-400 font-outfit text-base text-white 2xl:text-3xl 2xl:py-4"
+              >
                 Rincian Pembayaran
               </button>
             </div>

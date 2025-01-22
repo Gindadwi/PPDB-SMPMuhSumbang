@@ -213,7 +213,7 @@ const Tabs = () => {
                   <div className="mt-7">
                     <h1 className="font-poppins text-base">
                       Status PPDB:
-                      <span className="font-semibold font-poppins p-2 ml-3 bg-warnaUtama text-white rounded-lg">
+                      <span className="font-semibold font-poppins p-2 ml-3 bg-warnaUtama text-white rounded-lg text-sm lg:text-lg">
                         {item.status}
                       </span>
                     </h1>

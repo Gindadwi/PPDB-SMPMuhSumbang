@@ -7,6 +7,7 @@ import FormPendaftaran from "./pages/FormPendaftaran";
 import TentangKami from "./pages/TentangKami";
 import InformasiPPDB from "./pages/InformasiPPDB";
 import { Toaster } from "react-hot-toast";
+import Pembayaran from "./component/Pembayaran";
 
 import "./App.css";
 import Status from "./pages/Status";
@@ -26,6 +27,7 @@ function App() {
             <Route path="/tentangkami" element={<TentangKami />} />
             <Route path="/status" element={<Status />} />
             <Route path="/esktrakulikuler" element={<EkstrakurikulerPage />} />
+            <Route path="/pembayaran" element={<Pembayaran />} />
           </Routes>
         </div>
         <Footer />

@@ -28,6 +28,7 @@ const FormPendaftaran = ({ userId: propUserId }) => {
     sertifikat: null,
     aktaKelahiran: null,
     status: "Pending",
+    tanggalDaftar: "",
   });
 
   const [step, setStep] = useState(1);
@@ -152,6 +153,8 @@ const FormPendaftaran = ({ userId: propUserId }) => {
         "dd/MM/yyyy"
       );
 
+      const tanggalDaftar = format(new Date(), "dd/MM/yyy");
+
       for (const field of fileFields) {
         if (formData[field]) {
           const storageRef = ref(
@@ -165,6 +168,7 @@ const FormPendaftaran = ({ userId: propUserId }) => {
       }
 
       const dataToSave = {
+        tanggalDaftar: tanggalDaftar,
         nama: formData.nama,
         tempatLahir: formData.tempatLahir,
         tanggalLahir: formattedTanggalLahir,
