@@ -2,51 +2,45 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { getAuth } from "firebase/auth";
 import toast from "react-hot-toast";
+import { getDatabase, ref, onValue } from "firebase/database";
 
 const BuktiLolosPage = () => {
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
-  const auth = getAuth();
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchStatusData = async () => {
-      const user =
-        auth.currentUser || JSON.parse(localStorage.getItem("userId"));
+    const userId = localStorage.getItem("userId");
 
-      if (user && user.uid) {
-        try {
-          const response = await axios.get(
-            `https://smpmuhsumbang-9fa3a-default-rtdb.firebaseio.com/pendaftaran/${user.uid}.json`
-          );
-
-          if (response.headers["content-type"].includes("application/json")) {
-            const responseData = response.data;
-            const key = Object.keys(responseData)[0];
-            const data = responseData[key];
-
-            if (data) {
-              setUserData(data);
-            } else {
-              toast.error("Data pendaftaran tidak ditemukan.");
-            }
-          } else {
-            toast.error("Terjadi kesalahan dalam format data.");
-          }
-        } catch (error) {
-          toast.error("Terjadi kesalahan saat memuat data.");
-        }
-      } else {
-        toast.error("Silakan login terlebih dahulu.");
-      }
+    if (!userId) {
+      toast.error("Data ID tidak bisa ditemukan");
       setLoading(false);
+      return;
+    }
+
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(
+          `https://smpmuhsumbang-9fa3a-default-rtdb.firebaseio.com/pendaftaran/${userId}.json`
+        );
+
+        if (response.data) {
+          setUserData(response.data);
+        } else {
+          setError("Data tidak ditemukan.");
+        }
+      } catch (error) {
+        setError("Terjadi kesalahan saat mengambil data.");
+      } finally {
+        setLoading(false);
+      }
     };
 
-    fetchStatusData();
-  }, [auth]);
+    fetchData();
+  }, []);
 
-  if (loading) {
-    return <p>Memuat data...</p>;
-  }
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>{error}</p>;
 
   const renderStatusMessage = () => {
     if (userData.status === "Pending") {
