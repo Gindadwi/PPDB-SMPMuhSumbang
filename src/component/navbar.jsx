@@ -26,7 +26,7 @@ export default function Navbar() {
 
   // Fungsi untuk mengganti konten modal ke Register
   const switchToRegister = () => {
-    setModalContent(<Register onSwitchToLogin={switchToLogin} />);
+    setModalContent(<Register onRegisterSuccess={handleRegisterSuccess} />);
   };
 
   // Fungsi untuk membuka atau menutup dropdown saat tombol Register diklik
@@ -84,11 +84,16 @@ export default function Navbar() {
       .then(() => {
         localStorage.removeItem("userId"); // Hapus userId dari localStorage
         setIsLoggedIn(false); // Ubah status login
-        navigate("/login"); // Arahkan ke halaman login setelah logout
+        toast.success("Berhasil Logout");
       })
       .catch((error) => {
         console.error("Error saat logout:", error);
       });
+  };
+
+  const handleRegisterSuccess = () => {
+    toast.success("Registrasi Berhasil");
+    closeModal(); // Tutup modal setelah registrasi berhasil
   };
 
   // const handleLogout = () => {
@@ -187,7 +192,10 @@ export default function Navbar() {
                         <button
                           onClick={() =>
                             handleClickModal(
-                              <Register onSwitchToLogin={switchToLogin} />
+                              <Register
+                                onRegisterSuccess={handleRegisterSuccess}
+                                closeModal={closeModal} // Pastikan ini diteruskan
+                              />
                             )
                           } // Membuka modal Register
                           className="block font-poppins font-normal text-warnaUtama border border-1 border-warnaUtama rounded-lg mt-2 w-full px-4 py-2 lg:hover:bg-white lg:hover:scale-105 transform ease-in-out duration-200 2xl:text-2xl 2xl:py-3"
