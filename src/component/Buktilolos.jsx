@@ -4,6 +4,7 @@ import { getAuth } from "firebase/auth";
 import toast from "react-hot-toast";
 import { getDatabase, ref, onValue } from "firebase/database";
 import { useNavigate } from "react-router-dom";
+import { jsPDF } from "jspdf";
 
 const BuktiLolosPage = () => {
   const [userData, setUserData] = useState(null);
@@ -49,7 +50,7 @@ const BuktiLolosPage = () => {
     if (userData.status === "Pending") {
       return (
         <p className="text-blue-600 font-bold text-xl 2xl:text-3xl">
-          Tes Anda masih dalam tahap seleksi.
+          Anda masih dalam tahap seleksi.
         </p>
       );
     } else if (userData.status === "Di Terima") {
@@ -70,6 +71,44 @@ const BuktiLolosPage = () => {
 
   const handlePembayaran = () => {
     navigate("/pembayaran");
+  };
+
+  const handleDownloadPDF = () => {
+    const doc = new jsPDF();
+    doc.setFontSize(16);
+    doc.text("SURAT KETERANGAN DITERIMA", 105, 20, { align: "center" });
+
+    doc.setFontSize(12);
+    doc.text(
+      `Yang bertanda tangan di bawah ini, Kepala Sekolah SMP Muhammadiyah Sumbang,`,
+      20,
+      40
+    );
+    doc.text("dengan ini menyatakan bahwa:", 20, 50);
+
+    doc.setFontSize(12);
+    doc.text(`Nama        : ${userData.nama}`, 20, 70);
+    doc.text(`NIK         : ${userData.nik}`, 20, 80);
+    doc.text(`Alamat      : ${userData.alamat}`, 20, 90);
+
+    doc.text(
+      `Telah diterima sebagai siswa baru di SMP Muhammadiyah Sumbang`,
+      20,
+      110
+    );
+    doc.text("untuk Tahun Ajaran 2024/2025 pada kelas VII (Tujuh).", 20, 120);
+
+    doc.text(
+      "Demikian surat keterangan ini dibuat untuk dapat digunakan sebagaimana mestinya.",
+      20,
+      140
+    );
+
+    doc.text("Sumbang, [Tanggal Surat]", 20, 160);
+    doc.text("Kepala Sekolah,", 20, 180);
+    doc.text("[Nama Kepala Sekolah]", 20, 200);
+
+    doc.save("Surat_Keterangan_Diterima.pdf");
   };
 
   return (
@@ -139,17 +178,24 @@ const BuktiLolosPage = () => {
               {renderStatusMessage()}
             </div>
 
-            <div className="flex flex-col lg:flex lg:flex-row justify-center gap-5 mt-8">
-              <button className="bg-warnaUtama text-white px-16 py-2 rounded-md hover:bg-blue-600 font-outfit text-base 2xl:text-3xl 2xl:py-4">
-                Bukti Lolos
-              </button>
-              <button
-                onClick={handlePembayaran}
-                className="bg-green-600  px-6 py-2 rounded-md hover:bg-gray-400 font-outfit text-base text-white 2xl:text-3xl 2xl:py-4"
-              >
-                Rincian Pembayaran
-              </button>
-            </div>
+            {userData.status === "Di Terima" ? (
+              <div className="flex flex-col lg:flex lg:flex-row justify-center gap-5 mt-8">
+                <button
+                  onClick={handleDownloadPDF}
+                  className="bg-warnaUtama text-white px-16 py-2 rounded-md hover:bg-blue-600 font-outfit text-base 2xl:text-3xl 2xl:py-4"
+                >
+                  Bukti Lolos
+                </button>
+                <button
+                  onClick={handlePembayaran}
+                  className="bg-green-600 px-6 py-2 rounded-md hover:bg-gray-400 font-outfit text-base text-white 2xl:text-3xl 2xl:py-4"
+                >
+                  Rincian Pembayaran
+                </button>
+              </div>
+            ) : (
+              <p className="text-red-500 text-center font-semibold mt-6"></p>
+            )}
           </div>
         ) : (
           <p>Data tidak ditemukan.</p>
