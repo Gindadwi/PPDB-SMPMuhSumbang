@@ -18,7 +18,10 @@ function card(props) {
         </div>
 
         <div className="w-full flex items-center justify-center mt-auto pb-5">
-          <button className="bg-slate-200 w-[198px] lg:w-[280px] h-[30px] lg:h-[48px] font-poppins text-[12px] font-medium rounded-lg border border-black shadow-sm mt-5">
+          <button
+            onClick={onClick}
+            className="bg-slate-200 w-[198px] lg:w-[280px] h-[30px] lg:h-[48px] font-poppins text-[12px] font-medium rounded-lg border border-black shadow-sm mt-5"
+          >
             Selengkapnya
           </button>
         </div>

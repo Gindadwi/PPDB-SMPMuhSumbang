@@ -39,11 +39,23 @@ const Login = ({ onSwitchToRegister, onLoginSuccess, closeModal }) => {
 
       toast.success("Login berhasil!");
       onLoginSuccess(user);
-      closeModal();
+
+      // Tutup modal setelah login sukses
+      if (closeModal) {
+        closeModal();
+      }
+
+      // Arahkan pengguna ke halaman utama
       navigate("/");
     } catch (error) {
       console.log("Error during login:", error);
-      setError("Terjadi kesalahan, silakan coba lagi");
+      if (error.code === "auth/wrong-password") {
+        setError("Password yang Anda masukkan salah.");
+      } else if (error.code === "auth/user-not-found") {
+        setError("Pengguna dengan email tersebut tidak ditemukan.");
+      } else {
+        setError("Terjadi kesalahan, silakan coba lagi.");
+      }
     }
   };
 

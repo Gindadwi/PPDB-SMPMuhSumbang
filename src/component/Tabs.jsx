@@ -9,10 +9,13 @@ const Tabs = () => {
   // Membuat state untuk Tabs
   const [activeTabs, setActiveTabs] = useState("alur");
   const [informasiData, setInformasiData] = useState([]);
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // Status login pengguna
+  // /  const [isLoggedIn, setIsLoggedIn] = useState(false); // Status login pengguna
   const navigate = useNavigate();
 
   const auth = getAuth();
+
+  // Cek apakah userId ada di localStorage
+  const isLoggedIn = !!localStorage.getItem("userId");
 
   const syaratDokumen = [
     { label: "Foto Akta Kelahiran" },

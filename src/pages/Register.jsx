@@ -125,7 +125,7 @@ const Register = ({ onSwitchToLogin, closeModal, onRegisterSuccess }) => {
               Confirm Password
             </label>
             <input
-              type={showPassword ? "text" : "password"}
+              type="password"
               id="confirmPassword"
               value={confPassword}
               onChange={(e) => setConfPassword(e.target.value)}

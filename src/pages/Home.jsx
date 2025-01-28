@@ -3,8 +3,18 @@ import Button from "../common/Button";
 import Card from "../component/CardSlide";
 import About from "../component/About";
 import Accordion from "../component/Accordion";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 
 const Home = () => {
+  const navigate = useNavigate;
+
+  const scrollToSection = (id) => {
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
   return (
     <div>
       <div>
@@ -25,6 +35,7 @@ const Home = () => {
 
               <div className="flex flex-col gap-3 mt-4 lg:flex-row lg:w-[400px] 2xl:w-[600px] 2xl:mt-6">
                 <Button
+                  onClick={() => scrollToSection("Prestasi")}
                   className="w-full bg-warnaUtama text-white font-medium lg:text-[18px] lg:py-3 2xl:text-3xl 2xl:py-4"
                   name="Prestasi Kami"
                 />
@@ -41,7 +52,10 @@ const Home = () => {
       </div>
       <div className="mt-10 2xl:mt-14 items-center justify-center flex flex-col ">
         <div className="w-full text-left  max-w-[1080px] 2xl:max-w-[1440px]  px-4 lg:px-0">
-          <h1 className="font-outfit font-medium text-[24px] lg:text-[35px] text-black text-left 2xl:text-[45px]">
+          <h1
+            id="Prestasi"
+            className="font-outfit font-medium text-[24px] lg:text-[35px] text-black text-left 2xl:text-[45px]"
+          >
             Prestasi Spemba
           </h1>
         </div>

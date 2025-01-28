@@ -72,9 +72,9 @@ export default function Navbar() {
     }
   }, []);
 
-  const handleLogginsuccess = () => {
+  const handleLogginsuccess = (user) => {
     setIsLoggedIn(true);
-    localStorage.setItem("isLoggedIn", "true"); // Simpan status login
+    localStorage.setItem("userId", user.uid); // Asumsikan user.uid adalah ID pengguna dari Firebase
     toast.success("Login Berhasil");
     closeModal();
   };
@@ -85,6 +85,7 @@ export default function Navbar() {
         localStorage.removeItem("userId"); // Hapus userId dari localStorage
         setIsLoggedIn(false); // Ubah status login
         toast.success("Berhasil Logout");
+        navigate("/"); // Arahkan ke halaman beranda setelah logout
       })
       .catch((error) => {
         console.error("Error saat logout:", error);
@@ -212,7 +213,7 @@ export default function Navbar() {
                     id="skill-modal" // ID untuk menginisialisasi modal
                     data-modal-backdrop="static" // Properti backdrop modal
                     tabIndex="-1" // Untuk aksesibilitas
-                    aria-hidden="true" // Menyembunyikan modal dari screen readers saat tidak aktif
+                    inert // Menyembunyikan modal dari screen readers saat tidak aktif
                     className="fixed bg-black h-screen bg-opacity-50 items-center justify-center flex top-0 left-0 right-0 z-50 w-full p-4 overflow-x-hidden overflow-y-auto md:h-full"
                   >
                     {/* Kontainer modal */}
