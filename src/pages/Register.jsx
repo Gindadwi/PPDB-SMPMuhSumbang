@@ -154,20 +154,6 @@ const Register = ({ onSwitchToLogin, closeModal, onRegisterSuccess }) => {
           />
         </div>
       </form>
-
-      <div className="w-full items-center justify-center flex flex-row gap-3 mt-6 lg:mt-10 lg:gap-3">
-        <p className="text-[14px] lg:text-[16px] font-outfit font-normal">
-          Sudah Punya Akun?
-        </p>
-        {/* Tambahkan onClick handler untuk memanggil fungsi beralih */}
-        <a
-          href="#"
-          onClick={handleLogin}
-          className="text-[14px] lg:text-[16px] font-outfit font-semibold text-warnaUtama"
-        >
-          Login
-        </a>
-      </div>
     </div>
   );
 };
