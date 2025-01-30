@@ -121,7 +121,7 @@ const Login = ({ onSwitchToRegister, onLoginSuccess, closeModal }) => {
           onClick={handleCreate}
           className="text-[14px] lg:text-[16px] font-outfit font-semibold text-warnaUtama"
         >
-          Create Account
+          Lupa password
         </a>
       </div>
     </div>
