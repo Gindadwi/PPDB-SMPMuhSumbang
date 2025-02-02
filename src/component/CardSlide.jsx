@@ -83,7 +83,7 @@ const CardSlide = () => {
       </button>
 
       {/* Modal */}
-      <Modal show={isModalOpen} onClose={handleCloseModal}>
+      {/* <Modal show={isModalOpen} onClose={handleCloseModal}>
         <Modal.Header>Detail Prestasi</Modal.Header>
         <Modal.Body>
           {selectedItem && (
@@ -106,7 +106,7 @@ const CardSlide = () => {
             Tutup
           </button>
         </Modal.Footer>
-      </Modal>
+      </Modal> */}
     </div>
   );
 };

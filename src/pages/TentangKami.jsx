@@ -109,7 +109,7 @@ const TentangKami = () => {
               Misi
             </h3>
 
-            <ul className="list-decimal text-justify list-inside flex flex-col gap-2 2xl:text-2xl">
+            <ul className="list-decimal text-justify  flex flex-col gap-2 2xl:text-2xl">
               {Misi.map((misi, index) => (
                 <li key={index}>{misi}</li>
               ))}

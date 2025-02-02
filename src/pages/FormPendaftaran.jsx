@@ -39,6 +39,71 @@ const FormPendaftaran = ({ userId: propUserId }) => {
 
   // Ambil userId dari localStorage jika tidak ada dari props
   const userId = propUserId || localStorage.getItem("userId");
+  const [lahirDiJawa, setLahirDiJawa] = useState(true);
+
+  const kabupatenJawa = [
+    "Kabupaten Banyumas",
+    "Kabupaten Cilacap",
+    "Kabupaten Purbalingga",
+    "Kabupaten Banjarnegara",
+    "Kabupaten Kebumen",
+    "Kabupaten Purworejo",
+    "Kabupaten Wonosobo",
+    "Kabupaten Magelang",
+    "Kabupaten Temanggung",
+    "Kabupaten Semarang",
+    "Kabupaten Kendal",
+    "Kabupaten Batang",
+    "Kabupaten Pekalongan",
+    "Kabupaten Pemalang",
+    "Kabupaten Tegal",
+    "Kabupaten Brebes",
+    "Kabupaten Blora",
+    "Kabupaten Grobogan",
+    "Kabupaten Rembang",
+    "Kabupaten Pati",
+    "Kabupaten Jepara",
+    "Kabupaten Kudus",
+    "Kabupaten Demak",
+    "Kabupaten Boyolali",
+    "Kabupaten Klaten",
+    "Kabupaten Sukoharjo",
+    "Kabupaten Wonogiri",
+    "Kabupaten Karanganyar",
+    "Kabupaten Sragen",
+    "Kabupaten Ngawi",
+    "Kabupaten Magetan",
+    "Kabupaten Ponorogo",
+    "Kabupaten Madiun",
+    "Kabupaten Nganjuk",
+    "Kabupaten Kediri",
+    "Kabupaten Tulungagung",
+    "Kabupaten Blitar",
+    "Kabupaten Malang",
+    "Kabupaten Pasuruan",
+    "Kabupaten Probolinggo",
+    "Kabupaten Lumajang",
+    "Kabupaten Jember",
+    "Kabupaten Banyuwangi",
+    "Kabupaten Bondowoso",
+    "Kabupaten Situbondo",
+    "Kabupaten Sidoarjo",
+    "Kabupaten Gresik",
+    "Kabupaten Lamongan",
+    "Kabupaten Bojonegoro",
+    "Kabupaten Tuban",
+    "Kabupaten Mojokerto",
+    "Kabupaten Jombang",
+    "Kabupaten Bangkalan",
+    "Kabupaten Sampang",
+    "Kabupaten Pamekasan",
+    "Kabupaten Sumenep",
+  ];
+
+  const handleTempatLahirChange = (e) => {
+    const value = e.target.value;
+    setFormData({ ...formData, tempatLahir: value });
+  };
 
   useEffect(() => {
     if (!userId) {
@@ -63,78 +128,15 @@ const FormPendaftaran = ({ userId: propUserId }) => {
 
           updatedData.total = (ipa + bindo + mtk) / 3;
         }
+
+        if (name === "nik" || name === "noHP") {
+          updatedData[name] = value.replace(/[^0-9]/g, ""); // Hanya angka diperbolehkan
+        }
+
         return updatedData;
       });
     }
   };
-
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-  //   if (!userId) {
-  //     alert("User ID tidak ditemukan. Silakan login kembali.");
-  //     return;
-  //   }
-
-  //   try {
-  //     const storage = getStorage();
-
-  //     // Mengupload file dan mendapatkan URL
-  //     const fileFields = ["kk", "kip", "skhun", "sertifikat", "aktaKelahiran"];
-  //     const fileUrls = {};
-
-  //     // Format tanggal lahir
-  //     const formattedTanggalLahir = format(
-  //       new Date(formData.tanggalLahir),
-  //       "dd/MM/yyyy"
-  //     );
-
-  //     for (const field of fileFields) {
-  //       if (formData[field]) {
-  //         const storageRef = ref(
-  //           storage,
-  //           `files/${userId}/${field}-${formData[field].name}`
-  //         );
-  //         await uploadBytes(storageRef, formData[field]);
-  //         const downloadURL = await getDownloadURL(storageRef);
-  //         fileUrls[field] = downloadURL;
-  //       }
-  //     }
-
-  //     // Struktur data yang lebih sederhana
-  //     const dataToSave = {
-  //       nama: formData.nama,
-  //       tempatLahir: formData.tempatLahir,
-  //       tanggalLahir: formData.tanggalLahir,
-  //       alamat: formData.alamat,
-  //       jenisKelamin: formData.jenisKelamin,
-  //       nik: formData.nik,
-  //       noHP: formData.noHP,
-  //       namaOrtu: formData.namaOrtu,
-  //       asalSekolah: formData.asalSekolah,
-  //       IPA: formData.IPA,
-  //       BIndo: formData.BIndo,
-  //       MTK: formData.MTK,
-  //       total: formData.total,
-  //       status: formData.status,
-  //       // Menambahkan file URL yang sudah diupload
-  //       kkUrl: fileUrls.kk || "",
-  //       kipUrl: fileUrls.kip || "",
-  //       skhunUrl: fileUrls.skhun || "",
-  //       sertifikatUrl: fileUrls.sertifikat || "",
-  //       aktaKelahiranUrl: fileUrls.aktaKelahiran || "",
-  //     };
-
-  //     // Menyimpan data di Realtime Database menggunakan axios
-  //     const url = `https://smpmuhsumbang-9fa3a-default-rtdb.firebaseio.com/pendaftaran/${userId}.json`;
-  //     await axios.post(url, dataToSave);
-
-  //     toast.success("Pendaftaran berhasil ");
-  //     navigate("/informasippdb");
-  //   } catch (error) {
-  //     console.error("Terjadi kesalahan:", error);
-  //     alert("Terjadi kesalahan saat menyimpan data.");
-  //   }
-  // };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -155,17 +157,20 @@ const FormPendaftaran = ({ userId: propUserId }) => {
 
       const tanggalDaftar = format(new Date(), "dd/MM/yyy");
 
-      for (const field of fileFields) {
+      const uploadPromises = fileFields.map(async (field) => {
         if (formData[field]) {
           const storageRef = ref(
             storage,
             `files/${userId}/${field}-${formData[field].name}`
           );
           await uploadBytes(storageRef, formData[field]);
-          const downloadURL = await getDownloadURL(storageRef);
-          fileUrls[field] = downloadURL;
+          return { [field]: await getDownloadURL(storageRef) };
         }
-      }
+        return { [field]: "" };
+      });
+
+      const fileUploadResults = await Promise.all(uploadPromises);
+      fileUploadResults.forEach((result) => Object.assign(fileUrls, result));
 
       const dataToSave = {
         tanggalDaftar: tanggalDaftar,
@@ -238,6 +243,7 @@ const FormPendaftaran = ({ userId: propUserId }) => {
                   type="text"
                   name="nama"
                   onChange={handleInputChange}
+                  value={formData.nama}
                   className="border border-black rounded-md p-2 lg:p-3 font-outfit"
                   placeholder="Masukkan nama lengkap"
                 />
@@ -248,13 +254,39 @@ const FormPendaftaran = ({ userId: propUserId }) => {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mt-5">
               <div className="flex flex-col w-full">
                 <label className="font-medium font-outfit">Tempat Lahir</label>
-                <input
-                  type="text"
-                  name="tempatLahir"
-                  onChange={handleInputChange}
+                <select
+                  onChange={(e) => setLahirDiJawa(e.target.value === "Jawa")}
                   className="border border-black rounded-md p-2 lg:p-3 font-outfit"
-                  placeholder="Tempat lahir"
-                />
+                >
+                  <option value="Jawa">Di Jawa</option>
+                  <option value="Luar Jawa">Di Luar Jawa</option>
+                </select>
+
+                {lahirDiJawa ? (
+                  <select
+                    name="tempatLahir"
+                    onChange={handleTempatLahirChange}
+                    value={formData.tempatLahir}
+                    className="border border-black rounded-md p-2 lg:p-3 font-outfit mt-2"
+                  >
+                    <option value="" disabled selected>
+                      Pilih Kabupaten
+                    </option>
+                    {kabupatenJawa.map((kabupaten, index) => (
+                      <option key={index} value={kabupaten}>
+                        {kabupaten}
+                      </option>
+                    ))}
+                  </select>
+                ) : (
+                  <input
+                    type="text"
+                    name="tempatLahir"
+                    onChange={handleTempatLahirChange}
+                    className="border border-black rounded-md p-2 lg:p-3 font-outfit mt-2"
+                    placeholder="Masukkan tempat lahir"
+                  />
+                )}
               </div>
 
               <div className="flex flex-col w-full">
@@ -262,6 +294,7 @@ const FormPendaftaran = ({ userId: propUserId }) => {
                 <input
                   type="date"
                   onChange={handleInputChange}
+                  value={formData.tanggalLahir}
                   name="tanggalLahir"
                   dateFormat="Masukan Tanggal lahir"
                   className="w-full border border-black rounded-md p-2 lg:p-3 font-outfit"
@@ -278,6 +311,7 @@ const FormPendaftaran = ({ userId: propUserId }) => {
                   type="text"
                   name="alamat"
                   onChange={handleInputChange}
+                  value={formData.alamat}
                   className="border border-black rounded-md p-2 lg:p-3 font-outfit"
                   placeholder="Masukkan alamat lengkap"
                 />
@@ -292,6 +326,7 @@ const FormPendaftaran = ({ userId: propUserId }) => {
                   type="number"
                   name="nik"
                   onChange={handleInputChange}
+                  value={formData.nik}
                   className="border border-black rounded-md p-2 lg:p-3 font-outfit"
                   placeholder="Masukan NIk"
                 />
@@ -305,6 +340,7 @@ const FormPendaftaran = ({ userId: propUserId }) => {
                 <select
                   name="jenisKelamin"
                   onChange={handleInputChange}
+                  value={formData.jenisKelamin}
                   className="border border-black rounded-md p-2 lg:p-3 font-outfit"
                 >
                   <option value="" disabled selected>
@@ -324,6 +360,7 @@ const FormPendaftaran = ({ userId: propUserId }) => {
                   type="tel"
                   name="noHP"
                   onChange={handleInputChange}
+                  value={formData.noHP}
                   className="border border-black rounded-md p-2 lg:p-3 font-outfit"
                   placeholder="Masukan Nomor whatshaap"
                 />
@@ -338,6 +375,7 @@ const FormPendaftaran = ({ userId: propUserId }) => {
                   type="text"
                   name="namaOrtu"
                   onChange={handleInputChange}
+                  value={formData.namaOrtu}
                   className="border border-black rounded-md p-2 lg:p-3 font-outfit"
                   placeholder="Nama Orangtua/Wali"
                 />
@@ -352,6 +390,7 @@ const FormPendaftaran = ({ userId: propUserId }) => {
                   type="text"
                   name="asalSekolah"
                   onChange={handleInputChange}
+                  value={formData.asalSekolah}
                   className="border border-black rounded-md p-2 lg:p-3 font-outfit"
                   placeholder="Masukan Asal Sekolah"
                 />
@@ -368,6 +407,7 @@ const FormPendaftaran = ({ userId: propUserId }) => {
                   type="number"
                   name="IPA"
                   onChange={handleInputChange}
+                  value={formData.IPA}
                   className="border border-black rounded-md p-2 lg:p-3 font-outfit"
                   placeholder="IPA"
                 />
@@ -375,6 +415,7 @@ const FormPendaftaran = ({ userId: propUserId }) => {
                   type="number"
                   name="BIndo"
                   onChange={handleInputChange}
+                  value={formData.BIndo}
                   className="border border-black rounded-md p-2 lg:p-3 font-outfit"
                   placeholder="B.Indo"
                 />
@@ -382,6 +423,7 @@ const FormPendaftaran = ({ userId: propUserId }) => {
                   type="number"
                   name="MTK"
                   onChange={handleInputChange}
+                  value={formData.MTK}
                   className="border border-black rounded-md p-2 lg:p-3 font-outfit"
                   placeholder="MTK"
                 />

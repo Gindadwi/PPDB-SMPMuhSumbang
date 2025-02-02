@@ -106,7 +106,7 @@ const BuktiLolosPage = () => {
 
     doc.text("Sumbang, [Tanggal Surat]", 20, 160);
     doc.text("Kepala Sekolah,", 20, 180);
-    doc.text("[Nama Kepala Sekolah]", 20, 200);
+    doc.text("Abdul Ma'arif S.Pd", 20, 200);
 
     doc.save("Surat_Keterangan_Diterima.pdf");
   };
