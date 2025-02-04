@@ -5,23 +5,28 @@ import PropTypes from "prop-types";
 import Button from "../common/Button";
 import { Icon } from "@iconify/react";
 import { useNavigate } from "react-router-dom"; // Ubah import ini
-import { signInWithEmailAndPassword } from "firebase/auth";
+import {
+  signInWithEmailAndPassword,
+  sendPasswordResetEmail,
+} from "firebase/auth";
 import { auth } from "../firebase";
 
 const Login = ({ onSwitchToRegister, onLoginSuccess, closeModal }) => {
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [forgotPasswordModal, setForgotPasswordModal] = useState(false);
+  const [resetEmail, setResetEmail] = useState("");
   const navigate = useNavigate(); // Gunakan useNavigate di sini
   const [error, setError] = useState("");
 
   // Fungsi untuk berpindah ke halaman register
-  const handleCreate = (e) => {
-    e.preventDefault();
-    if (onSwitchToRegister) {
-      onSwitchToRegister();
-    }
-  };
+  // const handleCreate = (e) => {
+  //   e.preventDefault();
+  //   if (onSwitchToRegister) {
+  //     onSwitchToRegister();
+  //   }
+  // };
 
   // Fungsi untuk melakukan proses login
   const handleLogin = async (e) => {
@@ -51,11 +56,27 @@ const Login = ({ onSwitchToRegister, onLoginSuccess, closeModal }) => {
       console.log("Error during login:", error);
       if (error.code === "auth/wrong-password") {
         setError("Password yang Anda masukkan salah.");
+        toast.error("Password yang Anda masukkan salah.");
       } else if (error.code === "auth/user-not-found") {
         setError("Pengguna dengan email tersebut tidak ditemukan.");
+        toast.error("Pengguna dengan email tersebut tidak ditemukan.");
       } else {
         setError("Terjadi kesalahan, silakan coba lagi.");
+        toast.error("Check Password dan Email Anda.");
       }
+    }
+  };
+
+  // membuat kode lupa password
+  const handleForgotPassword = async (e) => {
+    e.preventDefault();
+
+    try {
+      await sendPasswordResetEmail(auth, resetEmail);
+      toast.success("Check Email Kamu");
+      setForgotPasswordModal(false);
+    } catch (error) {
+      toast.error("Gagal mengirim email reset password. Pastikan email benar.");
     }
   };
 
@@ -114,16 +135,51 @@ const Login = ({ onSwitchToRegister, onLoginSuccess, closeModal }) => {
       </form>
       <div className="w-full items-center justify-center flex flex-row gap-2 mt-6 lg:mt-10 lg:gap-40">
         <p className="text-[14px] lg:text-[16px] font-outfit font-normal">
-          Belum Memiliki Akun?
+          Lupa Password?
         </p>
-        <a
-          href="#"
-          onClick={handleCreate}
+        <button
+          onClick={() => setForgotPasswordModal(true)}
           className="text-[14px] lg:text-[16px] font-outfit font-semibold text-warnaUtama"
         >
-          Lupa password
-        </a>
+          Klik di sini
+        </button>
       </div>
+
+      {/* Modal untuk reset password */}
+      {forgotPasswordModal && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="bg-white p-5 rounded-lg shadow-lg w-80">
+            <h2 className="text-lg font-semibold font-outfit mb-3">
+              Reset Password
+            </h2>
+            <p className="text-sm font-medium font-poppins mb-3">
+              Masukkan email Anda untuk mendapatkan tautan reset password.
+            </p>
+            <input
+              type="email"
+              value={resetEmail}
+              onChange={(e) => setResetEmail(e.target.value)}
+              className="w-full p-2 border border-gray-300 rounded-md mb-3"
+              placeholder="Masukkan email"
+              required
+            />
+            <div className="flex justify-between">
+              <button
+                onClick={() => setForgotPasswordModal(false)}
+                className="bg-red-700 text-white font-outfit px-4 py-2 rounded-md"
+              >
+                Batal
+              </button>
+              <button
+                onClick={handleForgotPassword}
+                className="bg-warnaUtama font-outfit text-white px-4 py-2 rounded-md"
+              >
+                Kirim
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

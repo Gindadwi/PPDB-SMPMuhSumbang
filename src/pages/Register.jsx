@@ -5,7 +5,11 @@ import { Icon } from "@iconify/react";
 import PropTypes from "prop-types"; // Untuk validasi prop
 import axios from "axios";
 import toast from "react-hot-toast";
-import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  updateProfile,
+  sendEmailVerification,
+} from "firebase/auth";
 import { auth } from "../firebase";
 
 const Register = ({ onSwitchToLogin, closeModal, onRegisterSuccess }) => {
@@ -32,6 +36,7 @@ const Register = ({ onSwitchToLogin, closeModal, onRegisterSuccess }) => {
         password
       );
       const user = userCredential.user;
+      await sendEmailVerification(user);
       closeModal(); // Tutup modal setelah registrasi berhasil
       onRegisterSuccess(); // Callback untuk memberitahu komponen induk
 
@@ -42,15 +47,6 @@ const Register = ({ onSwitchToLogin, closeModal, onRegisterSuccess }) => {
     } catch (error) {
       console.error(error);
       toast.error(error.message || "Terjadi kesalahan saat registrasi");
-    }
-  };
-
-  // Handler untuk link 'Login'
-  const handleLogin = (e) => {
-    e.preventDefault(); // Mencegah perilaku default link
-    if (onSwitchToLogin) {
-      // Memeriksa apakah prop diberikan
-      onSwitchToLogin(); // Memanggil fungsi untuk beralih ke Login modal
     }
   };
 
