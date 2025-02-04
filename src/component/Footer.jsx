@@ -54,25 +54,33 @@ const Footer = () => {
             </h1>
             <a
               className="text-white font-poppins text-[14px] lg:text-[18px] 2xl:text-[22px] font-extralight"
-              href=""
+              href="https://www.instagram.com/smpmuhammadiyahsumbang?igsh=NG5yd295YmF3Yjdz"
+              target="blank"
+              rel="noopener noreferrer"
             >
               Instagram
             </a>
             <a
               className="text-white font-poppins text-[14px] lg:text-[18px] 2xl:text-[22px] font-extralight"
-              href=""
+              href="https://www.facebook.com/smpmuhsumbang?mibextid=ZbWKwL"
+              target="blank"
+              rel="noopener noreferrer"
             >
               Facebook
             </a>
             <a
               className="text-white font-poppins text-[14px] lg:text-[18px] 2xl:text-[22px] font-extralight"
-              href=""
+              href="https://youtube.com/@smpmuhammadiyahsumbang?si=EBwUDfD0_TyJbLoS"
+              target="blank"
+              rel="noopener noreferrer"
             >
-              Twiter
+              Youtube
             </a>
             <a
               className="text-white font-poppins text-[14px] lg:text-[18px] 2xl:text-[22px] font-extralight"
-              href=""
+              href="https://www.tiktok.com/@spemba_jaya?_t=ZS-8tbsuaOglhn&_r=1"
+              target="blank"
+              rel="noopener noreferrer"
             >
               Tik Tok
             </a>

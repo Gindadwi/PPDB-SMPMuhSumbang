@@ -27,8 +27,10 @@ const Ekstrakulikuler = () => {
     <div className="flex justify-center bg-gray-100">
       <div className="p-6 max-w-[1080px]">
         <div className="text-center mt-12">
-          <h1 className="text-2xl font-semibold">Ekstrakurikuler</h1>
-          <p className="text-lg">SMP Muhammadiyah Sumbang</p>
+          <h1 className="text-2xl font-semibold font-outfit">
+            Ekstrakurikuler
+          </h1>
+          <p className="text-lg font-poppins">SMP Muhammadiyah Sumbang</p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mt-6">

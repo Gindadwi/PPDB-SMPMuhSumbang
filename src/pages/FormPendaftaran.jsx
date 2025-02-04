@@ -258,7 +258,7 @@ const FormPendaftaran = ({ userId: propUserId }) => {
                   onChange={(e) => setLahirDiJawa(e.target.value === "Jawa")}
                   className="border border-black rounded-md p-2 lg:p-3 font-outfit"
                 >
-                  <option value="Jawa">Di Jawa</option>
+                  <option value="Jawa">Jawa Tengah</option>
                   <option value="Luar Jawa">Di Luar Jawa</option>
                 </select>
 
