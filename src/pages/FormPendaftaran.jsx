@@ -202,7 +202,7 @@ const FormPendaftaran = ({ userId: propUserId }) => {
       const response = await axios.get(url);
       if (response.data) {
         // Jika data sudah ada, beri peringatan
-        alert("Data sudah ada, tidak bisa ditambahkan lagi.");
+        toast.error("Data sudah ada, tidak bisa ditambahkan lagi.");
         return;
       }
 
@@ -210,27 +210,38 @@ const FormPendaftaran = ({ userId: propUserId }) => {
       await axios.put(url, dataToSave);
 
       // Membuat notifikasi Whatsap jika ada pendaftar baru
-      // Kirim notifikasi ke WhatsApp admin
-      const message = `
-    Informasi Pendaftaran Siswa Baru:
-    Nama: ${formData.nama}
-    Tempat Lahir: ${formData.tempatLahir}
-    Tanggal Lahir: ${formattedTanggalLahir}
-    Alamat: ${formData.alamat}
-    NIK: ${formData.nik}`;
-      const apiKey = "3038884"; // Your CallMeBot API Key
-
-      const apiUrl = `https://api.callmebot.com/whatsapp.php?phone=6281228900185&text=${encodeURIComponent(
-        message
-      )}&apikey=${apiKey}`;
-
-      await axios.get(apiUrl);
-
+      await sendWhatsAppNotification(
+        formData.nama,
+        formData.alamat,
+        formData.nik,
+        formData.noHP
+      );
       toast.success("Pendaftaran berhasil ");
       navigate("/informasippdb");
     } catch (error) {
       console.error("Terjadi kesalahan:", error);
-      alert("Terjadi kesalahan saat menyimpan data.");
+      toast.error("Terjadi kesalahan saat menyimpan data.");
+    }
+  };
+
+  const sendWhatsAppNotification = async (nama, alamat, nik, NoHP) => {
+    const adminPhone = "6281228900185"; // Nomor WhatsApp admin
+    const apiKey = "3038884"; // API Key dari CallMeBot
+    const message = `📢 Ada Pendaftar Baru !📢 \nDengan:\nNama: ${nama}\nAlamat: ${alamat} \nNik: ${nik} \nNomor Hp: ${NoHP} \n\nSilahkan cek admin untuk mengetahui lebih lanjut💻💻`;
+
+    try {
+      const url = `https://api.callmebot.com/whatsapp.php?phone=${adminPhone}&text=${encodeURIComponent(
+        message
+      )}&apikey=${apiKey}`;
+
+      const response = await fetch(url);
+      if (response.ok) {
+        console.log("Notifikasi berhasil dikirim ke WhatsApp admin.");
+      } else {
+        console.error("Gagal mengirim notifikasi.");
+      }
+    } catch (error) {
+      console.error("Error:", error);
     }
   };
 
