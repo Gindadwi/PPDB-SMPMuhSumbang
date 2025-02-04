@@ -209,6 +209,23 @@ const FormPendaftaran = ({ userId: propUserId }) => {
       // Jika data belum ada, simpan data baru dengan `set`
       await axios.put(url, dataToSave);
 
+      // Membuat notifikasi Whatsap jika ada pendaftar baru
+      // Kirim notifikasi ke WhatsApp admin
+      const message = `
+    Informasi Pendaftaran Siswa Baru:
+    Nama: ${formData.nama}
+    Tempat Lahir: ${formData.tempatLahir}
+    Tanggal Lahir: ${formattedTanggalLahir}
+    Alamat: ${formData.alamat}
+    NIK: ${formData.nik}`;
+      const apiKey = "3038884"; // Your CallMeBot API Key
+
+      const apiUrl = `https://api.callmebot.com/whatsapp.php?phone=6281228900185&text=${encodeURIComponent(
+        message
+      )}&apikey=${apiKey}`;
+
+      await axios.get(apiUrl);
+
       toast.success("Pendaftaran berhasil ");
       navigate("/informasippdb");
     } catch (error) {
