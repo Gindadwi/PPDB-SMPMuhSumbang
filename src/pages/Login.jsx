@@ -39,6 +39,12 @@ const Login = ({ onSwitchToRegister, onLoginSuccess, closeModal }) => {
       );
       const user = userCredential.user;
 
+      //cek email apakah email sudah di verifikasi
+      if (!user.emailVerified) {
+        toast.error("Silahkan verifikasi email adna sebelum login");
+        return; //stop login jika belum verifikasi
+      }
+
       // Simpan user ID di localStorage untuk digunakan di FormPendaftaran
       localStorage.setItem("userId", user.uid);
 

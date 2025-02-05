@@ -44,7 +44,28 @@ const BuktiLolosPage = () => {
   }, []);
 
   if (loading) return <p>Loading...</p>;
-  if (error) return <p>{error}</p>;
+  if (error) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-100 p-5">
+        <div className="bg-white shadow-lg rounded-lg max-w-xl w-full p-8">
+          <h1 className="text-center font-semibold text-xl text-red-500">
+            {error}
+          </h1>
+          <p className="text-center text-gray-600 mt-4">
+            Silakan lakukan pendaftaran terlebih dahulu.
+          </p>
+          <div className="text-center mt-6">
+            <button
+              onClick={() => navigate("/form-pendaftaran")}
+              className="bg-blue-500 text-white px-6 py-2 rounded-md hover:bg-blue-600"
+            >
+              Daftar Sekarang
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   const renderStatusMessage = () => {
     if (userData.status === "Pending") {

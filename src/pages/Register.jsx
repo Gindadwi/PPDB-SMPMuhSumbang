@@ -43,7 +43,9 @@ const Register = ({ onSwitchToLogin, closeModal, onRegisterSuccess }) => {
       // Update nama pengguna
       await updateProfile(user, { displayName: name });
 
-      toast.success("Registrasi berhasil!");
+      toast.success(
+        "Registrasi berhasil! Periksa email anda untuk verifikasi sebelum login"
+      );
     } catch (error) {
       console.error(error);
       toast.error(error.message || "Terjadi kesalahan saat registrasi");
