@@ -41,7 +41,7 @@ const Login = ({ onSwitchToRegister, onLoginSuccess, closeModal }) => {
 
       //cek email apakah email sudah di verifikasi
       if (!user.emailVerified) {
-        toast.error("Silahkan verifikasi email adna sebelum login");
+        toast.error("Silahkan verifikasi email anda sebelum login");
         return; //stop login jika belum verifikasi
       }
 

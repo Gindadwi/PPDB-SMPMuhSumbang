@@ -36,11 +36,11 @@ const Home = () => {
               <div className="flex flex-col gap-3 mt-4 lg:flex-row lg:w-[400px] 2xl:w-[600px] 2xl:mt-6">
                 <Button
                   onClick={() => scrollToSection("Prestasi")}
-                  className="w-full bg-warnaUtama text-white font-medium lg:text-[18px] lg:py-3 2xl:text-3xl 2xl:py-4"
+                  className="w-full bg-warnaUtama text-white font-medium lg:text-[18px] lg:py-3 2xl:text-2xl 2xl:py-3"
                   name="Prestasi Kami"
                 />
                 <Button
-                  className="w-full bg-white font-medium text-black lg:text-[18px] lg:py-3 2xl:text-3xl 2xl:py-4"
+                  className="w-full bg-white font-medium text-black lg:text-[18px] lg:py-3 2xl:text-2xl 2xl:py-3"
                   name="Contact Us"
                 />
               </div>

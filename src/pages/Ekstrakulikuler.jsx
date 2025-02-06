@@ -25,7 +25,7 @@ const Ekstrakulikuler = () => {
 
   return (
     <div className="flex justify-center bg-gray-100">
-      <div className="p-6 max-w-[1080px]">
+      <div className="p-6 max-w-[1080px] 2xl:mt-16">
         <div className="text-center mt-12">
           <h1 className="text-2xl font-semibold font-outfit">
             Ekstrakurikuler

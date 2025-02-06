@@ -20,12 +20,25 @@ const Register = ({ onSwitchToLogin, closeModal, onRegisterSuccess }) => {
   const [password, setPassword] = useState("");
   const [confPassword, setConfPassword] = useState("");
 
+  // Fungsi untuk memvalidasi password
+  const validatePassword = (password) => {
+    const regex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+    return regex.test(password);
+  };
+
   //Membuat fungsi register
   const handleRegister = async (e) => {
     e.preventDefault();
 
     if (password !== confPassword) {
       toast.error("Password tidak cocok!");
+      return;
+    }
+
+    if (!validatePassword(password)) {
+      toast.error(
+        "Password harus minimal 8 karakter dan mengandung huruf serta angka."
+      );
       return;
     }
 
@@ -113,7 +126,7 @@ const Register = ({ onSwitchToLogin, closeModal, onRegisterSuccess }) => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               className="w-full rounded-md text-[12px] font-normal p-2 border border-gray-300 shadow-md"
-              placeholder="••••••••••••••"
+              placeholder="Minimal 8 karakter, huruf & angka"
             />
 
             <label

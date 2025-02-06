@@ -55,7 +55,7 @@ const Accordion = () => {
               </p>
               <div className="border-2 border-black rounded-md">
                 <FiArrowRight
-                  className={` w-8 m-1 transform transition-transform duration-300 2xl:w-16 2xl:h-9 ${
+                  className={` w-8 m-1 transform transition-transform duration-300 2xl:w-14 2xl:h-7 ${
                     activeIndex === index ? "rotate-90" : ""
                   }`}
                 />
@@ -77,7 +77,7 @@ const Accordion = () => {
       <div className="text-center mt-6">
         <button
           onClick={handleShowMore}
-          className="px-4 py-2 2xl:text-3xl 2xl:py-4 border border-warnaUtama text-warnaUtama rounded-lg hover:bg-blue-500 hover:text-white transition-colors duration-300"
+          className="px-4 py-2 2xl:text-2xl 2xl:py-4 border border-warnaUtama text-warnaUtama rounded-lg hover:bg-blue-500 hover:text-white transition-colors duration-300"
         >
           {showAll ? "Tampilkan Lebih sedikit" : "Pertanyaan lainya"}
         </button>

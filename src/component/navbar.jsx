@@ -162,7 +162,7 @@ export default function Navbar() {
                 <Button
                   id="dropdownDefaultButton"
                   name={isLoggedIn ? "Logout" : "Register"} // Nama tombol
-                  className={"bg-white 2xl:text-2xl 2xl:py-2"} // Kelas CSS tambahan
+                  className={"bg-white 2xl:text-xl 2xl:py-2"} // Kelas CSS tambahan
                   onClick={isLoggedIn ? handleLogout : handleRegister} // Handler saat tombol diklik
                 />
                 {/* Dropdown muncul jika dropdownOpen true */}
@@ -183,7 +183,7 @@ export default function Navbar() {
                               />
                             )
                           } // Membuka modal Login
-                          className="block bg-warnaUtama text-white font-poppins font-normal w-full px-4 py-2 rounded-lg lg:hover:scale-105 transform ease-in-out duration-200 2xl:text-2xl 2xl:py-3"
+                          className="block bg-warnaUtama text-white font-poppins font-normal w-full px-4 py-2 rounded-lg lg:hover:scale-105 transform ease-in-out duration-200 2xl:text-xl 2xl:py-3"
                         >
                           Login
                         </button>
@@ -199,7 +199,7 @@ export default function Navbar() {
                               />
                             )
                           } // Membuka modal Register
-                          className="block font-poppins font-normal text-warnaUtama border border-1 border-warnaUtama rounded-lg mt-2 w-full px-4 py-2 lg:hover:bg-white lg:hover:scale-105 transform ease-in-out duration-200 2xl:text-2xl 2xl:py-3"
+                          className="block font-poppins font-normal text-warnaUtama border border-1 border-warnaUtama rounded-lg mt-2 w-full px-4 py-2 lg:hover:bg-white lg:hover:scale-105 transform ease-in-out duration-200 2xl:text-xl 2xl:py-3"
                         >
                           Register
                         </button>

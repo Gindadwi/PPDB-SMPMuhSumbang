@@ -166,6 +166,12 @@ const Tabs = () => {
                 ))}
               </ul>
 
+              <div className="py-2 px-4 bg-warnaUtama rounded-md shadow-sm border-r-2 border-black">
+                <h1 className="text-center font-outfit font-semibold lg:text-2xl text-white">
+                  Tata Cara Pendaftaran
+                </h1>
+              </div>
+
               <div className="mt-4">
                 {tahapPendaftaran.map((step) => (
                   <div
@@ -213,7 +219,7 @@ const Tabs = () => {
                       Tanggal Selesai PPDB: {formatDate(item.tanggal_tutup)}
                     </li>
                     {item.detail && (
-                      <li style={{ whiteSpace: "pre-line" }}>{item.detail}</li>
+                      <li dangerouslySetInnerHTML={{ __html: item.detail }} />
                     )}
                   </ul>
 

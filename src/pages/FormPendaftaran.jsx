@@ -118,10 +118,44 @@ const FormPendaftaran = ({ userId: propUserId }) => {
       setFormData({ ...formData, [name]: files[0] });
     } else {
       setFormData((prevData) => {
-        const updatedData = { ...prevData, [name]: value };
+        let updatedData = { ...prevData, [name]: value };
+
+        // Validasi panjang NIK
+        if (name === "nik") {
+          if (value.length > 16) {
+            toast.error("NIK tidak boleh lebih 16 digit!");
+            return prevData;
+          }
+        }
+
+        // Validasi nilai maksimal 100 untuk IPA, BIndo, dan MTK
+        if (["IPA", "BIndo", "MTK"].includes(name)) {
+          const nilai = parseFloat(value) || 0;
+          if (nilai > 100) {
+            toast.error("Nilai tidak boleh lebih dari 100!");
+            return prevData;
+          }
+        }
+
+        // Validasi panjang NIK
+        if (name === "nik") {
+          if (value.length > 16) {
+            toast.error("NIK harus 16 digit!");
+            return prevData;
+          }
+        }
+
+        // Validasi nilai maksimal 100 untuk IPA, BIndo, dan MTK
+        if (["IPA", "BIndo", "MTK"].includes(name)) {
+          const nilai = parseFloat(value) || 0;
+          if (nilai > 100) {
+            toast.error("Nilai tidak boleh lebih dari 100!");
+            return prevData;
+          }
+        }
 
         // Jika ada perubahan di nilai IPA, B. Indo, atau MTK, hitung total
-        if (name === "IPA" || name === "BIndo" || name === "MTK") {
+        if (["IPA", "BIndo", "MTK"].includes(name)) {
           const ipa = parseFloat(updatedData.IPA) || 0;
           const bindo = parseFloat(updatedData.BIndo) || 0;
           const mtk = parseFloat(updatedData.MTK) || 0;
@@ -129,8 +163,9 @@ const FormPendaftaran = ({ userId: propUserId }) => {
           updatedData.total = (ipa + bindo + mtk) / 3;
         }
 
+        // Hanya angka diperbolehkan untuk NIK dan noHP
         if (name === "nik" || name === "noHP") {
-          updatedData[name] = value.replace(/[^0-9]/g, ""); // Hanya angka diperbolehkan
+          updatedData[name] = value.replace(/[^0-9]/g, "");
         }
 
         return updatedData;
@@ -154,6 +189,41 @@ const FormPendaftaran = ({ userId: propUserId }) => {
         new Date(formData.tanggalLahir),
         "dd/MM/yyyy"
       );
+
+      const requiredFields = [
+        "nama",
+        "tempatLahir",
+        "tanggalLahir",
+        "alamat",
+        "jenisKelamin",
+        "nik",
+        "noHP",
+        "namaOrtu",
+        "asalSekolah",
+        "IPA",
+        "BIndo",
+        "MTK",
+      ];
+      for (const field of requiredFields) {
+        if (!formData[field]) {
+          toast.error(` harap di isi kolom ${field}`);
+          return;
+        }
+      }
+
+      // membuat validari kalau file tidak di isi
+      const requiredFile = ["kk", "skhun", "aktaKelahiran"];
+      for (const file of requiredFile) {
+        if (!formData[file]) {
+          toast.error(`file ${field.toUpperCase} wajib diunggal!!`);
+          return;
+        }
+      }
+
+      if (formData.nik.length !== 16) {
+        toast.error("Nik kurang dari 16 digit");
+        return;
+      }
 
       const tanggalDaftar = format(new Date(), "dd/MM/yyy");
 
