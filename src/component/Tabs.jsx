@@ -167,7 +167,7 @@ const Tabs = () => {
               </ul>
 
               <div className="py-2 px-4 bg-warnaUtama rounded-md shadow-sm border-r-2 border-black">
-                <h1 className="text-center font-outfit font-semibold lg:text-2xl text-white">
+                <h1 className="text-center font-outfit font-semibold lg:text-xl text-white">
                   Tata Cara Pendaftaran
                 </h1>
               </div>
