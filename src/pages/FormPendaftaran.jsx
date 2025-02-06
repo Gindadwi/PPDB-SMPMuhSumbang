@@ -215,7 +215,7 @@ const FormPendaftaran = ({ userId: propUserId }) => {
       const requiredFile = ["kk", "skhun", "aktaKelahiran"];
       for (const file of requiredFile) {
         if (!formData[file]) {
-          toast.error(`file ${field.toUpperCase} wajib diunggal!!`);
+          toast.error(`File ${file.toUpperCase()} wajib diunggah!`);
           return;
         }
       }

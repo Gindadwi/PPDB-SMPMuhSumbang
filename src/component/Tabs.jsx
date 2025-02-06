@@ -9,7 +9,7 @@ const Tabs = () => {
   // Membuat state untuk Tabs
   const [activeTabs, setActiveTabs] = useState("alur");
   const [informasiData, setInformasiData] = useState([]);
-  // /  const [isLoggedIn, setIsLoggedIn] = useState(false); // Status login pengguna
+  const [isDataExists, setIsDataExists] = useState(false);
   const navigate = useNavigate();
 
   const auth = getAuth();
@@ -126,6 +126,44 @@ const Tabs = () => {
     }
   };
 
+  //untuk mengecek apakah data pendaftar dari user sudah ada
+  useEffect(() => {
+    const fetchData = async () => {
+      const user = auth.currentUser; // Mendapatkan user yang sedang terautentikasi
+      if (user && user.uid) {
+        // Memeriksa apakah user ada dan memiliki userId
+        const userId = user.uid; // Mendapatkan userId dari objek user Firebase
+        const url = `https://smpmuhsumbang-9fa3a-default-rtdb.firebaseio.com/pendaftaran/${userId}.json`;
+
+        try {
+          const response = await axios.get(url); // Mengambil data dari Firebase
+          if (response.data) {
+            // Jika data ditemukan, setIsDataExists menjadi true
+            setIsDataExists(true);
+          }
+        } catch (error) {
+          console.error("Error fetching data: ", error); // Menangani error jika terjadi kesalahan saat mengambil data
+        }
+      }
+    };
+
+    fetchData(); // Memanggil fungsi fetchData
+  }, [auth]); // Menambahkan auth sebagai dependensi agar effect dijalankan ketika status user berubah
+
+  // kode berpindah ke halaman detail
+  const handleDetail = () => {
+    const user = auth.currentUser; // Mendapatkan user yang sedang terautentikasi
+
+    // Cek apakah status pendaftaran sudah dibuka
+    if (currentStatus === "Pendaftaran Di Buka") {
+      if (user && user.uid) {
+        navigate(`/detail/${user.uid}`); // Arahkan ke halaman detail berdasarkan userId
+      }
+    } else {
+      toast.error("Pendaftaran belum dibuka."); // Tampilkan pesan error jika pendaftaran belum dibuka
+    }
+  };
+
   return (
     <div className="flex flex-col justify-center items-center px-5 w-full p-4 mt-2">
       <div className="container lg:max-w-[1080px] lg:w-full">
@@ -236,14 +274,15 @@ const Tabs = () => {
 
               <div className="flex w-full gap-5 lg:gap-4">
                 <Button
-                  name="Daftar"
-                  onClick={handleDaftarClick}
+                  name={isDataExists ? "Detail" : "Daftar"}
+                  onClick={isDataExists ? handleDetail : handleDaftarClick}
                   className={`${
                     currentStatus === "Pendaftaran Di Buka"
                       ? "bg-warnaUtama"
                       : "bg-gray-300 cursor-not-allowed"
                   } text-white font-poppins font-medium lg:text-base w-full lg:h-11`}
                 />
+
                 <Button
                   name="Check Status"
                   onClick={handleStatus}
