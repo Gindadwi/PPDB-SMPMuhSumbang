@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { auth } from "../firebase";
 import { format } from "date-fns";
+import { FaSpinner } from "react-icons/fa";
 
 const FormPendaftaran = ({ userId: propUserId }) => {
   const [formData, setFormData] = useState({
@@ -30,6 +31,8 @@ const FormPendaftaran = ({ userId: propUserId }) => {
     status: "Pending",
     tanggalDaftar: "",
   });
+
+  const [isLoading, setIsLoading] = useState(false);
 
   const [step, setStep] = useState(1);
   const navigate = useNavigate();
@@ -181,6 +184,8 @@ const FormPendaftaran = ({ userId: propUserId }) => {
       return;
     }
 
+    setIsLoading(true); // 🔥 Tampilkan loading
+
     try {
       const storage = getStorage();
       const fileFields = ["kk", "kip", "skhun", "sertifikat", "aktaKelahiran"];
@@ -291,6 +296,8 @@ const FormPendaftaran = ({ userId: propUserId }) => {
     } catch (error) {
       console.error("Terjadi kesalahan:", error);
       toast.error("Terjadi kesalahan saat menyimpan data.");
+    } finally {
+      setIsLoading(false); // 🔥 Matikan loading setelah selesai
     }
   };
 
@@ -635,8 +642,15 @@ const FormPendaftaran = ({ userId: propUserId }) => {
               <button
                 type="submit"
                 className="bg-warnaUtama text-white lg:text-[18px] lg:py-3 font-outfit font-medium px-4 py-2 rounded-md lg:hover:scale-105 transform duration-150"
+                disabled={isLoading}
               >
-                Daftar
+                {isLoading ? (
+                  <div className="flex gap-2 items-center justify-center">
+                    Memproses <FaSpinner className="animate-spin" />
+                  </div>
+                ) : (
+                  "Daftar"
+                )}
               </button>
             </div>
           </>

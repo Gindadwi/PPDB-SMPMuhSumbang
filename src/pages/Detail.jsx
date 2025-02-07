@@ -4,6 +4,7 @@ import axios from "axios";
 import { storage } from "../firebase"; // Import your Firebase config
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import toast from "react-hot-toast";
+import { FaSpinner } from "react-icons/fa";
 
 export const Details = () => {
   const { id } = useParams(); // Mengambil parameter id dari URL
@@ -37,6 +38,8 @@ export const Details = () => {
     skhun: null,
     sertifikat: null,
   });
+
+  const [isLoading, setIsLoading] = useState(false);
 
   const formFields = [
     { label: "Nama Lengkap", name: "nama", type: "text" },
@@ -174,6 +177,7 @@ export const Details = () => {
   const handleUpdate = async (e) => {
     e.preventDefault();
 
+    setIsLoading(true); // 🔥 Tampilkan loading
     try {
       // Upload files if any
       const updatedData = { ...formData };
@@ -256,9 +260,16 @@ export const Details = () => {
         <div className="flex justify-center mt-6">
           <button
             type="submit"
-            className="bg-warnaUtama text-white py-3 px-6 rounded-lg hover:bg-blue-600 transition duration-300"
+            className="bg-warnaUtama font-semibold font-outfit text-white py-3 px-6 rounded-lg hover:bg-blue-600 transition duration-300"
+            disabled={isLoading}
           >
-            Update Data
+            {isLoading ? (
+              <div className="flex gap-2 items-center justify-center">
+                Memproses <FaSpinner className="animate-spin" />
+              </div>
+            ) : (
+              "Update Data"
+            )}
           </button>
         </div>
       </form>
