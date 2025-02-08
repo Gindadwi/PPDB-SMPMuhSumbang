@@ -9,7 +9,8 @@ import { FaSpinner } from "react-icons/fa";
 export const Details = () => {
   const { id } = useParams(); // Mengambil parameter id dari URL
   const navigate = useNavigate();
-
+  const [modalImage, setModalImage] = useState(null);
+  const [isModalVisible, setIsModalVisible] = useState(false); // Untuk animasi
   const [formData, setFormData] = useState({
     nama: "",
     tempatLahir: "",
@@ -207,8 +208,18 @@ export const Details = () => {
     }
   };
 
+  const openModal = (imageUrl) => {
+    setModalImage(imageUrl);
+    setIsModalVisible(true);
+  };
+
+  const closeModal = () => {
+    setIsModalVisible(false);
+    setTimeout(() => setModalImage(null), 300);
+  };
+
   return (
-    <div className="max-w-4xl mx-auto my-28 p-6 bg-white rounded-lg border lg:border-1 lg:border-gray-200 shadow-lg">
+    <div className="max-w-4xl mx-auto my-28 p-6 bg-white lg:rounded-lg lg:border lg:border-1 lg:border-gray-200 lg:shadow-lg">
       <h2 className="text-2xl font-bold text-center mb-6">Detail Pendaftar</h2>
 
       <form onSubmit={handleUpdate} className="space-y-6">
@@ -242,6 +253,7 @@ export const Details = () => {
                 <img
                   src={formData[field.name]}
                   alt={field.label}
+                  onClick={() => openModal(formData[field.name])}
                   className="w-full h-48 object-cover border rounded-md cursor-pointer"
                 />
               ) : (
@@ -273,6 +285,22 @@ export const Details = () => {
           </button>
         </div>
       </form>
+      {modalImage && (
+        <div
+          className={`fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 transition-opacity ${
+            isModalVisible ? "opacity-100" : "opacity-0"
+          }`}
+          onClick={closeModal} // Gunakan fungsi closeModal untuk transisi animasi
+        >
+          <img
+            src={modalImage}
+            alt="Gambar besar"
+            className={`max-w-full max-h-full border rounded-lg transform transition-transform duration-300 ${
+              isModalVisible ? "scale-100" : "scale-90"
+            }`}
+          />
+        </div>
+      )}
     </div>
   );
 };
