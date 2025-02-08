@@ -95,41 +95,95 @@ const BuktiLolosPage = () => {
   };
 
   const handleDownloadPDF = () => {
-    const doc = new jsPDF();
-    doc.setFontSize(16);
-    doc.text("SURAT KETERANGAN DITERIMA", 105, 20, { align: "center" });
+    const doc = new jsPDF("p", "mm", "a4");
+    doc.setFont("helvetica");
 
+    // Header
+    doc.setFontSize(14);
+    doc.setFont("Bold", "times");
+    doc.text("SMP MUHAMMADIYAH SUMBANG", 105, 15, { align: "center" });
     doc.setFontSize(12);
+    doc.text("KECAMATAN SUMBANG KABUPATEN BANYUMAS", 105, 22, {
+      align: "center",
+    });
+    doc.setFontSize(10);
     doc.text(
-      `Yang bertanda tangan di bawah ini, Kepala Sekolah SMP Muhammadiyah Sumbang,`,
-      20,
-      40
+      "Dusun I, Karangcegak, Kec. Sumbang, Kabupaten Banyumas, Jawa Tengah 53183",
+      105,
+      28,
+      { align: "center" }
     );
-    doc.text("dengan ini menyatakan bahwa:", 20, 50);
+    doc.line(20, 32, 190, 32);
 
+    // Judul
+    doc.setFontSize(13);
+    doc.setFont("helvetica", "semibold");
+    doc.text("SURAT PERNYATAAN DITERIMA", 105, 40, { align: "center" });
     doc.setFontSize(12);
-    doc.text(`Nama        : ${userData.nama}`, 20, 70);
-    doc.text(`NIK         : ${userData.nik}`, 20, 80);
-    doc.text(`Alamat      : ${userData.alamat}`, 20, 90);
+    doc.text("MENJADI SISWA KELAS VII TAHUN PELAJARAN 2024/2025", 105, 48, {
+      align: "center",
+    });
 
+    // ISI SURAT
+    let y = 63; // Posisi awal untuk isi surat
+    const labelX = 30; // Posisi x untuk label
+    const valueX = 70; // Posisi x untuk nilai (agar titik dua sejajar)
+
+    doc.setFont("courier", "normal"); // Gunakan font monospasi
+    doc.setFontSize(11);
+    doc.text("Nama Lengkap", labelX, y);
+    doc.text(`: ${userData.nama}`, valueX, y); // Nilai dimulai setelah titik dua
+    y += 8;
+    doc.text("NIK", labelX, y);
+    doc.text(`: ${userData.nik}`, valueX, y);
+    y += 8;
+    doc.text("Alamat", labelX, y);
+    doc.text(`: ${userData.alamat}`, valueX, y);
+    y += 8;
+    doc.text("Status", labelX, y);
+    doc.text(`: ${userData.status}`, valueX, y);
+    y += 20; // Jarak tambahan sebelum bagian "DITERIMA"
+
+    // Tulisan DITERIMA menjadi Peserta Didik Kelas ...
+    doc.setFont("times", "bold");
     doc.text(
-      `Telah diterima sebagai siswa baru di SMP Muhammadiyah Sumbang`,
-      20,
-      110
+      "DITERIMA menjadi Peserta Didik Kelas ... pada tahun pelajaran " +
+        userData.tahunPelajaran,
+      doc.internal.pageSize.getWidth() / 2,
+      y,
+      { align: "center" }
     );
-    doc.text("untuk Tahun Ajaran 2024/2025 pada kelas VII (Tujuh).", 20, 120);
+    y += 30; // Jarak lebih besar untuk elemen selanjutnya
 
+    // Tanggal dan Tanda Tangan
+    doc.setFont("times", "normal");
+    doc.text(`Sumbang, ${userData.tanggal}`, 140, 124);
+    doc.text("Kepala Sekolah", 140, 130);
+    doc.text("(Abdul Ma'arif S.Pd)", 140, 150);
+    doc.text(`NIP. 12345678`, 140, 157);
+
+    // Catatan
+    y = +200;
+    doc.setFontSize(10);
+    doc.setFont("helvetica", "bold");
+    doc.text("Catatan:", 20, y);
+    y += 10;
+    doc.setFont("helvetica", "normal");
     doc.text(
-      "Demikian surat keterangan ini dibuat untuk dapat digunakan sebagaimana mestinya.",
+      `- Daftar ulang dilaksanakan tanggal ${userData.daftarUlangStart} s.d. ${userData.daftarUlangEnd}`,
       20,
-      140
+      y
     );
+    y += 10;
+    doc.text(
+      "- Apabila pada tanggal tersebut tidak melakukan daftar ulang, maka dianggap mengundurkan diri.",
+      20,
+      y,
+      { maxWidth: 170 }
+    );
+    y += 10;
 
-    doc.text("Sumbang, [Tanggal Surat]", 20, 160);
-    doc.text("Kepala Sekolah,", 20, 180);
-    doc.text("Abdul Ma'arif S.Pd", 20, 200);
-
-    doc.save("Surat_Keterangan_Diterima.pdf");
+    doc.save(`Surat_Keterangan_${userData.nama}.pdf`);
   };
 
   return (
