@@ -8,7 +8,6 @@ import TentangKami from "./pages/TentangKami";
 import InformasiPPDB from "./pages/InformasiPPDB";
 import { Toaster } from "react-hot-toast";
 import Pembayaran from "./component/Pembayaran";
-import Surat from "./common/surat";
 import { Details } from "./pages/Detail";
 
 import "./App.css";
@@ -31,7 +30,6 @@ function App() {
             <Route path="/esktrakulikuler" element={<EkstrakurikulerPage />} />
             <Route path="/pembayaran" element={<Pembayaran />} />
             <Route path="/detail/:id" element={<Details />} />
-            <Route path="/Surat" element={<Surat />} />
           </Routes>
         </div>
         <Footer />
