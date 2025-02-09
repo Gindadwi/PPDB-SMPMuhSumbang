@@ -120,6 +120,16 @@ const FeeTable = () => {
       },
     });
 
+    // Ambil posisi terakhir tabel agar tanda tangan tidak tertutup
+    const finalY = doc.lastAutoTable.finalY || 25;
+
+    // Tanggal dan Tanda Tangan (Diletakkan setelah tabel)
+    doc.setFont("times", "normal");
+    doc.text(`Sumbang`, 140, finalY + 10); // Tambah 10 agar ada jarak
+    doc.text("Bendahara Sekolah", 140, finalY + 16);
+    doc.text("PRAMESIA OKTA VIANI, S.Pd", 140, finalY + 36);
+    doc.text(`NIP. 12345678`, 140, finalY + 43);
+
     // Simpan PDF
     doc.save("Rincian-Pembayaran.pdf");
   };
@@ -241,8 +251,16 @@ const FeeTable = () => {
           </tfoot>
         </table>
       </div>
-
-      <div className="flex items-end justify-end mt-3">
+      <div className="w-full flex items-end justify-end mt-10">
+        <div className="mt-4 text-left">
+          <p className="lg:text-[18px] font-poppins">Sumbang, 19 Juni 2024</p>
+          <p className="lg:text-[18px] font-poppins">Bendahara Sekolah</p>
+          <p className="mt-8 lg:mt-16 font-bold lg:text-[18px] font-poppins">
+            PRAMESIA OKTA VIANI, S.Pd
+          </p>
+        </div>
+      </div>
+      <div className="flex items-end justify-end mt-10">
         <Button
           name="Cetak Pembayaran"
           onClick={downloadPDF}

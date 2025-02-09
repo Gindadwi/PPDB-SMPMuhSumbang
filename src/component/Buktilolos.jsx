@@ -100,7 +100,7 @@ const BuktiLolosPage = () => {
 
     // Header
     doc.setFontSize(14);
-    doc.setFont("Bold", "times");
+    doc.setFont("Bold");
     doc.text("SMP MUHAMMADIYAH SUMBANG", 105, 15, { align: "center" });
     doc.setFontSize(12);
     doc.text("KECAMATAN SUMBANG KABUPATEN BANYUMAS", 105, 22, {
@@ -129,7 +129,7 @@ const BuktiLolosPage = () => {
     const labelX = 30; // Posisi x untuk label
     const valueX = 70; // Posisi x untuk nilai (agar titik dua sejajar)
 
-    doc.setFont("courier", "normal"); // Gunakan font monospasi
+    doc.setFont("Poppins", "normal"); // Gunakan font monospasi
     doc.setFontSize(11);
     doc.text("Nama Lengkap", labelX, y);
     doc.text(`: ${userData.nama}`, valueX, y); // Nilai dimulai setelah titik dua
@@ -146,8 +146,9 @@ const BuktiLolosPage = () => {
 
     // Tulisan DITERIMA menjadi Peserta Didik Kelas ...
     doc.setFont("times", "bold");
+    doc.setFontSize("12");
     doc.text(
-      "DITERIMA menjadi Peserta Didik Kelas ... pada tahun pelajaran " +
+      "DITERIMA menjadi Peserta Didik Kelas VII pada tahun pelajaran " +
         userData.tahunPelajaran,
       doc.internal.pageSize.getWidth() / 2,
       y,
