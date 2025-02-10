@@ -7,7 +7,7 @@ import Login from "../pages/Login";
 import Register from "../pages/Register"; // Pastikan nama file sesuai dan huruf kapital
 import "flowbite/dist/flowbite.css";
 import { Modal } from "flowbite";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { signOut } from "firebase/auth"; // Tambahkan ini
 import { auth } from "../firebase"; // Tambahkan ini
@@ -18,6 +18,7 @@ export default function Navbar() {
   const [modalContent, setModalContent] = useState(null);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false); // State untuk status login
+  const navigate = useNavigate();
 
   // Fungsi untuk mengganti konten modal ke Login
   const switchToLogin = () => {
