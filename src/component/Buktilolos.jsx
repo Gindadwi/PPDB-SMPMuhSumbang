@@ -5,6 +5,7 @@ import toast from "react-hot-toast";
 import { getDatabase, ref, onValue } from "firebase/database";
 import { useNavigate } from "react-router-dom";
 import { jsPDF } from "jspdf";
+import Dikdasmen from "../assets/dikdasmen.png";
 
 const BuktiLolosPage = () => {
   const [userData, setUserData] = useState(null);
@@ -96,94 +97,107 @@ const BuktiLolosPage = () => {
 
   const handleDownloadPDF = () => {
     const doc = new jsPDF("p", "mm", "a4");
-    doc.setFont("helvetica");
+    doc.setFont("times", "normal");
+
+    // Tambahkan logo pada kop surat
+    const logo = new Image();
+    logo.src = Dikdasmen; // Ganti dengan path ke file logo Anda
+    doc.addImage(logo, "PNG", 18, 10, 33, 33); // Atur posisi dan ukuran logo
 
     // Header
-    doc.setFontSize(14);
-    doc.setFont("Bold");
-    doc.text("SMP MUHAMMADIYAH SUMBANG", 105, 15, { align: "center" });
-    doc.setFontSize(12);
-    doc.text("KECAMATAN SUMBANG KABUPATEN BANYUMAS", 105, 22, {
+    doc.setFontSize(10);
+    doc.text("MUHAMMADIYAH MAJELIS DIKDASMEN DAN PNF", 120, 15, {
       align: "center",
     });
+    doc.setFontSize(14);
+    doc.setFont("times", "bold");
+    doc.text("SMP MUHAMMADIYAH SUMBANG", 120, 22, { align: "center" });
+    doc.setFontSize(12);
+    doc.text('TERAKREDITASI "A"', 120, 28, { align: "center" });
     doc.setFontSize(10);
     doc.text(
-      "Dusun I, Karangcegak, Kec. Sumbang, Kabupaten Banyumas, Jawa Tengah 53183",
-      105,
-      28,
+      "NPSN: 20301870, Alamat: Jl. Raya Karangcegak Kec. Sumbang, Kab. Banyumas",
+      120,
+      34,
       { align: "center" }
     );
-    doc.line(20, 32, 190, 32);
+    doc.text(
+      "Kode Pos 53183, Telp: (0281) 6455684, Email: smpmuhammadiyahsumbang@gmail.com",
+      120,
+      42,
+      { align: "center" }
+    );
+    doc.line(20, 44, 190, 44);
 
-    // Judul
+    // Judul Surat
     doc.setFontSize(13);
-    doc.setFont("helvetica", "semibold");
-    doc.text("SURAT PERNYATAAN DITERIMA", 105, 40, { align: "center" });
-    doc.setFontSize(12);
-    doc.text("MENJADI SISWA KELAS VII TAHUN PELAJARAN 2024/2025", 105, 48, {
-      align: "center",
-    });
-
-    // ISI SURAT
-    let y = 63; // Posisi awal untuk isi surat
-    const labelX = 30; // Posisi x untuk label
-    const valueX = 70; // Posisi x untuk nilai (agar titik dua sejajar)
-
-    doc.setFont("Poppins", "normal"); // Gunakan font monospasi
+    doc.setFont("times", "bold");
+    doc.text("SURAT KETERANGAN", 105, 52, { align: "center" });
     doc.setFontSize(11);
+    doc.text("No. 420/__/VI/2024", 105, 58, { align: "center" });
+
+    // Isi Surat
+    let y = 70; // Posisi awal untuk isi surat
+    const labelX = 30; // Posisi x untuk label
+    const valueX = 80; // Posisi x untuk nilai (agar titik dua sejajar)
+
+    doc.setFont("times", "normal");
+    doc.setFontSize(11);
+    doc.text("Yang bertanda tangan di bawah ini adalah:", 30, y);
+    y += 10;
     doc.text("Nama Lengkap", labelX, y);
-    doc.text(`: ${userData.nama}`, valueX, y); // Nilai dimulai setelah titik dua
+    doc.text(`: Abdul Ma'arif, S.Pd`, valueX, y);
+    y += 8;
+    doc.text("Nomor Induk Karyawan", labelX, y);
+    doc.text(": 830267 071 01 1.40", valueX, y);
+    y += 8;
+    doc.text("Jabatan Dinas", labelX, y);
+    doc.text(": Kepala SMP Muhammadiyah Sumbang", valueX, y);
+    y += 15;
+
+    doc.text("Menerangkan bahwa:", 30, y);
+    y += 10;
+    doc.text("Nama Siswa", labelX, y);
+    doc.text(`: ${userData.nama}`, valueX, y);
+    y += 8;
+    doc.text("Tempat, Tanggal Lahir", labelX, y);
+    doc.text(`: ${userData.tempatLahir}, ${userData.tanggalLahir}`, valueX, y);
     y += 8;
     doc.text("NIK", labelX, y);
     doc.text(`: ${userData.nik}`, valueX, y);
     y += 8;
-    doc.text("Alamat", labelX, y);
-    doc.text(`: ${userData.alamat}`, valueX, y);
-    y += 8;
-    doc.text("Status", labelX, y);
-    doc.text(`: ${userData.status}`, valueX, y);
-    y += 20; // Jarak tambahan sebelum bagian "DITERIMA"
+    doc.text("Sekolah Asal", labelX, y);
+    doc.text(`: ${userData.asalSekolah}`, valueX, y);
+    y += 15;
 
-    // Tulisan DITERIMA menjadi Peserta Didik Kelas ...
-    doc.setFont("times", "bold");
-    doc.setFontSize("12");
+    const isiSurat =
+      "Siswa atas nama tersebut di atas telah mendaftar sebagai calon Peserta didik baru SMP Muhammadiyah Sumbang, dan telah melakukan verifikasi administrasi dan tes akademik sesuai ketentuan yang berlaku. Dengan demikian dinyatakan Diterima Sebagai Peserta Didik Baru Kelas VII (Tujuh) SMP Muhammadiyah Sumbang Tahun Pelajaran 2024/2025.";
+
+    doc.setFont("times", "normal");
+    doc.text(isiSurat, 30, y, { maxWidth: 150, align: "justify" });
+    y += 35;
+
     doc.text(
-      "DITERIMA menjadi Peserta Didik Kelas VII pada tahun pelajaran " +
-        userData.tahunPelajaran,
-      doc.internal.pageSize.getWidth() / 2,
+      "Demikian Surat Keterangan ini kami sampaikan, untuk bisa digunakan oleh yang bersangkutan sesuai mestinya dengan penuh tanggung jawab.",
+      30,
       y,
-      { align: "center" }
+      {
+        maxWidth: 150,
+        align: "justify",
+      }
     );
-    y += 30; // Jarak lebih besar untuk elemen selanjutnya
+    y += 20;
 
     // Tanggal dan Tanda Tangan
-    doc.setFont("times", "normal");
-    doc.text(`Sumbang, ${userData.tanggal}`, 140, 124);
-    doc.text("Kepala Sekolah", 140, 130);
-    doc.text("(Abdul Ma'arif S.Pd)", 140, 150);
-    doc.text(`NIP. 12345678`, 140, 157);
+    doc.text(`Sumbang, ${userData.tanggalSurat}`, 140, y);
+    y += 6;
+    doc.text("Kepala SMP Muhammadiyah Sumbang", 140, y);
+    y += 30;
+    doc.text("(Abdul Ma'arif, S.Pd)", 140, y);
+    y += 6;
+    doc.text("NIK: 830267 071 01 1.40", 140, y);
 
-    // Catatan
-    y = +200;
-    doc.setFontSize(10);
-    doc.setFont("helvetica", "bold");
-    doc.text("Catatan:", 20, y);
-    y += 10;
-    doc.setFont("helvetica", "normal");
-    doc.text(
-      `- Daftar ulang dilaksanakan tanggal ${userData.daftarUlangStart} s.d. ${userData.daftarUlangEnd}`,
-      20,
-      y
-    );
-    y += 10;
-    doc.text(
-      "- Apabila pada tanggal tersebut tidak melakukan daftar ulang, maka dianggap mengundurkan diri.",
-      20,
-      y,
-      { maxWidth: 170 }
-    );
-    y += 10;
-
+    // Simpan PDF
     doc.save(`Surat_Keterangan_${userData.nama}.pdf`);
   };
 
