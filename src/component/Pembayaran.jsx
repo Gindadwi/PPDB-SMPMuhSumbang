@@ -253,9 +253,13 @@ const FeeTable = () => {
       </div>
       <div className="w-full flex items-end justify-end mt-10">
         <div className="mt-4 text-left">
-          <p className="lg:text-[18px] font-poppins">Sumbang, 19 Juni 2024</p>
-          <p className="lg:text-[18px] font-poppins">Bendahara Sekolah</p>
-          <p className="mt-8 lg:mt-16 font-bold lg:text-[18px] font-poppins">
+          <p className="lg:text-[18px] text-[14px] font-poppins">
+            Sumbang, 19 Juni 2024
+          </p>
+          <p className="lg:text-[18px] text-[14px] font-poppins">
+            Bendahara Sekolah
+          </p>
+          <p className="mt-16 lg:mt-16 font-bold text-[14px] lg:text-[18px]  font-poppins">
             PRAMESIA OKTA VIANI, S.Pd
           </p>
         </div>

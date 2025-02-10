@@ -202,41 +202,41 @@ const BuktiLolosPage = () => {
             <div className="space-y-3 2xl:space-y-9">
               <div className="flex gap-6 font-poppins ">
                 <div>
-                  <p className="font-semibold font-poppins text-lg 2xl:text-4xl">
+                  <p className="font-semibold font-poppins text-base lg:text-lg 2xl:text-4xl">
                     Nama Lengkap:
                   </p>
-                  <p className="font-poppins text-lg 2xl:text-3xl">
+                  <p className="font-poppins text-base lg:text-lg 2xl:text-3xl">
                     {userData.nama}
                   </p>
                 </div>
               </div>
               <div className="flex gap-6 font-poppins">
                 <div>
-                  <p className="font-semibold font-poppins text-lg 2xl:text-4xl">
+                  <p className="font-semibold font-poppins text-base lg:text-lg 2xl:text-4xl">
                     NIK:
                   </p>
-                  <p className="font-poppins text-lg 2xl:text-3xl">
+                  <p className="font-poppins text-base lg:text-lg 2xl:text-3xl">
                     {userData.nik}
                   </p>
                 </div>
               </div>
               <div className="flex gap-6 font-poppins">
                 <div>
-                  <p className="font-semibold font-poppins text-lg 2xl:text-4xl">
+                  <p className="font-semibold font-poppins text-base lg:text-lg 2xl:text-4xl">
                     Alamat:
                   </p>
-                  <p className="font-poppins text-lg 2xl:text-3xl">
+                  <p className="font-poppins text-base lg:text-lg 2xl:text-3xl">
                     {userData.alamat}
                   </p>
                 </div>
               </div>
               <div className="flex gap-6 font-poppins">
                 <div>
-                  <p className="font-semibold font-poppins text-lg 2xl:text-4xl">
+                  <p className="font-semibold font-poppins text-base lg:text-lg 2xl:text-4xl">
                     Status:
                   </p>
                   <p
-                    className={`font-semibold text-lg 2xl:text-3xl ${
+                    className={`font-semibold text-base lg:text-lg 2xl:text-3xl ${
                       userData.status === "Di Terima"
                         ? "text-green-500"
                         : userData.status === "Pending"
