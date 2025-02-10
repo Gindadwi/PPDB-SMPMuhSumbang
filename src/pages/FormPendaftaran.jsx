@@ -37,7 +37,34 @@ const FormPendaftaran = ({ userId: propUserId }) => {
   const [step, setStep] = useState(1);
   const navigate = useNavigate();
 
-  const nextStep = () => setStep((prevStep) => prevStep + 1);
+  const nextStep = () => {
+    const requiredFields = [
+      "nama",
+      "tempatLahir",
+      "tanggalLahir",
+      "alamat",
+      "jenisKelamin",
+      "nik",
+      "noHP",
+      "namaOrtu",
+      "asalSekolah",
+      "IPA",
+      "BIndo",
+      "MTK",
+    ];
+    for (const field of requiredFields) {
+      if (!formData[field]) {
+        toast.error(` harap di isi kolom ${field}`);
+        return;
+      }
+    }
+
+    if (formData.nik.length !== 16) {
+      toast.error("NIK harus 16 digit");
+      return;
+    }
+    setStep((prevStep) => prevStep + 1);
+  };
   const prevStep = () => setStep((prevStep) => prevStep - 1);
 
   // Ambil userId dari localStorage jika tidak ada dari props
@@ -195,27 +222,6 @@ const FormPendaftaran = ({ userId: propUserId }) => {
         "dd/MM/yyyy"
       );
 
-      const requiredFields = [
-        "nama",
-        "tempatLahir",
-        "tanggalLahir",
-        "alamat",
-        "jenisKelamin",
-        "nik",
-        "noHP",
-        "namaOrtu",
-        "asalSekolah",
-        "IPA",
-        "BIndo",
-        "MTK",
-      ];
-      for (const field of requiredFields) {
-        if (!formData[field]) {
-          toast.error(` harap di isi kolom ${field}`);
-          return;
-        }
-      }
-
       // membuat validari kalau file tidak di isi
       const requiredFile = ["kk", "skhun", "aktaKelahiran"];
       for (const file of requiredFile) {
@@ -223,11 +229,6 @@ const FormPendaftaran = ({ userId: propUserId }) => {
           toast.error(`File ${file.toUpperCase()} wajib diunggah!`);
           return;
         }
-      }
-
-      if (formData.nik.length !== 16) {
-        toast.error("Nik kurang dari 16 digit");
-        return;
       }
 
       const tanggalDaftar = format(new Date(), "dd/MM/yyy");
