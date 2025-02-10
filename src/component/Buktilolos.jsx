@@ -124,7 +124,7 @@ const BuktiLolosPage = () => {
     doc.text(
       "Kode Pos 53183, Telp: (0281) 6455684, Email: smpmuhammadiyahsumbang@gmail.com",
       120,
-      42,
+      40,
       { align: "center" }
     );
     doc.line(20, 44, 190, 44);
