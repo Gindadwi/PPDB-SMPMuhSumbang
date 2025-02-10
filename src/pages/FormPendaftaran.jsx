@@ -562,9 +562,12 @@ const FormPendaftaran = ({ userId: propUserId }) => {
             {/* Step 2: Upload Berkas */}
             <div className="grid grid-cols-1 gap-4">
               <div className="flex flex-col w-full">
-                <label className="font-medium font-outfit text-[14px]">
-                  Upload Kartu Keluarga (KK)
-                </label>
+                <div className="flex items-center gap-1">
+                  <label className="font-medium font-outfit text-[14px]">
+                    Upload Kartu Keluarga (KK)
+                  </label>
+                  <p className="text-red-600 text-[18px] lg:text-[26px]">*</p>
+                </div>
                 <input
                   type="file"
                   name="kk"
@@ -576,9 +579,12 @@ const FormPendaftaran = ({ userId: propUserId }) => {
 
             <div className="grid grid-cols-1 gap-4 mt-5">
               <div className="flex flex-col w-full">
-                <label className="font-medium font-outfit text-[14px]">
-                  Upload SKHUN
-                </label>
+                <div className="flex items-center gap-1">
+                  <label className="font-medium font-outfit text-[14px]">
+                    Upload SKHUN
+                  </label>
+                  <p className="text-red-600 text-[18px] lg:text-[26px]">*</p>
+                </div>
                 <input
                   type="file"
                   name="skhun"
@@ -590,9 +596,12 @@ const FormPendaftaran = ({ userId: propUserId }) => {
 
             <div className="grid grid-cols-1 gap-4 mt-5">
               <div className="flex flex-col w-full">
-                <label className="font-medium font-outfit text-[14px]">
-                  Upload Akta Kelahiran
-                </label>
+                <div className="flex items-center gap-1">
+                  <label className="font-medium font-outfit text-[14px]">
+                    Upload Akta Kelahiran
+                  </label>
+                  <p className="text-red-600 text-[18px] lg:text-[26px]">*</p>
+                </div>
                 <input
                   type="file"
                   name="aktaKelahiran"

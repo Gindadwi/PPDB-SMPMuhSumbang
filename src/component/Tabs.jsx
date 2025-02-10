@@ -256,8 +256,8 @@ const Tabs = () => {
                     <li>
                       Tanggal Selesai PPDB: {formatDate(item.tanggal_tutup)}
                     </li>
-                    {item.detail && (
-                      <li dangerouslySetInnerHTML={{ __html: item.detail }} />
+                    {item.details && (
+                      <li dangerouslySetInnerHTML={{ __html: item.details }} />
                     )}
                   </ul>
 
