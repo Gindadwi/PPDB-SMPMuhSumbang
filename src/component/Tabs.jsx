@@ -18,6 +18,7 @@ const Tabs = () => {
   const isLoggedIn = !!localStorage.getItem("userId");
 
   const syaratDokumen = [
+    { label: "Pas Foto 3 X 4" },
     { label: "Foto Akta Kelahiran" },
     { label: "Foto SKHUN" },
     { label: "Foto Kartu Keluarga" },

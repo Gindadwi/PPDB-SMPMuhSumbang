@@ -23,6 +23,7 @@ const FormPendaftaran = ({ userId: propUserId }) => {
     BIndo: "",
     MTK: "",
     total: 0,
+    pasFoto: null,
     kk: null,
     kip: null,
     skhun: null,
@@ -215,7 +216,14 @@ const FormPendaftaran = ({ userId: propUserId }) => {
 
     try {
       const storage = getStorage();
-      const fileFields = ["kk", "kip", "skhun", "sertifikat", "aktaKelahiran"];
+      const fileFields = [
+        "pasFoto",
+        "kk",
+        "kip",
+        "skhun",
+        "sertifikat",
+        "aktaKelahiran",
+      ];
       const fileUrls = {};
       const formattedTanggalLahir = format(
         new Date(formData.tanggalLahir),
@@ -223,7 +231,7 @@ const FormPendaftaran = ({ userId: propUserId }) => {
       );
 
       // membuat validari kalau file tidak di isi
-      const requiredFile = ["kk", "skhun", "aktaKelahiran"];
+      const requiredFile = ["pasFoto", "kk", "skhun", "aktaKelahiran"];
       for (const file of requiredFile) {
         if (!formData[file]) {
           toast.error(`File ${file.toUpperCase()} wajib diunggah!`);
@@ -264,6 +272,7 @@ const FormPendaftaran = ({ userId: propUserId }) => {
         MTK: formData.MTK,
         total: formData.total,
         status: formData.status,
+        pasFotoUrl: fileUrls.pasFoto || "",
         kkUrl: fileUrls.kk || "",
         kipUrl: fileUrls.kip || "",
         skhunUrl: fileUrls.skhun || "",
@@ -561,6 +570,23 @@ const FormPendaftaran = ({ userId: propUserId }) => {
           <>
             {/* Step 2: Upload Berkas */}
             <div className="grid grid-cols-1 gap-4">
+              <div className="flex flex-col w-full">
+                <div className="flex items-center gap-1">
+                  <label className="font-medium font-outfit text-[14px]">
+                    Foto 3X4
+                  </label>
+                  <p className="text-red-600 text-[18px] lg:text-[26px]">*</p>
+                </div>
+                <input
+                  type="file"
+                  name="pasFoto"
+                  onChange={handleInputChange}
+                  className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+                />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 gap-4  mt-5">
               <div className="flex flex-col w-full">
                 <div className="flex items-center gap-1">
                   <label className="font-medium font-outfit text-[14px]">

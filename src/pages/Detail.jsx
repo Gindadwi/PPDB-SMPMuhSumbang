@@ -25,6 +25,7 @@ export const Details = () => {
     nilaiMtk: "",
     status: "",
     total: "",
+    pasFotoUrl: "",
     aktaKelahiranUrl: "",
     kkUrl: "",
     kipUrl: "",
@@ -33,6 +34,7 @@ export const Details = () => {
   });
 
   const [files, setFiles] = useState({
+    pasFoto: null,
     aktaKelahiran: null,
     kk: null,
     kip: null,
@@ -58,6 +60,11 @@ export const Details = () => {
   ];
 
   const documentFields = [
+    {
+      label: "Pas Foto 3X4",
+      name: "pasFotoUrl",
+      field: "pasFoto",
+    },
     {
       label: "Akta Kelahiran",
       name: "aktaKelahiranUrl",
