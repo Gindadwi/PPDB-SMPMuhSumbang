@@ -117,11 +117,7 @@ const Tabs = () => {
 
   const handleStatus = () => {
     if (isLoggedIn) {
-      if (currentStatus === "Pendaftaran Di Buka") {
-        navigate("/status"); // Arahkan ke halaman status pendaftaran
-      } else {
-        toast.error("Pendaftaran Belum dibuka.");
-      }
+      navigate("/status");
     } else {
       toast.error("Silakan login terlebih dahulu.");
     }
@@ -287,12 +283,7 @@ const Tabs = () => {
                 <Button
                   name="Check Status"
                   onClick={handleStatus}
-                  className={`${
-                    currentStatus == "Pendaftaran Di Buka"
-                      ? "bg-white"
-                      : "bg-gray-300 cursor-not-allowed"
-                  }
-                 text-warnaUtama lg:text-base font-poppins font-medium border-2 border-warnaUtama rounded-md w-full lg:h-11`}
+                  className="bg-white text-warnaUtama lg:text-base font-poppins font-medium border-2 border-warnaUtama rounded-md w-full lg:h-11"
                 />
               </div>
             </div>
