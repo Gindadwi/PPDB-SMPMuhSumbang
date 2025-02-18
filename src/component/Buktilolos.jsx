@@ -189,7 +189,15 @@ const BuktiLolosPage = () => {
     y += 20;
 
     // Tanggal dan Tanda Tangan
-    doc.text(`Sumbang, ${userData.tanggalSurat}`, 140, y);
+
+    const tanggalSurat = new Date().toLocaleDateString("id-ID", {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    });
+
+    // Ganti bagian ini:
+    doc.text(`Sumbang, ${tanggalSurat}`, 140, y);
     y += 6;
     doc.text("Kepala SMP Muhammadiyah Sumbang", 140, y);
     y += 30;
