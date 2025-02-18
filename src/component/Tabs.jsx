@@ -244,7 +244,7 @@ const Tabs = () => {
               {informasiData.map((item, index) => (
                 <div key={index} className="mt-3">
                   <h3 className="font-poppins lg:lg:text-xl text-[15px] font-semibold lg:font-semibold">
-                    Informasi PPDB SMP Muhammadiyah Sumbang akan dibuka pada:
+                    PPDB SMP Muhammadiyah Sumbang akan dibuka pada:
                   </h3>
                   <ul className="list-disc font-poppins font-medium mt-5 pl-5 space-y-4 text-sm lg:text-base">
                     <li>
@@ -254,7 +254,15 @@ const Tabs = () => {
                       Tanggal Selesai PPDB: {formatDate(item.tanggal_tutup)}
                     </li>
                     {item.details && (
-                      <li dangerouslySetInnerHTML={{ __html: item.details }} />
+                      <div className="mt-4 p-4 -ml-4 bg-gray-100 rounded-md border-l-4 border-red-500">
+                        <h3 className="text-red-700 font-outfit font-semibold">
+                          📢 Informasi Penting 📢:
+                        </h3>
+                        <p
+                          className="text-gray-700 text-sm mt-2"
+                          dangerouslySetInnerHTML={{ __html: item.details }}
+                        />
+                      </div>
                     )}
                   </ul>
 
