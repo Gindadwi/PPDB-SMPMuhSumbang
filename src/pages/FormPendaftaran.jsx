@@ -53,6 +53,8 @@ const FormPendaftaran = ({ userId: propUserId }) => {
       "BIndo",
       "MTK",
     ];
+
+    // Validasi form
     for (const field of requiredFields) {
       if (!formData[field]) {
         toast.error(` harap di isi kolom ${field}`);
@@ -60,6 +62,7 @@ const FormPendaftaran = ({ userId: propUserId }) => {
       }
     }
 
+    // Validasi panjang NIK
     if (formData.nik.length !== 16) {
       toast.error("NIK harus 16 digit");
       return;
@@ -131,24 +134,30 @@ const FormPendaftaran = ({ userId: propUserId }) => {
     "Kabupaten Sumenep",
   ];
 
+  // Handle perubahan tempat lahir
   const handleTempatLahirChange = (e) => {
     const value = e.target.value;
     setFormData({ ...formData, tempatLahir: value });
   };
 
+  // Cek apakah user sudah login
   useEffect(() => {
     if (!userId) {
       alert("Anda harus login untuk mengakses form ini.");
     }
   }, [userId]);
 
+  // Handle perubahan input
   const handleInputChange = (e) => {
     const { name, value, files } = e.target;
 
+    // Jika input adalah file, gunakan files[0] sebagai value
     if (files) {
       setFormData({ ...formData, [name]: files[0] });
     } else {
+      // Jika input bukan file, gunakan value biasa
       setFormData((prevData) => {
+        // Update data dengan value baru
         let updatedData = { ...prevData, [name]: value };
 
         // Validasi panjang NIK
@@ -204,9 +213,11 @@ const FormPendaftaran = ({ userId: propUserId }) => {
     }
   };
 
+  // Handle submit form
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // Cek apakah user sudah login
     if (!userId) {
       alert("User ID tidak ditemukan. Silakan login kembali.");
       return;
@@ -214,6 +225,7 @@ const FormPendaftaran = ({ userId: propUserId }) => {
 
     setIsLoading(true); // 🔥 Tampilkan loading
 
+    // Simpan data ke Database
     try {
       const storage = getStorage();
       const fileFields = [
@@ -224,7 +236,10 @@ const FormPendaftaran = ({ userId: propUserId }) => {
         "sertifikat",
         "aktaKelahiran",
       ];
+
+      // URL file yang sudah diupload
       const fileUrls = {};
+      // Format tanggal lahir ke format dd/MM/yyyy
       const formattedTanggalLahir = format(
         new Date(formData.tanggalLahir),
         "dd/MM/yyyy"
@@ -233,15 +248,19 @@ const FormPendaftaran = ({ userId: propUserId }) => {
       // membuat validari kalau file tidak di isi
       const requiredFile = ["pasFoto", "kk", "skhun", "aktaKelahiran"];
       for (const file of requiredFile) {
+        // Jika file tidak diunggah, tampilkan pesan error
         if (!formData[file]) {
           toast.error(`File ${file.toUpperCase()} wajib diunggah!`);
           return;
         }
       }
 
+      // Tanggal daftar
       const tanggalDaftar = format(new Date(), "dd/MM/yyy");
 
+      // Upload file ke Firebase Storage
       const uploadPromises = fileFields.map(async (field) => {
+        // Jika file diisi, upload file ke Firebase Storage
         if (formData[field]) {
           const storageRef = ref(
             storage,
@@ -253,9 +272,11 @@ const FormPendaftaran = ({ userId: propUserId }) => {
         return { [field]: "" };
       });
 
+      // Tunggu semua file selesai diupload
       const fileUploadResults = await Promise.all(uploadPromises);
       fileUploadResults.forEach((result) => Object.assign(fileUrls, result));
 
+      // Data yang akan disimpan ke Database
       const dataToSave = {
         tanggalDaftar: tanggalDaftar,
         nama: formData.nama,

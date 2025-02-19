@@ -164,24 +164,32 @@ export const Details = () => {
     });
   };
 
+  // Fungsi untuk meng-handle perubahan file input
   const handleFileChange = (e, field) => {
     const file = e.target.files[0];
     if (file) {
+      // Mengupdate state files dengan file yang dipilih
       setFiles((prevFiles) => ({ ...prevFiles, [field]: file }));
     }
   };
 
+  // Fungsi untuk meng-upload file ke Firebase Storage
   const uploadFile = async (file, fileName) => {
+    // Referensi file di Firebase Storage
     const fileRef = ref(storage, `files/${fileName}`);
     const uploadTask = uploadBytesResumable(fileRef, file);
 
+    // Mengembalikan URL download file setelah proses upload selesai
     return new Promise((resolve, reject) => {
+      // Menangani proses upload
       uploadTask.on("state_changed", null, reject, () => {
+        // Jika upload berhasil, ambil URL download file
         getDownloadURL(uploadTask.snapshot.ref).then(resolve).catch(reject);
       });
     });
   };
 
+  // Fungsi untuk meng-handle submit form
   const handleUpdate = async (e) => {
     e.preventDefault();
 
@@ -191,6 +199,7 @@ export const Details = () => {
       const updatedData = { ...formData };
       for (const [field, file] of Object.entries(files)) {
         if (file) {
+          // Upload file to Firebase Storage
           const url = await uploadFile(file, `${id}_${field}`);
           updatedData[`${field}Url`] = url;
         }
@@ -215,11 +224,13 @@ export const Details = () => {
     }
   };
 
+  // Fungsi untuk menampilkan gambar dalam modal
   const openModal = (imageUrl) => {
     setModalImage(imageUrl);
     setIsModalVisible(true);
   };
 
+  // Fungsi untuk menutup modal
   const closeModal = () => {
     setIsModalVisible(false);
     setTimeout(() => setModalImage(null), 300);

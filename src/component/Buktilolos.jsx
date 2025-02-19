@@ -15,22 +15,26 @@ const BuktiLolosPage = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    // Ambil ID user dari local storage
     const userId = localStorage.getItem("userId");
 
+    // Jika tidak ada ID user, tampilkan pesan error
     if (!userId) {
       toast.error("Data ID tidak bisa ditemukan");
       setLoading(false);
       return;
     }
 
+    // Ambil data pendaftaran dari database
     const fetchData = async () => {
       try {
         const response = await axios.get(
           `https://smpmuhsumbang-9fa3a-default-rtdb.firebaseio.com/pendaftaran/${userId}.json`
         );
 
+        // Jika data ditemukan, simpan ke state
         if (response.data) {
-          setUserData(response.data);
+          setUserData(response.data); // Simpan data user ke state
         } else {
           setError("Data tidak ditemukan.");
         }
@@ -57,7 +61,7 @@ const BuktiLolosPage = () => {
           </p>
           <div className="text-center mt-6">
             <button
-              onClick={() => navigate("/form-pendaftaran")}
+              onClick={() => navigate("/informasippdb")}
               className="bg-blue-500 text-white px-6 py-2 rounded-md hover:bg-blue-600"
             >
               Daftar Sekarang
@@ -68,6 +72,7 @@ const BuktiLolosPage = () => {
     );
   }
 
+  // fungsi untuk menampilkan kelulusan
   const renderStatusMessage = () => {
     if (userData.status === "Pending") {
       return (
@@ -91,10 +96,12 @@ const BuktiLolosPage = () => {
     return <p>Status belum diperbarui.</p>;
   };
 
+  // navigasi ke halaman pembayaran
   const handlePembayaran = () => {
     navigate("/pembayaran");
   };
 
+  // fungsi untuk membuat dan mengunduh PDF
   const handleDownloadPDF = () => {
     const doc = new jsPDF("p", "mm", "a4");
     doc.setFont("times", "normal");
@@ -259,6 +266,7 @@ const BuktiLolosPage = () => {
                   </p>
                   <p
                     className={`font-semibold text-base lg:text-lg 2xl:text-3xl ${
+                      // Tambahkan warna berdasarkan status
                       userData.status === "Di Terima"
                         ? "text-green-500"
                         : userData.status === "Pending"

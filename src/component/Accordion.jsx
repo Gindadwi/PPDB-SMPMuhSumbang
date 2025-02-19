@@ -4,19 +4,20 @@ import { useState } from "react";
 import axios from "axios";
 
 const Accordion = () => {
-  const [activeIndex, setActiveIdex] = useState(null);
-  const [faqs, setFaqs] = useState([]); //State Untuk menyimpn data FAQ
-  const [showAll, setShowAll] = useState(false); //state untuk membuat fungsi button pertanyaan lainya
-  const itemShow = 4; //jumlah faq yang di tampilkan pertanya
+  const [activeIndex, setActiveIdex] = useState(null); // Menyimpan indeks pertanyaan yang aktif
+  const [faqs, setFaqs] = useState([]); // Menyimpan data FAQ yang diambil dari API
+  const [showAll, setShowAll] = useState(false); // Menentukan apakah semua pertanyaan ditampilkan atau tidak
+  const itemShow = 4; // Jumlah pertanyaan yang ditampilkan secara default
 
   useEffect(() => {
+    // Mengambil data FAQ dari API ketika komponen pertama kali dimuat
     const fetchData = async () => {
       try {
         const response = await axios.get(
           "https://smpmuhsumbang-9fa3a-default-rtdb.firebaseio.com/FAQ.json"
         );
         const data = response.data;
-        const formattedFaqs = Object.keys(data).map((key) => data[key]); //membuat data menjadi array
+        const formattedFaqs = Object.keys(data).map((key) => data[key]); // Mengubah objek data menjadi array
         setFaqs(formattedFaqs);
       } catch (error) {
         console.log("error mengambil data", error);
@@ -26,16 +27,16 @@ const Accordion = () => {
     fetchData();
   }, []);
 
-  // membuat fungsi toogle accordion
+  // Fungsi untuk membuka dan menutup accordion
   const toggleAccordion = (index) => {
     if (activeIndex === index) {
-      setActiveIdex(null); //fungsi jika metutup acordion jika di klik lagi
+      setActiveIdex(null); // Menutup accordion jika sudah terbuka
     } else {
-      setActiveIdex(index); // buka acordion yang baru di klik
+      setActiveIdex(index); // Membuka accordion yang diklik
     }
   };
 
-  //Membuat fungsi button untuk menampilkan semua question
+  // Fungsi untuk menampilkan semua pertanyaan
   const handleShowMore = () => {
     setShowAll(!showAll);
   };
@@ -43,6 +44,7 @@ const Accordion = () => {
   return (
     <div className="max-w-[1080px] 2xl:max-w-[1440px] 2xl:px-10 w-full mx-auto p-4">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {/* Menampilkan pertanyaan FAQ sesuai jumlah yang ditentukan */}
         {faqs.slice(0, showAll ? faqs.length : itemShow).map((faq, index) => (
           <div
             key={index}
@@ -61,7 +63,7 @@ const Accordion = () => {
                 />
               </div>
             </div>
-            {/* Menampilkan jawaban FAQ */}
+            {/* Menampilkan jawaban FAQ jika accordion aktif */}
             {activeIndex === index && (
               <div
                 className="mt-3 text-gray-600 font-poppins text-[12px] lg:text-[16px] 2xl:text-[24px] overflow-hidden transition-all duration-500"
@@ -74,12 +76,13 @@ const Accordion = () => {
         ))}
       </div>
 
+      {/* Tombol untuk menampilkan lebih banyak atau lebih sedikit pertanyaan */}
       <div className="text-center mt-6">
         <button
           onClick={handleShowMore}
           className="px-4 py-2 2xl:text-2xl 2xl:py-4 border border-warnaUtama text-warnaUtama rounded-lg hover:bg-blue-500 hover:text-white transition-colors duration-300"
         >
-          {showAll ? "Tampilkan Lebih sedikit" : "Pertanyaan lainya"}
+          {showAll ? "Tampilkan Lebih sedikit" : "Pertanyaan lainnya"}
         </button>
       </div>
     </div>

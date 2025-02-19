@@ -6,13 +6,16 @@ const Ekstrakulikuler = () => {
   const [imgCard, setImgCard] = useState([]);
   const [selectedEkskul, setSelectedEkskul] = useState(null);
 
+  // Fungsi untuk mengambil data dari
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
           "https://smpmuhsumbang-9fa3a-default-rtdb.firebaseio.com/eksul.json"
         );
+        // Ambil data dari response
         const data = response.data;
+        // Ubah data menjadi array
         const imagecard = Object.keys(data).map((key) => data[key]);
         setImgCard(imagecard);
       } catch (error) {

@@ -76,13 +76,16 @@ const Tabs = () => {
     return () => unsubscribe(); // Membersihkan listener
   }, [auth]);
 
+  // Fungsi untuk mengambil data Informasi PPDB
   const fetchInformasiData = async () => {
     try {
       const response = await axios.get(
         "https://smpmuhsumbang-9fa3a-default-rtdb.firebaseio.com/InformasiPPDB.json"
       );
+      // Mengambil data
       const data = response.data;
       console.log("Data fetched from Firebase:", data); // Log data dari Firebase
+      // Mengubah objek menjadi array
       const InformasiPPDB = Object.keys(data).map((key) => data[key]);
       setInformasiData(InformasiPPDB);
     } catch (error) {

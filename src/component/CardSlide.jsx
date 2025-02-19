@@ -8,17 +8,24 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
 const CardSlide = () => {
+  // State untuk menyimpan data dari API
   const [data, setData] = useState([]);
+  // State untuk menyimpan item yang dipilih
   const [selectedItem, setSelectedItem] = useState(null);
+  // State untuk mengontrol tampilan modal
   const [isModalOpen, setIsModalOpen] = useState(false);
+  // Ref untuk mengontrol slider
   const sliderRef = useRef(null);
 
+  // useEffect untuk mengambil data dari API
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
           "https://smpmuhsumbang-9fa3a-default-rtdb.firebaseio.com/Prestasi.json"
         );
+
+        // Mengubah object menjadi array
         const fetchedData = Object.values(response.data);
         setData(fetchedData);
       } catch (error) {
@@ -29,21 +36,26 @@ const CardSlide = () => {
     fetchData();
   }, []);
 
+  // Fungsi untuk menampilkan modal
   const handleOpenModal = (item) => {
     setSelectedItem(item);
     setIsModalOpen(true);
   };
 
+  // Fungsi untuk menutup modal
   const handleCloseModal = () => {
     setSelectedItem(null);
     setIsModalOpen(false);
   };
 
+  // Konfigurasi slider
   const settings = {
     infinite: true,
     speed: 500,
     slidesToShow: 3,
     slidesToScroll: 1,
+
+    // Responsive slider
     responsive: [
       { breakpoint: 1440, settings: { slidesToShow: 3, slidesToScroll: 1 } },
       { breakpoint: 1080, settings: { slidesToShow: 2.5, slidesToScroll: 1 } },
@@ -55,6 +67,7 @@ const CardSlide = () => {
 
   return (
     <div className="relative px-4 lg:px-14 w-full max-w-[1180px] 2xl:max-w-[1444px] overflow-hidden">
+      {/* Slider untuk menampilkan data */}
       <Slider ref={sliderRef} {...settings}>
         {data.map((item, index) => (
           <div className="p-2" key={index}>
