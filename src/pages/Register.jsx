@@ -65,6 +65,54 @@ const Register = ({ onSwitchToLogin, closeModal, onRegisterSuccess }) => {
     }
   };
 
+  // const handleRegister = async (e) => {
+  //   e.preventDefault();
+
+  //   if (password !== confPassword) {
+  //     toast.error("Password tidak cocok!");
+  //     return;
+  //   }
+
+  //   if (!validatePassword(password)) {
+  //     toast.error(
+  //       "Password harus minimal 8 karakter dan mengandung huruf serta angka."
+  //     );
+  //     return;
+  //   }
+
+  //   try {
+  //     // Registrasi user ke Firebase Authentication
+  //     const userCredential = await createUserWithEmailAndPassword(
+  //       auth,
+  //       email,
+  //       password
+  //     );
+  //     const user = userCredential.user;
+
+  //     // Kirim email verifikasi
+  //     await sendEmailVerification(user);
+  //     await updateProfile(user, { displayName: name }); // Set nama pengguna di Firebase Authentication
+
+  //     // 🔥 Simpan nama ke Realtime Database berdasarkan userId
+  //     const userId = user.uid;
+  //     const url = `https://smpmuhsumbang-9fa3a-default-rtdb.firebaseio.com/pendaftaran/${userId}.json`;
+
+  //     await axios.put(url, { nama: name });
+
+  //     // Notifikasi sukses
+  //     toast.success(
+  //       "Registrasi berhasil! Periksa email anda untuk verifikasi sebelum login"
+  //     );
+
+  //     // Tutup modal dan beri tahu induk bahwa registrasi berhasil
+  //     closeModal();
+  //     onRegisterSuccess();
+  //   } catch (error) {
+  //     console.error(error);
+  //     toast.error(error.message || "Terjadi kesalahan saat registrasi");
+  //   }
+  // };
+
   return (
     <div className="">
       <h1 className="text-black text-[20px] font-outfit font-medium">

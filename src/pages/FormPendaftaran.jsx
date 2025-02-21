@@ -34,6 +34,7 @@ const FormPendaftaran = ({ userId: propUserId }) => {
   });
 
   const [isLoading, setIsLoading] = useState(false);
+  const [isChecked, setIsChecked] = useState(false);
 
   const [step, setStep] = useState(1);
   const navigate = useNavigate();
@@ -73,66 +74,6 @@ const FormPendaftaran = ({ userId: propUserId }) => {
 
   // Ambil userId dari localStorage jika tidak ada dari props
   const userId = propUserId || localStorage.getItem("userId");
-  const [lahirDiJawa, setLahirDiJawa] = useState(true);
-
-  const kabupatenJawa = [
-    "Kabupaten Banyumas",
-    "Kabupaten Cilacap",
-    "Kabupaten Purbalingga",
-    "Kabupaten Banjarnegara",
-    "Kabupaten Kebumen",
-    "Kabupaten Purworejo",
-    "Kabupaten Wonosobo",
-    "Kabupaten Magelang",
-    "Kabupaten Temanggung",
-    "Kabupaten Semarang",
-    "Kabupaten Kendal",
-    "Kabupaten Batang",
-    "Kabupaten Pekalongan",
-    "Kabupaten Pemalang",
-    "Kabupaten Tegal",
-    "Kabupaten Brebes",
-    "Kabupaten Blora",
-    "Kabupaten Grobogan",
-    "Kabupaten Rembang",
-    "Kabupaten Pati",
-    "Kabupaten Jepara",
-    "Kabupaten Kudus",
-    "Kabupaten Demak",
-    "Kabupaten Boyolali",
-    "Kabupaten Klaten",
-    "Kabupaten Sukoharjo",
-    "Kabupaten Wonogiri",
-    "Kabupaten Karanganyar",
-    "Kabupaten Sragen",
-    "Kabupaten Ngawi",
-    "Kabupaten Magetan",
-    "Kabupaten Ponorogo",
-    "Kabupaten Madiun",
-    "Kabupaten Nganjuk",
-    "Kabupaten Kediri",
-    "Kabupaten Tulungagung",
-    "Kabupaten Blitar",
-    "Kabupaten Malang",
-    "Kabupaten Pasuruan",
-    "Kabupaten Probolinggo",
-    "Kabupaten Lumajang",
-    "Kabupaten Jember",
-    "Kabupaten Banyuwangi",
-    "Kabupaten Bondowoso",
-    "Kabupaten Situbondo",
-    "Kabupaten Sidoarjo",
-    "Kabupaten Gresik",
-    "Kabupaten Lamongan",
-    "Kabupaten Bojonegoro",
-    "Kabupaten Tuban",
-    "Kabupaten Mojokerto",
-    "Kabupaten Jombang",
-    "Kabupaten Bangkalan",
-    "Kabupaten Sampang",
-    "Kabupaten Pamekasan",
-    "Kabupaten Sumenep",
-  ];
 
   // Handle perubahan tempat lahir
   const handleTempatLahirChange = (e) => {
@@ -151,9 +92,30 @@ const FormPendaftaran = ({ userId: propUserId }) => {
   const handleInputChange = (e) => {
     const { name, value, files } = e.target;
 
-    // Jika input adalah file, gunakan files[0] sebagai value
-    if (files) {
-      setFormData({ ...formData, [name]: files[0] });
+    if (files && files[0]) {
+      const file = files[0];
+      const validFileTypes = ["image/jpeg", "image/png", "image/jpg"];
+      const maxSize = 2 * 1024 * 1024; // 2MB
+      if (!validFileTypes.includes(file.type)) {
+        toast.error(
+          `Format file ${name.toUpperCase()} tidak valid. Gunakan JPG atau PNG.`
+        );
+        e.target.value = ""; // Reset input file agar tidak tersimpan
+        return;
+      }
+
+      if (file.size > maxSize) {
+        toast.error(
+          `Ukuran file ${name.toUpperCase()} terlalu besar. Maksimal 2MB.`
+        );
+        e.target.value = ""; // Reset input file agar tidak tersimpan
+        return;
+      }
+
+      setFormData((prevData) => ({
+        ...prevData,
+        [name]: file,
+      }));
     } else {
       // Jika input bukan file, gunakan value biasa
       setFormData((prevData) => {
@@ -220,6 +182,12 @@ const FormPendaftaran = ({ userId: propUserId }) => {
     // Cek apakah user sudah login
     if (!userId) {
       alert("User ID tidak ditemukan. Silakan login kembali.");
+      return;
+    }
+
+    // Validasi checklist sebelum submit
+    if (!isChecked) {
+      toast.error("Anda harus menyetujui bahwa data sudah benar dan valid!");
       return;
     }
 
@@ -390,39 +358,14 @@ const FormPendaftaran = ({ userId: propUserId }) => {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mt-5">
               <div className="flex flex-col w-full">
                 <label className="font-medium font-outfit">Tempat Lahir</label>
-                <select
-                  onChange={(e) => setLahirDiJawa(e.target.value === "Jawa")}
-                  className="border border-black rounded-md p-2 lg:p-3 font-outfit"
-                >
-                  <option value="Jawa">Jawa Tengah</option>
-                  <option value="Luar Jawa">Di Luar Jawa</option>
-                </select>
 
-                {lahirDiJawa ? (
-                  <select
-                    name="tempatLahir"
-                    onChange={handleTempatLahirChange}
-                    value={formData.tempatLahir}
-                    className="border border-black rounded-md p-2 lg:p-3 font-outfit mt-2"
-                  >
-                    <option value="" disabled selected>
-                      Pilih Kabupaten
-                    </option>
-                    {kabupatenJawa.map((kabupaten, index) => (
-                      <option key={index} value={kabupaten}>
-                        {kabupaten}
-                      </option>
-                    ))}
-                  </select>
-                ) : (
-                  <input
-                    type="text"
-                    name="tempatLahir"
-                    onChange={handleTempatLahirChange}
-                    className="border border-black rounded-md p-2 lg:p-3 font-outfit mt-2"
-                    placeholder="Masukkan tempat lahir"
-                  />
-                )}
+                <input
+                  type="text"
+                  name="tempatLahir"
+                  onChange={handleTempatLahirChange}
+                  className="border border-black rounded-md p-2 lg:p-3 font-outfit mt-2"
+                  placeholder="Masukkan tempat lahir"
+                />
               </div>
 
               <div className="flex flex-col w-full">
@@ -534,43 +477,68 @@ const FormPendaftaran = ({ userId: propUserId }) => {
             </div>
 
             {/* Nilai Ujian */}
-            <div className="mt-5">
-              <label className="font-medium font-outfit">
-                Nilai Ujian Sekolah
-              </label>
-              <div className="grid grid-cols-3 lg:grid-cols-4 gap-2 ">
-                <input
-                  type="number"
-                  name="IPA"
-                  onChange={handleInputChange}
-                  value={formData.IPA}
-                  className="border border-black rounded-md p-2 lg:p-3 font-outfit"
-                  placeholder="IPA"
-                />
-                <input
-                  type="number"
-                  name="BIndo"
-                  onChange={handleInputChange}
-                  value={formData.BIndo}
-                  className="border border-black rounded-md p-2 lg:p-3 font-outfit"
-                  placeholder="B.Indo"
-                />
-                <input
-                  type="number"
-                  name="MTK"
-                  onChange={handleInputChange}
-                  value={formData.MTK}
-                  className="border border-black rounded-md p-2 lg:p-3 font-outfit"
-                  placeholder="MTK"
-                />
-                <input
-                  type="number"
-                  name="total"
-                  onChange={handleInputChange}
-                  value={formData.total.toFixed(2)}
-                  className="border border-black rounded-md p-2 lg:p-3 font-outfit"
-                  placeholder="Total Nilai"
-                />
+            <div className="mt-7">
+              <div className="">
+                <label className="font-medium font-outfit text-center bg-warnaUtama text-white p-2 rounded-md">
+                  Masukan nilai Ujian Sekolah
+                </label>
+              </div>
+              <div className="grid grid-cols-3 lg:grid-cols-4 gap-2 mt-6 ">
+                <div className="flex flex-col w-full">
+                  <label className="font-medium font-outfit" htmlFor="">
+                    IPA
+                  </label>
+                  <input
+                    type="number"
+                    name="IPA"
+                    onChange={handleInputChange}
+                    value={formData.IPA}
+                    className="border border-black rounded-md p-2 lg:p-3 font-outfit"
+                    placeholder="IPA"
+                  />
+                </div>
+
+                <div className="flex flex-col w-full">
+                  <label className="font-medium font-outfit" htmlFor="">
+                    B.Indonesai
+                  </label>
+                  <input
+                    type="number"
+                    name="BIndo"
+                    onChange={handleInputChange}
+                    value={formData.BIndo}
+                    className="border border-black rounded-md p-2 lg:p-3 font-outfit"
+                    placeholder="B.Indo"
+                  />
+                </div>
+
+                <div className="flex flex-col w-full">
+                  <label className="font-medium font-outfit" htmlFor="">
+                    Matematika
+                  </label>
+                  <input
+                    type="number"
+                    name="MTK"
+                    onChange={handleInputChange}
+                    value={formData.MTK}
+                    className="border border-black rounded-md p-2 lg:p-3 font-outfit"
+                    placeholder="MTK"
+                  />
+                </div>
+
+                <div className="flex flex-col w-full">
+                  <label className="font-medium font-outfit" htmlFor="">
+                    Rata-Rata
+                  </label>
+                  <input
+                    type="number"
+                    name="total"
+                    onChange={handleInputChange}
+                    value={formData.total.toFixed(2)}
+                    className="border border-black rounded-md p-2 lg:p-3 font-outfit"
+                    placeholder="Total Nilai"
+                  />
+                </div>
               </div>
             </div>
 
@@ -589,6 +557,19 @@ const FormPendaftaran = ({ userId: propUserId }) => {
 
         {step === 2 && (
           <>
+            <div className="mb-5 p-4 border-l-4 border-blue-500 bg-blue-100 text-blue-900 rounded-lg shadow-md">
+              <h3 className="font-semibold text-lg flex items-center">
+                <span className="text-xl mr-2">📌</span> Catatan Penting
+              </h3>
+              <ul className="list-disc pl-5 mt-2 text-sm font-medium">
+                <li>
+                  File harus berupa gambar dengan format JPG, JPEG, atau PNG.
+                </li>
+                <li>Ukuran file maksimal 2MB.</li>
+                <li>Pastikan dokumen yang diunggah jelas dan terbaca.</li>
+              </ul>
+            </div>
+
             {/* Step 2: Upload Berkas */}
             <div className="grid grid-cols-1 gap-4">
               <div className="flex flex-col w-full">
@@ -683,6 +664,20 @@ const FormPendaftaran = ({ userId: propUserId }) => {
                   onChange={handleInputChange}
                   className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
                 />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 gap-4 mt-5 ml-5">
+              <div className="flex items-center">
+                <input
+                  type="checkbox"
+                  checked={isChecked}
+                  onChange={(e) => setIsChecked(e.target.checked)}
+                  className="mr-2  w-5 h-5"
+                />
+                <label className="font-poppins text-[12px] lg:text-[14px]">
+                  Saya menyatakan bahwa data yang diisi adalah benar dan valid.
+                </label>
               </div>
             </div>
 
